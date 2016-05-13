@@ -18,15 +18,22 @@ class TrimViewController: UIViewController {
     override func viewDidLoad() {
         view.backgroundColor = UIColor.whiteColor()
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "back", style: .Plain, target: self, action: #selector(dismiss))
-        
-        
-        navigationItem.leftBarButtonItem?.rx_tap.subscribe({ [weak self] _ in
-            self!.dismissViewControllerAnimated(true, completion: nil)
-        }).addDisposableTo(disposeBag)
-        
+
+//        navigationItem.leftBarButtonItem?.rx_tap.subscribe({ [weak self] _ in
+//            self!.dismissViewControllerAnimated(true, completion: nil)
+//        }).addDisposableTo(disposeBag)
+    }
+    
+    override func prefersStatusBarHidden() -> Bool {
+        return true
     }
     
     func dismiss() -> Void {
+        UIApplication.sharedApplication().statusBarHidden = false
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    deinit {
+        
     }
 }
