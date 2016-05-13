@@ -1,0 +1,17 @@
+PODS:
+  - RxCocoa (2.4):
+    - RxSwift (~> 2.4)
+  - RxSwift (2.4)
+  - SVProgressHUD (2.0.3)
+
+DEPENDENCIES:
+  - RxCocoa
+  - RxSwift
+  - SVProgressHUD
+
+SPEC CHECKSUMS:
+  RxCocoa: 7d6cd877de99f5640306b3d6cf87f580c1d91b61
+  RxSwift: 67b9ef4e8b34fb394e200e754c6a09cc16559f94
+  SVProgressHUD: b0830714205bea1317ea1a2ebc71e5633af334d4
+
+COCOAPODS: 0.39.0

@@ -7,19 +7,23 @@
 //
 
 import UIKit
+
 import MobileCoreServices
+import SVProgressHUD
+import AVFoundation
+
+import RxCocoa
+import RxSwift
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+    
+    let disposeBag = DisposeBag()
+    
+    
+    
+    
+    
+    
 
     @IBAction func pickVideo(sender: AnyObject) {
         let picker = UIImagePickerController()
@@ -30,7 +34,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         picker.mediaTypes = [movieType,vidoeType]
         self.presentViewController(picker, animated: true, completion: nil)
         
-        
+    }
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        let URL = info[UIImagePickerControllerReferenceURL] as! NSURL
+        let asset = AVURLAsset(URL: URL)
+        let trimVC = TrimViewController()
+        trimVC.asset = asset
+        let navi = UINavigationController(rootViewController: trimVC)
+        picker.dismissViewControllerAnimated(true) { 
+            self.presentViewController(navi, animated: true, completion: nil)
+        }
         
         
         
