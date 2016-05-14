@@ -9,15 +9,11 @@
 import UIKit
 
 import MobileCoreServices
-import SVProgressHUD
 import AVFoundation
-
-import RxCocoa
-import RxSwift
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    let disposeBag = DisposeBag()
+
     
     
     
