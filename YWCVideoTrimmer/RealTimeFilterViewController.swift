@@ -29,10 +29,10 @@ class RealTimeFilterViewController: UIViewController, AVCaptureVideoDataOutputSa
         view.backgroundColor = UIColor.whiteColor()
         eaglContext = EAGLContext(API: .OpenGLES2)
         videoPreviewView = GLKView()
-        videoPreviewView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight)
         videoPreviewView.context = eaglContext
         videoPreviewView.enableSetNeedsDisplay = false
         videoPreviewView.transform =  CGAffineTransformMakeRotation(CGFloat(M_PI_2))
+        videoPreviewView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight)
         view.addSubview(videoPreviewView)
         videoPreviewView.bindDrawable()
         videoPreviewViewBounds.size.width = CGFloat(videoPreviewView.drawableWidth)
@@ -135,6 +135,8 @@ class RealTimeFilterViewController: UIViewController, AVCaptureVideoDataOutputSa
         
         
         filteredImage = effectFilter.outputImage!
+        
+        
 //        filteredImage = (effectFilter?.outputImage)!
 //        guard filteredImage = effectFilter.outputImage! else {
 //            
