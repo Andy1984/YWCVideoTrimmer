@@ -46,17 +46,15 @@ class RealTimeFilterViewController: UIViewController, AVCaptureVideoDataOutputSa
     }
     
     func start() {
-        let videoDevices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo)
+        guard let videoDevices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) as? [AVCaptureDevice] else {
+            print("Wrong device type")
+            return
+        }
         let position:AVCaptureDevicePosition = .Back
         for device in videoDevices {
-            if let d = device as? AVCaptureDevice {
-                if d.position == position {
-                    videoDevice = d
-                    print(videoDevice)
-                    break
-                }
-            } else {
-                print("Wrong device type")
+            if device.position == position {
+                videoDevice = device
+                break;
             }
         }
         let videoDeviceInput:AVCaptureDeviceInput?
@@ -103,7 +101,6 @@ class RealTimeFilterViewController: UIViewController, AVCaptureVideoDataOutputSa
     
     //AVCaptureVideoDataOutputSampleBufferDelegate method
     func captureOutput(captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
-        
         guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
             print("imageBuffer does not exist")
             return;
@@ -123,7 +120,7 @@ class RealTimeFilterViewController: UIViewController, AVCaptureVideoDataOutputSa
         vignetteFilter.setValue(vector, forKey: kCIInputCenterKey)
         vignetteFilter.setValue(extentSize.width/2, forKey: kCIInputRadiusKey)
         
-        guard var filteredImage = vignetteFilter.outputImage else {
+        guard let vignetteImage = vignetteFilter.outputImage else {
             print("filteredImage == nil")
             return
         }
@@ -131,18 +128,12 @@ class RealTimeFilterViewController: UIViewController, AVCaptureVideoDataOutputSa
             print("effectFilter == nil")
             return;
         }
-        effectFilter.setValue(filteredImage, forKey: kCIInputImageKey)
+        effectFilter.setValue(vignetteImage, forKey: kCIInputImageKey)
         
-        
-        filteredImage = effectFilter.outputImage!
-        
-        
-//        filteredImage = (effectFilter?.outputImage)!
-//        guard filteredImage = effectFilter.outputImage! else {
-//            
-//        }
-        
-        
+        guard let effectImage = effectFilter.outputImage else {
+            print("effectImage == nil")
+            return;
+        }
         
         // MARK: Finally, display the new image by videoPreviewView:
         let sourceAspect = extentSize.width/extentSize.height
@@ -174,7 +165,7 @@ class RealTimeFilterViewController: UIViewController, AVCaptureVideoDataOutputSa
         glEnable(UInt32(GL_BLEND));
         glBlendFunc(UInt32(GL_ONE), UInt32(GL_ONE_MINUS_SRC_ALPHA));
         
-        ciContext.drawImage(filteredImage, inRect: videoPreviewViewBounds, fromRect: drawRect)
+        ciContext.drawImage(effectImage, inRect: videoPreviewViewBounds, fromRect: drawRect)
         
         videoPreviewView.display()
         
