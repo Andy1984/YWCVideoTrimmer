@@ -101,5 +101,88 @@ class RealTimeFilterViewController: UIViewController, AVCaptureVideoDataOutputSa
         
     }
     
+    //AVCaptureVideoDataOutputSampleBufferDelegate method
+    func captureOutput(captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
+        
+        guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+            print("imageBuffer does not exist")
+            return;
+        }
+        let sourceImage = CIImage(CVImageBuffer: imageBuffer, options: nil)
+        let sourceExtent = sourceImage.extent
+        
+        // MARK: Add two filters
+        // Image processing
+        guard let vignetteFilter = CIFilter(name: "CIVignetteEffect") else {
+            print("vignetteFilter == nil")
+            return;
+        }
+        vignetteFilter.setValue(sourceImage, forKey: kCIInputImageKey)
+        let extentSize = sourceExtent.size
+        let vector = CIVector(x: extentSize.width/2, y: extentSize.height/2)
+        vignetteFilter.setValue(vector, forKey: kCIInputCenterKey)
+        vignetteFilter.setValue(extentSize.width/2, forKey: kCIInputRadiusKey)
+        
+        guard var filteredImage = vignetteFilter.outputImage else {
+            print("filteredImage == nil")
+            return
+        }
+        guard let effectFilter = CIFilter(name: "CIPhotoEffectInstant") else {
+            print("effectFilter == nil")
+            return;
+        }
+        effectFilter.setValue(filteredImage, forKey: kCIInputImageKey)
+        
+        
+        filteredImage = effectFilter.outputImage!
+//        filteredImage = (effectFilter?.outputImage)!
+//        guard filteredImage = effectFilter.outputImage! else {
+//            
+//        }
+        
+        
+        
+        // MARK: Finally, display the new image by videoPreviewView:
+        let sourceAspect = extentSize.width/extentSize.height
+        let previewAspect = videoPreviewViewBounds.size.width/videoPreviewViewBounds.size.height
+        // we want to maintain the aspect radio of the screen size, so we clip the video image
+        var drawRect = sourceExtent
+        if sourceAspect > previewAspect {
+            // use full height of the video image, and center crop the width
+            drawRect.origin.x += (drawRect.size.width - drawRect.size.height * previewAspect) / 2.0;
+            drawRect.size.width = drawRect.size.height * previewAspect;
+        } else {
+            // use full width of the video image, and center crop the height
+            drawRect.origin.y += (drawRect.size.height - drawRect.size.width / previewAspect) / 2.0;
+            drawRect.size.height = drawRect.size.width / previewAspect;
+        }
+        //Why twice
+        videoPreviewView.bindDrawable()
+        
+        if eaglContext != EAGLContext.currentContext() {
+            if EAGLContext.setCurrentContext(eaglContext) == false {
+                print("Refresh eaglContext fail")
+            }
+        }
+        
+        // clear eagl view to grey
+        glClearColor(0.5, 0.5, 0.5, 1.0);
+        glClear(UInt32(GL_COLOR_BUFFER_BIT));
+        // set the blend mode to "source over" so that CI will use that
+        glEnable(UInt32(GL_BLEND));
+        glBlendFunc(UInt32(GL_ONE), UInt32(GL_ONE_MINUS_SRC_ALPHA));
+        
+        ciContext.drawImage(filteredImage, inRect: videoPreviewViewBounds, fromRect: drawRect)
+        
+        videoPreviewView.display()
+        
+        
+        
+        
+        
+        
+        
+    }
+    
 
 }
