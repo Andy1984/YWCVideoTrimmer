@@ -14,6 +14,9 @@
 		1710262F1CE49EE6009A9233 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1710262E1CE49EE6009A9233 /* Assets.xcassets */; };
 		171026321CE49EE6009A9233 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 171026301CE49EE6009A9233 /* LaunchScreen.storyboard */; };
 		1710263A1CE4B1EA009A9233 /* TrimViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171026391CE4B1EA009A9233 /* TrimViewController.swift */; };
+		1798275B1CE71FBF0072996D /* Define.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1798275A1CE71FBF0072996D /* Define.swift */; };
+		17F20B981CEAC38900CA4BF4 /* RealTimeFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F20B971CEAC38900CA4BF4 /* RealTimeFilterViewController.swift */; };
+		17F20B9A1CEAC48600CA4BF4 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17F20B991CEAC48600CA4BF4 /* OpenGLES.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +28,9 @@
 		171026311CE49EE6009A9233 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		171026331CE49EE6009A9233 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		171026391CE4B1EA009A9233 /* TrimViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrimViewController.swift; sourceTree = "<group>"; };
+		1798275A1CE71FBF0072996D /* Define.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Define.swift; sourceTree = "<group>"; };
+		17F20B971CEAC38900CA4BF4 /* RealTimeFilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealTimeFilterViewController.swift; sourceTree = "<group>"; };
+		17F20B991CEAC48600CA4BF4 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		24DF6F57B73E420BAC1D8B03 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B95D305B7E64BFCC6155A73A /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE2B564F8B3932BF0F71CDBF /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -35,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17F20B9A1CEAC48600CA4BF4 /* OpenGLES.framework in Frameworks */,
 				137BF7DEDB4F983DC01D691E /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -66,6 +73,8 @@
 				171026271CE49EE6009A9233 /* AppDelegate.swift */,
 				171026291CE49EE6009A9233 /* ViewController.swift */,
 				171026391CE4B1EA009A9233 /* TrimViewController.swift */,
+				17F20B971CEAC38900CA4BF4 /* RealTimeFilterViewController.swift */,
+				1798275A1CE71FBF0072996D /* Define.swift */,
 				1710262B1CE49EE6009A9233 /* Main.storyboard */,
 				1710262E1CE49EE6009A9233 /* Assets.xcassets */,
 				171026301CE49EE6009A9233 /* LaunchScreen.storyboard */,
@@ -86,6 +95,7 @@
 		BD41D71285D752F9A2EB8400 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				17F20B991CEAC48600CA4BF4 /* OpenGLES.framework */,
 				B95D305B7E64BFCC6155A73A /* Pods.framework */,
 			);
 			name = Frameworks;
@@ -215,6 +225,8 @@
 			files = (
 				1710262A1CE49EE6009A9233 /* ViewController.swift in Sources */,
 				1710263A1CE4B1EA009A9233 /* TrimViewController.swift in Sources */,
+				17F20B981CEAC38900CA4BF4 /* RealTimeFilterViewController.swift in Sources */,
+				1798275B1CE71FBF0072996D /* Define.swift in Sources */,
 				171026281CE49EE6009A9233 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
