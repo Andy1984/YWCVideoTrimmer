@@ -149,7 +149,6 @@ class RealTimeFilterViewController: UIViewController, AVCaptureVideoDataOutputSa
             drawRect.origin.y += (drawRect.size.height - drawRect.size.width / previewAspect) / 2.0;
             drawRect.size.height = drawRect.size.width / previewAspect;
         }
-        //Why twice
         videoPreviewView.bindDrawable()
         
         if eaglContext != EAGLContext.currentContext() {

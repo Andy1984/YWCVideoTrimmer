@@ -10,25 +10,93 @@ import UIKit
 import AVFoundation
 import GLKit
 
-class TrimViewController: UIViewController, GLKViewDelegate {
+class TrimViewController: UIViewController, GLKViewDelegate, AVPlayerItemOutputPullDelegate {
     var asset:AVURLAsset!
-    let glkView:GLKView! = GLKView()
+    var videoPreviewView:GLKView!
+    var ciContext:CIContext!
+    var eaglContext:EAGLContext!
+    lazy var player:AVPlayer = AVPlayer(playerItem: AVPlayerItem(asset: self.asset))
+    var videoOutput:AVPlayerItemVideoOutput!
+    
+    func outputMediaDataWillChange(sender: AVPlayerItemOutput) {
+    }
+    
+    func outputSequenceWasFlushed(output: AVPlayerItemOutput) {
+    }
+    
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        
         view.backgroundColor = UIColor.whiteColor()
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "back", style: .Plain, target: self, action: #selector(back))
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "export", style: .Plain, target: self, action: #selector(export))
         navigationItem.title = "Preview"
         
-        glkView.frame = CGRectMake(0, 0, view.bounds.size.width, view.bounds.size.width)
-        view.addSubview(glkView)
-        glkView.delegate = self
         
+        
+        eaglContext = EAGLContext(API: .OpenGLES2)
+        let frame = CGRectMake(0, 0, view.bounds.size.width, view.bounds.size.height)
+        videoPreviewView = GLKView(frame: frame, context: eaglContext)
+        view.addSubview(videoPreviewView)
+        videoPreviewView.delegate = self
+        videoPreviewView.enableSetNeedsDisplay = false
+        videoPreviewView.bindDrawable()
+        ciContext = CIContext(EAGLContext: self.eaglContext, options: [kCIContextWorkingColorSpace:NSNull()])
+        EAGLContext.setCurrentContext(eaglContext)
+        
+        videoOutput = AVPlayerItemVideoOutput(pixelBufferAttributes: nil)
+        player.currentItem?.addOutput(videoOutput)
+        player.play()
+        let displayLink = CADisplayLink(target: self, selector: #selector(displayLinkDidRefresh))
+        displayLink.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSRunLoopCommonModes)
+    }
+    
+    func displayLinkDidRefresh(link: CADisplayLink) {
+    
+        let itemTime = videoOutput.itemTimeForHostTime(CACurrentMediaTime())
+        guard itemTime != kCMTimeZero else {
+            print("itemTime is zero")
+            return
+        }
+        guard videoOutput.hasNewPixelBufferForItemTime(itemTime) else {
+            print(videoOutput)
+            print(itemTime)
+            return;
+        }
+        
+        
+        let pixelBuffer:CVPixelBuffer = videoOutput.copyPixelBufferForItemTime(itemTime, itemTimeForDisplay: nil)!
+        let sourceImage:CIImage = CIImage(CVPixelBuffer: pixelBuffer)
+        let sourceExtent = sourceImage.extent
+        
+        
+        if eaglContext != EAGLContext.currentContext() {
+            if EAGLContext.setCurrentContext(eaglContext) == false {
+                print("Refresh eaglContext fail")
+            }
+        }
+        
+        
+        // clear eagl view to grey
+        glClearColor(0.5, 0.5, 0.5, 1.0);
+        glClear(UInt32(GL_COLOR_BUFFER_BIT));
+        // set the blend mode to "source over" so that CI will use that
+        glEnable(UInt32(GL_BLEND));
+        glBlendFunc(UInt32(GL_ONE), UInt32(GL_ONE_MINUS_SRC_ALPHA));
+        
+        ciContext.drawImage(sourceImage, inRect: videoPreviewView.bounds, fromRect: sourceExtent)
+        
+        videoPreviewView.display()
         
     }
     
+    
     //代理方法
     func glkView(view: GLKView, drawInRect rect: CGRect) {
+        
+        return
         
     }
     

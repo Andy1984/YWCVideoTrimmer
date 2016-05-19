@@ -17,6 +17,25 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     let disposeBag = DisposeBag()
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        guard let path = NSBundle.mainBundle().pathForResource("launchScreen", ofType: "mp4") else {
+            print("path is nil")
+            return
+        }
+        let URL = NSURL.fileURLWithPath(path)
+        let asset:AVURLAsset = AVURLAsset(URL: URL)
+        let trimVC = TrimViewController()
+        trimVC.asset = asset
+        let navi = UINavigationController(rootViewController: trimVC)
+        presentViewController(navi, animated: true, completion: nil)
+    }
+    
+    override func viewDidLoad() {
+        
+    }
+    
     @IBAction func pickVideo(sender: AnyObject) {
         let picker = UIImagePickerController()
         picker.sourceType = .PhotoLibrary

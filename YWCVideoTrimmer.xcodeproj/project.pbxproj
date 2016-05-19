@@ -14,6 +14,7 @@
 		1710262F1CE49EE6009A9233 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1710262E1CE49EE6009A9233 /* Assets.xcassets */; };
 		171026321CE49EE6009A9233 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 171026301CE49EE6009A9233 /* LaunchScreen.storyboard */; };
 		1710263A1CE4B1EA009A9233 /* TrimViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171026391CE4B1EA009A9233 /* TrimViewController.swift */; };
+		17686B841CEC63F900BE1FEA /* launchScreen.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 17686B831CEC63F900BE1FEA /* launchScreen.mp4 */; };
 		1798275B1CE71FBF0072996D /* Define.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1798275A1CE71FBF0072996D /* Define.swift */; };
 		17F20B981CEAC38900CA4BF4 /* RealTimeFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F20B971CEAC38900CA4BF4 /* RealTimeFilterViewController.swift */; };
 		17F20B9A1CEAC48600CA4BF4 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17F20B991CEAC48600CA4BF4 /* OpenGLES.framework */; };
@@ -28,6 +29,7 @@
 		171026311CE49EE6009A9233 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		171026331CE49EE6009A9233 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		171026391CE4B1EA009A9233 /* TrimViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrimViewController.swift; sourceTree = "<group>"; };
+		17686B831CEC63F900BE1FEA /* launchScreen.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = launchScreen.mp4; sourceTree = "<group>"; };
 		1798275A1CE71FBF0072996D /* Define.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Define.swift; sourceTree = "<group>"; };
 		17F20B971CEAC38900CA4BF4 /* RealTimeFilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealTimeFilterViewController.swift; sourceTree = "<group>"; };
 		17F20B991CEAC48600CA4BF4 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -75,6 +77,7 @@
 				171026391CE4B1EA009A9233 /* TrimViewController.swift */,
 				17F20B971CEAC38900CA4BF4 /* RealTimeFilterViewController.swift */,
 				1798275A1CE71FBF0072996D /* Define.swift */,
+				17686B831CEC63F900BE1FEA /* launchScreen.mp4 */,
 				1710262B1CE49EE6009A9233 /* Main.storyboard */,
 				1710262E1CE49EE6009A9233 /* Assets.xcassets */,
 				171026301CE49EE6009A9233 /* LaunchScreen.storyboard */,
@@ -164,6 +167,7 @@
 			files = (
 				171026321CE49EE6009A9233 /* LaunchScreen.storyboard in Resources */,
 				1710262F1CE49EE6009A9233 /* Assets.xcassets in Resources */,
+				17686B841CEC63F900BE1FEA /* launchScreen.mp4 in Resources */,
 				1710262D1CE49EE6009A9233 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
