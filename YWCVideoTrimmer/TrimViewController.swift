@@ -20,9 +20,15 @@ class TrimViewController: UIViewController, GLKViewDelegate, AVPlayerItemOutputP
 //    var videoVisionFrame:CGRect!
     lazy var videoVisualFrame: CGRect = {
         
-        
-        
-        return CGRectZero
+        if self.asset.width > self.asset.height {
+            let w = self.videoPreviewView.bounds.size.width
+            let h = w * self.asset.width / self.asset.height
+            return CGRectMake(0, 0, w, h)
+        } else {
+            let h = self.videoPreviewView.bounds.size.height
+            let w = h * self.asset.width / self.asset.height
+            return CGRectMake(0, 0, w, h)
+        }
         
     }()
     
