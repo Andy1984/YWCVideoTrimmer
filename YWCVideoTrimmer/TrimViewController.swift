@@ -15,28 +15,31 @@ class TrimViewController: UIViewController, GLKViewDelegate, AVPlayerItemOutputP
     var videoPreviewView:GLKView!
     var ciContext:CIContext!
     var eaglContext:EAGLContext!
-    lazy var player:AVPlayer = AVPlayer(playerItem: AVPlayerItem(asset: self.asset))
+    var player:AVPlayer!
     var videoOutput:AVPlayerItemVideoOutput!
 //    var videoVisionFrame:CGRect!
+//    lazy var videoVisualFrame: CGRect = {
+//        let w:CGFloat = CGFloat(self.videoPreviewView.drawableWidth)
+//        let h:CGFloat = CGFloat(self.videoPreviewView.drawableHeight)
+//        return CGRectMake(0, 0, w, h)
+//    }()
     lazy var videoVisualFrame: CGRect = {
-        
+        let scale:CGFloat = 2
         if self.asset.width > self.asset.height {
-            let w = self.videoPreviewView.bounds.size.width
+            let w = self.videoPreviewView.width
             let h = w * self.asset.width / self.asset.height
-            return CGRectMake(0, 0, w, h)
+            return CGRectMake(0, 0, w * scale, h * scale)
         } else {
-            let h = self.videoPreviewView.bounds.size.height
-            let w = h * self.asset.width / self.asset.height
-            return CGRectMake(0, 0, w, h)
+            let h:CGFloat = self.videoPreviewView.height
+            let w:CGFloat = h * self.asset.width / self.asset.height
+            let x:CGFloat = (self.videoPreviewView.width - w) / 2
+            let y:CGFloat = 0.0
+            return CGRectMake(x * scale, y, w * scale, h * scale)
         }
         
     }()
     
-    func outputMediaDataWillChange(sender: AVPlayerItemOutput) {
-    }
     
-    func outputSequenceWasFlushed(output: AVPlayerItemOutput) {
-    }
     
     
     override func viewDidLoad() {
@@ -51,7 +54,7 @@ class TrimViewController: UIViewController, GLKViewDelegate, AVPlayerItemOutputP
         extendedLayoutIncludesOpaqueBars = true
         
         eaglContext = EAGLContext(API: .OpenGLES2)
-        let frame = CGRectMake(0, 0, view.bounds.size.width, view.bounds.size.width)
+        let frame = CGRectMake(0, 88, view.width, view.width)
         videoPreviewView = GLKView(frame: frame, context: eaglContext)
         view.addSubview(videoPreviewView)
         videoPreviewView.delegate = self
@@ -61,6 +64,8 @@ class TrimViewController: UIViewController, GLKViewDelegate, AVPlayerItemOutputP
         EAGLContext.setCurrentContext(eaglContext)
         
         videoOutput = AVPlayerItemVideoOutput(pixelBufferAttributes: nil)
+        videoOutput.setDelegate(self, queue: dispatch_get_main_queue())
+        player = AVPlayer(playerItem: AVPlayerItem(asset: self.asset))
         player.currentItem?.addOutput(videoOutput)
         player.play()
         let displayLink = CADisplayLink(target: self, selector: #selector(displayLinkDidRefresh))
@@ -95,18 +100,19 @@ class TrimViewController: UIViewController, GLKViewDelegate, AVPlayerItemOutputP
         
         // clear eagl view to grey
         glClearColor(0.5, 0.5, 0.5, 1.0);
-        ciContext.drawImage(sourceImage, inRect: videoPreviewView.bounds, fromRect: sourceExtent)
-        videoPreviewView.display()
+        glClear(UInt32(GL_COLOR_BUFFER_BIT));
+        // set the blend mode to "source over" so that CI will use that
+        glEnable(UInt32(GL_BLEND));
+        glBlendFunc(UInt32(GL_ONE), UInt32(GL_ONE_MINUS_SRC_ALPHA));
+        ciContext.drawImage(sourceImage, inRect: videoVisualFrame, fromRect: sourceExtent)
+        
+//         videoPreviewView.display()
+        try videoPreviewView.display()
+        
         
     }
     
     
-    //代理方法
-    func glkView(view: GLKView, drawInRect rect: CGRect) {
-        
-        return
-        
-    }
     
     //隐藏状态栏
     override func prefersStatusBarHidden() -> Bool {
@@ -124,6 +130,19 @@ class TrimViewController: UIViewController, GLKViewDelegate, AVPlayerItemOutputP
     
     //销毁
     deinit {
+        print("xiaohui")
+    }
+    
+    //代理方法
+    func glkView(view: GLKView, drawInRect rect: CGRect) {
         
+        return
+        
+    }
+    
+    func outputMediaDataWillChange(sender: AVPlayerItemOutput) {
+    }
+    
+    func outputSequenceWasFlushed(output: AVPlayerItemOutput) {
     }
 }
