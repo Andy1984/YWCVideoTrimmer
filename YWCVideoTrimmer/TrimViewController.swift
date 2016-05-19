@@ -17,6 +17,14 @@ class TrimViewController: UIViewController, GLKViewDelegate, AVPlayerItemOutputP
     var eaglContext:EAGLContext!
     lazy var player:AVPlayer = AVPlayer(playerItem: AVPlayerItem(asset: self.asset))
     var videoOutput:AVPlayerItemVideoOutput!
+//    var videoVisionFrame:CGRect!
+    lazy var videoVisualFrame: CGRect = {
+        
+        
+        
+        return CGRectZero
+        
+    }()
     
     func outputMediaDataWillChange(sender: AVPlayerItemOutput) {
     }
@@ -34,10 +42,10 @@ class TrimViewController: UIViewController, GLKViewDelegate, AVPlayerItemOutputP
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "export", style: .Plain, target: self, action: #selector(export))
         navigationItem.title = "Preview"
         
-        
+        extendedLayoutIncludesOpaqueBars = true
         
         eaglContext = EAGLContext(API: .OpenGLES2)
-        let frame = CGRectMake(0, 0, view.bounds.size.width, view.bounds.size.height)
+        let frame = CGRectMake(0, 0, view.bounds.size.width, view.bounds.size.width)
         videoPreviewView = GLKView(frame: frame, context: eaglContext)
         view.addSubview(videoPreviewView)
         videoPreviewView.delegate = self
@@ -81,13 +89,7 @@ class TrimViewController: UIViewController, GLKViewDelegate, AVPlayerItemOutputP
         
         // clear eagl view to grey
         glClearColor(0.5, 0.5, 0.5, 1.0);
-        glClear(UInt32(GL_COLOR_BUFFER_BIT));
-        // set the blend mode to "source over" so that CI will use that
-        glEnable(UInt32(GL_BLEND));
-        glBlendFunc(UInt32(GL_ONE), UInt32(GL_ONE_MINUS_SRC_ALPHA));
-        
         ciContext.drawImage(sourceImage, inRect: videoPreviewView.bounds, fromRect: sourceExtent)
-        
         videoPreviewView.display()
         
     }
