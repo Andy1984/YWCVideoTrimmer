@@ -17,6 +17,7 @@ class TrimViewController: UIViewController, GLKViewDelegate, AVPlayerItemOutputP
     var eaglContext:EAGLContext!
     var player:AVPlayer!
     var videoOutput:AVPlayerItemVideoOutput!
+    var displayLink:CADisplayLink!
 //    var videoVisionFrame:CGRect!
 //    lazy var videoVisualFrame: CGRect = {
 //        let w:CGFloat = CGFloat(self.videoPreviewView.drawableWidth)
@@ -51,10 +52,10 @@ class TrimViewController: UIViewController, GLKViewDelegate, AVPlayerItemOutputP
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "export", style: .Plain, target: self, action: #selector(export))
         navigationItem.title = "Preview"
         
-        extendedLayoutIncludesOpaqueBars = true
+        navigationController?.navigationBar.translucent = false
         
         eaglContext = EAGLContext(API: .OpenGLES2)
-        let frame = CGRectMake(0, 88, view.width, view.width)
+        let frame = CGRectMake(0, 0, view.width, view.width)
         videoPreviewView = GLKView(frame: frame, context: eaglContext)
         view.addSubview(videoPreviewView)
         videoPreviewView.delegate = self
@@ -68,7 +69,7 @@ class TrimViewController: UIViewController, GLKViewDelegate, AVPlayerItemOutputP
         player = AVPlayer(playerItem: AVPlayerItem(asset: self.asset))
         player.currentItem?.addOutput(videoOutput)
         player.play()
-        let displayLink = CADisplayLink(target: self, selector: #selector(displayLinkDidRefresh))
+        displayLink = CADisplayLink(target: self, selector: #selector(displayLinkDidRefresh))
         displayLink.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSRunLoopCommonModes)
     }
     
@@ -90,7 +91,8 @@ class TrimViewController: UIViewController, GLKViewDelegate, AVPlayerItemOutputP
         let sourceImage:CIImage = CIImage(CVPixelBuffer: pixelBuffer)
         let sourceExtent = sourceImage.extent
         
-        
+        //Musts bind, or easy to crash when display
+        videoPreviewView.bindDrawable()
         if eaglContext != EAGLContext.currentContext() {
             if EAGLContext.setCurrentContext(eaglContext) == false {
                 print("Refresh eaglContext fail")
@@ -99,16 +101,13 @@ class TrimViewController: UIViewController, GLKViewDelegate, AVPlayerItemOutputP
         
         
         // clear eagl view to grey
-        glClearColor(0.5, 0.5, 0.5, 1.0);
+        glClearColor(0.0, 0.0, 0.0, 1.0);
         glClear(UInt32(GL_COLOR_BUFFER_BIT));
         // set the blend mode to "source over" so that CI will use that
         glEnable(UInt32(GL_BLEND));
         glBlendFunc(UInt32(GL_ONE), UInt32(GL_ONE_MINUS_SRC_ALPHA));
         ciContext.drawImage(sourceImage, inRect: videoVisualFrame, fromRect: sourceExtent)
-        
-//         videoPreviewView.display()
-        try videoPreviewView.display()
-        
+        videoPreviewView.display()
         
     }
     
@@ -122,6 +121,7 @@ class TrimViewController: UIViewController, GLKViewDelegate, AVPlayerItemOutputP
     func back() {
         UIApplication.sharedApplication().statusBarHidden = false
         self.dismissViewControllerAnimated(true, completion: nil)
+        displayLink.invalidate()
     }
     
     func export() {
