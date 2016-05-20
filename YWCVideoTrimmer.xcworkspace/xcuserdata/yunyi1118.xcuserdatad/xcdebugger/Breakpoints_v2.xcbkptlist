@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "YWCVideoTrimmer/TrimViewController.swift"
-            timestampString = "485404256.72982"
+            timestampString = "485404928.728205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "134"
-            endingLineNumber = "134"
+            startingLineNumber = "125"
+            endingLineNumber = "125"
             landmarkName = "deinit"
             landmarkType = "5">
          </BreakpointContent>

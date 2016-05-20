@@ -18,30 +18,23 @@ class TrimViewController: UIViewController, GLKViewDelegate, AVPlayerItemOutputP
     var player:AVPlayer!
     var videoOutput:AVPlayerItemVideoOutput!
     var displayLink:CADisplayLink!
-//    var videoVisionFrame:CGRect!
-//    lazy var videoVisualFrame: CGRect = {
-//        let w:CGFloat = CGFloat(self.videoPreviewView.drawableWidth)
-//        let h:CGFloat = CGFloat(self.videoPreviewView.drawableHeight)
-//        return CGRectMake(0, 0, w, h)
-//    }()
     lazy var videoVisualFrame: CGRect = {
-        let scale:CGFloat = 2
+        let scale:CGFloat = UIScreen.mainScreen().scale
+        let x,y,w,h:CGFloat
         if self.asset.width > self.asset.height {
-            let w = self.videoPreviewView.width
-            let h = w * self.asset.width / self.asset.height
-            return CGRectMake(0, 0, w * scale, h * scale)
+            w = self.videoPreviewView.width
+            h = w * self.asset.height / self.asset.width
+            y = (self.videoPreviewView.height - h) / 2
+            x = 0.0
         } else {
-            let h:CGFloat = self.videoPreviewView.height
-            let w:CGFloat = h * self.asset.width / self.asset.height
-            let x:CGFloat = (self.videoPreviewView.width - w) / 2
-            let y:CGFloat = 0.0
-            return CGRectMake(x * scale, y, w * scale, h * scale)
+            h = self.videoPreviewView.height
+            w = h * self.asset.width / self.asset.height
+            x = (self.videoPreviewView.width - w) / 2
+            y = 0.0
         }
+        return CGRectMake(x * scale, y * scale, w * scale, h * scale)
         
     }()
-    
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,7 +44,6 @@ class TrimViewController: UIViewController, GLKViewDelegate, AVPlayerItemOutputP
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "back", style: .Plain, target: self, action: #selector(back))
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "export", style: .Plain, target: self, action: #selector(export))
         navigationItem.title = "Preview"
-        
         navigationController?.navigationBar.translucent = false
         
         eaglContext = EAGLContext(API: .OpenGLES2)
