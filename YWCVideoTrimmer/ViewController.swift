@@ -20,15 +20,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        guard let path = NSBundle.mainBundle().pathForResource("launchScreen", ofType: "mp4") else {
-            print("path is nil")
-            return
-        }
-        let URL = NSURL.fileURLWithPath(path)
-        let asset:AVURLAsset = AVURLAsset(URL: URL)
-        let trimVC = TrimViewController()
-        trimVC.asset = asset
-        let navi = UINavigationController(rootViewController: trimVC)
+//        guard let path = NSBundle.mainBundle().pathForResource("launchScreen", ofType: "mp4") else {
+//            print("path is nil")
+//            return
+//        }
+//        let URL = NSURL.fileURLWithPath(path)
+//        let asset:AVURLAsset = AVURLAsset(URL: URL)
+//        let trimVC = TrimViewController()
+//        trimVC.asset = asset
+//        let navi = UINavigationController(rootViewController: trimVC)
+//        presentViewController(navi, animated: true, completion: nil)
+        
+        let cutVC = CuttingViewController()
+        let navi = UINavigationController(rootViewController: cutVC)
         presentViewController(navi, animated: true, completion: nil)
     }
     
