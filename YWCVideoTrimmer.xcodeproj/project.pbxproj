@@ -22,6 +22,7 @@
 		17F20B981CEAC38900CA4BF4 /* RealTimeFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F20B971CEAC38900CA4BF4 /* RealTimeFilterViewController.swift */; };
 		17F20B9A1CEAC48600CA4BF4 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17F20B991CEAC48600CA4BF4 /* OpenGLES.framework */; };
 		E44DFBC91CF32176002778A1 /* CuttingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44DFBC81CF32176002778A1 /* CuttingViewController.swift */; };
+		E4AE5FE31CF98DC800D1C156 /* ThumbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AE5FE21CF98DC800D1C156 /* ThumbView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		B95D305B7E64BFCC6155A73A /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE2B564F8B3932BF0F71CDBF /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		E44DFBC81CF32176002778A1 /* CuttingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CuttingViewController.swift; sourceTree = "<group>"; };
+		E4AE5FE21CF98DC800D1C156 /* ThumbView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 		171026261CE49EE6009A9233 /* YWCVideoTrimmer */ = {
 			isa = PBXGroup;
 			children = (
+				E4AE5FE11CF98DAE00D1C156 /* Cut */,
 				171026271CE49EE6009A9233 /* AppDelegate.swift */,
 				171026291CE49EE6009A9233 /* ViewController.swift */,
 				171026391CE4B1EA009A9233 /* TrimViewController.swift */,
@@ -114,6 +117,14 @@
 				B95D305B7E64BFCC6155A73A /* Pods.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E4AE5FE11CF98DAE00D1C156 /* Cut */ = {
+			isa = PBXGroup;
+			children = (
+				E4AE5FE21CF98DC800D1C156 /* ThumbView.swift */,
+			);
+			name = Cut;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -244,6 +255,7 @@
 				1796C7241CEDD43C005E7250 /* UIView+Extension.swift in Sources */,
 				1710263A1CE4B1EA009A9233 /* TrimViewController.swift in Sources */,
 				E44DFBC91CF32176002778A1 /* CuttingViewController.swift in Sources */,
+				E4AE5FE31CF98DC800D1C156 /* ThumbView.swift in Sources */,
 				17F20B981CEAC38900CA4BF4 /* RealTimeFilterViewController.swift in Sources */,
 				1796C7201CEDA256005E7250 /* AVAsset+Extension.swift in Sources */,
 				1798275B1CE71FBF0072996D /* Define.swift in Sources */,
