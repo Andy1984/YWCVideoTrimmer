@@ -23,6 +23,7 @@
 		17F20B9A1CEAC48600CA4BF4 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17F20B991CEAC48600CA4BF4 /* OpenGLES.framework */; };
 		E44DFBC91CF32176002778A1 /* CuttingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44DFBC81CF32176002778A1 /* CuttingViewController.swift */; };
 		E4AE5FE31CF98DC800D1C156 /* ThumbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AE5FE21CF98DC800D1C156 /* ThumbView.swift */; };
+		E4AE5FE71CF99E6F00D1C156 /* RulerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AE5FE61CF99E6F00D1C156 /* RulerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		BE2B564F8B3932BF0F71CDBF /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		E44DFBC81CF32176002778A1 /* CuttingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CuttingViewController.swift; sourceTree = "<group>"; };
 		E4AE5FE21CF98DC800D1C156 /* ThumbView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbView.swift; sourceTree = "<group>"; };
+		E4AE5FE61CF99E6F00D1C156 /* RulerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RulerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				E4AE5FE21CF98DC800D1C156 /* ThumbView.swift */,
+				E4AE5FE61CF99E6F00D1C156 /* RulerView.swift */,
 			);
 			name = Cut;
 			sourceTree = "<group>";
@@ -252,6 +255,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1710262A1CE49EE6009A9233 /* ViewController.swift in Sources */,
+				E4AE5FE71CF99E6F00D1C156 /* RulerView.swift in Sources */,
 				1796C7241CEDD43C005E7250 /* UIView+Extension.swift in Sources */,
 				1710263A1CE4B1EA009A9233 /* TrimViewController.swift in Sources */,
 				E44DFBC91CF32176002778A1 /* CuttingViewController.swift in Sources */,
