@@ -21,19 +21,23 @@ class RulerView: UIView {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
     
     override func drawRect(rect: CGRect) {
         let context = UIGraphicsGetCurrentContext()
-        
+        // MARK: 这是10是给个差不多的， 要重写！
         let leftMargin:CGFloat = 10.0
         let topMargin:CGFloat = 0.0
         let height:CGFloat = self.frame.height
         let width:CGFloat = self.frame.width
+        //小格的宽度
         let minorTickSpace:CGFloat = self.widthPerSecond
+        //每5个， 一个大针
         let multiple:Int = 5
+        //大格的长度
         let majorTickLength:CGFloat = 12.0
+        //小格的长度
         let minorTickLength:CGFloat = 7.0
         
         let baseY:CGFloat = topMargin + height
@@ -47,8 +51,11 @@ class RulerView: UIView {
             
             CGContextMoveToPoint(context, x, baseY)
             CGContextSetFillColor(context, CGColorGetComponents(self.themeColor.CGColor))
+            //如果到了大格
             if step % multiple == 0 {
+                //画长线
                 CGContextFillRect(context, CGRectMake(x, majorY, 1.75, majorTickLength))
+                //画时间文字
                 let font:UIFont = UIFont.systemFontOfSize(11)
                 let textColor:UIColor = self.themeColor
                 let stringAttrs = [NSFontAttributeName:font,

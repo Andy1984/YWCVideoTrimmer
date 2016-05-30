@@ -15,3 +15,4 @@ let ScreenWidth = UIScreen.mainScreen().bounds.size.width
 let ScreenHeight = UIScreen.mainScreen().bounds.size.height
 /// WINDOW
 let Window = UIApplication.sharedApplication().delegate!.window
+let ScreenScale = UIScreen.mainScreen().scale
