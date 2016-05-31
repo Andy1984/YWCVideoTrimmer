@@ -95,6 +95,7 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         
         
         let tmp = UIImageView(image: videoScreen)
+        tmp.backgroundColor = .whiteColor()
         var rect = tmp.frame
         rect.size.width = videoScreen.size.width
         tmp.frame = rect
@@ -165,17 +166,19 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
             i += 1
         }
 
-        
+        i = 0
         imageGenerator.generateCGImagesAsynchronouslyForTimes(times) { (requestedTime, image, actualTime, result, error) in
             switch result {
             case .Succeeded:
-                var j:Int = 0
-                j += 1
-                dispatch_async(dispatch_get_main_queue(), { 
+                
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    i += 1
                     let videoScreen = UIImage(CGImage: image!, scale: ScreenScale, orientation: .Up)
-                    if let imageView:UIImageView = self.frameView.viewWithTag(j) as? UIImageView {
+                    if let imageView:UIImageView = self.frameView.viewWithTag(Int(i)) as? UIImageView {
                         imageView.image = videoScreen
                     }
+                    print(i)
                     
                 })
             case .Failed:

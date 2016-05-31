@@ -18,7 +18,7 @@ class CuttingViewController: UIViewController {
         view.backgroundColor = UIColor.whiteColor()
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "back", style: .Plain, target: self, action: #selector(back))
         
-        guard let URLString = NSBundle.mainBundle().pathForResource("launchScreen", ofType: "mp4") else {
+        guard let URLString = NSBundle.mainBundle().pathForResource("mv", ofType: "mp4") else {
             print("Cannot get video")
             return
         }
