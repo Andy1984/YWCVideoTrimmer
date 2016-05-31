@@ -23,12 +23,26 @@ class CuttingViewController: UIViewController {
             return
         }
         let URL = NSURL(fileURLWithPath: URLString)
+        let asset = AVURLAsset(URL: URL)
         let playerVC = AVPlayerViewController()
-        playerVC.player = AVPlayer(URL: URL)
+        let playItem = AVPlayerItem(asset: asset)
+        playerVC.player = AVPlayer(playerItem: playItem)
         playerVC.showsPlaybackControls = false
         playerVC.view.frame = CGRectMake(0, 0, ScreenWidth, ScreenWidth)
         view.addSubview(playerVC.view)
         playerVC.player?.play()
+        
+        
+        
+        let trimmerView = VideoCuttingView(frame: CGRectZero, asset: asset)
+        
+        self.view.addSubview(trimmerView)
+        trimmerView.frame = CGRectMake(0, 400, 300, 100)
+        trimmerView.showsRulerView = true
+        trimmerView.trackerColor = .cyanColor()
+        trimmerView.resetSubviews()
+        
+        
         
         
     }

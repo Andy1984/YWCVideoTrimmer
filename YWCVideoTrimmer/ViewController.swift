@@ -33,7 +33,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         let cutVC = CuttingViewController()
         let navi = UINavigationController(rootViewController: cutVC)
-        presentViewController(navi, animated: true, completion: nil)
+        self.presentViewController(navi, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
@@ -64,6 +64,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         
     @IBAction func realTimeFilter(sender: AnyObject) {
+        
+        
+        
         let vc = RealTimeFilterViewController()
         presentViewController(vc, animated: true, completion: nil)
     }
