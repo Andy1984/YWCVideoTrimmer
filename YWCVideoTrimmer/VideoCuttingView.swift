@@ -9,6 +9,10 @@
 import UIKit
 import AVFoundation
 
+protocol YWCVideoCuttingDelegate: class {
+    func changePositionOfCuttingView(cuttingView:VideoCuttingView, startTime:CGFloat, endTime:CGFloat)
+}
+
 class VideoCuttingView: UIView, UIScrollViewDelegate {
     
     var themeColor:UIColor = .lightGrayColor()
@@ -18,6 +22,7 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
     var borderWidth:CGFloat = 15.0;
     var thumbWidth:CGFloat = 10;
     
+    weak var delegate:YWCVideoCuttingDelegate?
     //scrollView是整个可以滑动的
     var scrollView:UIScrollView!
     //contentView是包括刻度的
@@ -35,6 +40,14 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
     var leftThumbImage: UIImage?
     var rightThumbImage: UIImage?
     var trackerView:UIView!
+    
+    //这里的start表示初始
+    var leftStartPoint:CGPoint!
+    var rightStartPoint:CGPoint!
+    
+    //应该是NSTimeInterval比较合适
+    var startTime:CGFloat = 0
+    var endTime:CGFloat = 0
     
     init(frame: CGRect, asset:AVAsset) {
         super.init(frame: frame)
@@ -154,15 +167,74 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
     }
     
     func notifyDelegate() {
+        //这个start算法也是不对的， 不应该用overlayView来算， 应该用thumbView的内侧
+        let start:CGFloat = CGRectGetMaxX(self.leftOverlayView.frame) / self.widthPerSecond + (self.scrollView.contentOffset.x - self.thumbWidth) / self.widthPerSecond;
+        if self.trackerView.hidden == true &&  start != self.startTime{
+            self.seekToTime(start)
+        }
+        self.startTime = start
+        //显然endTime算法也不对
+        self.endTime = CGRectGetMinX(self.rightOverlayView.frame) / self.widthPerSecond + (self.scrollView.contentOffset.x - self.thumbWidth) / self.widthPerSecond;
         
+
     }
     
+    func seekToTime(time:CGFloat) {
+        trackerView.frame.origin.x = time * self.widthPerSecond + self.thumbWidth - scrollView.contentOffset.x
+    }
+    
+    //这写的是啥, 不应该用overlay来计算
     func moveLeftOverlayView(gesture:UIPanGestureRecognizer) {
-        
+        switch gesture.state {
+        case .Began:
+            leftStartPoint = gesture.locationInView(self)
+        case .Changed:
+            let point = gesture.locationInView(self)
+            let deltaX = point.x - leftStartPoint.x
+            var center = leftOverlayView.center
+            center.x += deltaX
+            var newLeftViewMidX = center.x
+            
+            let maxWidth =  CGRectGetMinX(rightOverlayView.frame) - (CGFloat(minLength) * widthPerSecond);
+            let newLeftViewMinX = newLeftViewMidX - overlayWidth/2
+            if newLeftViewMinX < self.thumbWidth - self.overlayWidth {
+                newLeftViewMidX = self.thumbWidth - self.overlayWidth + self.overlayWidth/2
+            } else if newLeftViewMinX + self.overlayWidth > maxWidth {
+                newLeftViewMidX = maxWidth - self.overlayWidth / 2
+            }
+            leftOverlayView.center = CGPointMake(newLeftViewMidX, leftOverlayView.center.y)
+            leftStartPoint = point
+            updateBorderFrames()
+            notifyDelegate()
+        default: break
+        }
     }
     
     func moveRightOverlayView(gesture:UIPanGestureRecognizer) {
-        
+        switch gesture.state {
+        case .Began:
+            rightStartPoint = gesture.locationInView(self)
+        case .Changed:
+            let point = gesture.locationInView(self)
+            let deltaX = point.x - rightStartPoint.x
+            var center = rightOverlayView.center
+            center.x += deltaX
+            var newRightViewMidX = center.x
+            
+            let minX = CGRectGetMaxX(self.leftOverlayView.frame) + CGFloat(self.minLength) * self.widthPerSecond
+            let maxX = asset.seconds <= self.maxLength ? CGRectGetMaxX(self.frameView.frame) : CGRectGetWidth(self.frame) - self.thumbWidth
+            if (newRightViewMidX - self.overlayWidth/2 < minX) {
+                newRightViewMidX = minX + self.overlayWidth/2;
+            } else if (newRightViewMidX - self.overlayWidth/2 > maxX) {
+                newRightViewMidX = maxX + self.overlayWidth/2;
+            }
+            
+            rightOverlayView.center = CGPointMake(newRightViewMidX, self.rightOverlayView.center.y)
+            rightStartPoint = point
+            updateBorderFrames()
+            notifyDelegate()
+        default:break
+        }
     }
     
     //不断调整border的长度
