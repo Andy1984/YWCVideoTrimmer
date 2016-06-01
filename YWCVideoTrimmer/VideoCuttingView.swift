@@ -73,82 +73,82 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
             view.performSelector(#selector(removeFromSuperview))
         }
         //整个scrollView
-        self.scrollView = UIScrollView(frame: CGRectMake(0,0,self.width,self.height))
-        self.addSubview(self.scrollView)
-        self.scrollView.delegate = self
-        self.scrollView.showsHorizontalScrollIndicator = false
+        scrollView = UIScrollView(frame: CGRectMake(0,0,width,height))
+        addSubview(scrollView)
+        scrollView.delegate = self
+        scrollView.showsHorizontalScrollIndicator = false
         
         //contentView是scrollView的内容，好像没必要创建
-        self.contentView = UIView(frame: CGRectMake(0,0,self.scrollView.width,self.scrollView.height))
-        self.scrollView.contentSize = self.contentView.frame.size
-        self.scrollView.addSubview(self.contentView)
+        contentView = UIView(frame: CGRectMake(0,0,scrollView.width,scrollView.height))
+        scrollView.contentSize = contentView.frame.size
+        scrollView.addSubview(contentView)
         
         //不知道为什么要判断是否存在rulerView
-        let ratio:CGFloat = self.showsRulerView ? 0.7 : 1.0
+        let ratio:CGFloat = showsRulerView ? 0.7 : 1.0
         //frameView的frame是不包括2边的thumb的
-        let frameViewFrame = CGRectMake(self.thumbWidth, 0, self.contentView.width - 2*self.thumbWidth, self.contentView.height * ratio)
-        self.frameView = UIView(frame: frameViewFrame)
-        self.frameView.layer.masksToBounds = true
-        self.contentView.addSubview(self.frameView)
+        let frameViewFrame = CGRectMake(thumbWidth, 0, contentView.width - 2*thumbWidth, contentView.height * ratio)
+        frameView = UIView(frame: frameViewFrame)
+        frameView.layer.masksToBounds = true
+        contentView.addSubview(frameView)
         
-        self.addFrames()
+        addFrames()
         
-        if self.showsRulerView {
-            let rulerFrame = CGRectMake(0, self.contentView.height * 0.7, self.contentView.width, self.contentView.height * 0.3)
-            let rulerView = RulerView(frame: rulerFrame, widthPerSecond: self.widthPerSecond, themeColor: self.themeColor)
-            self.contentView.addSubview(rulerView)
+        if showsRulerView {
+            let rulerFrame = CGRectMake(0, contentView.height * 0.7, contentView.width, contentView.height * 0.3)
+            let rulerView = RulerView(frame: rulerFrame, widthPerSecond: widthPerSecond, themeColor: themeColor)
+            contentView.addSubview(rulerView)
         }
         // add borders
-        self.topBorder = UIView()
-        self.topBorder.backgroundColor = self.themeColor
-        self.addSubview(self.topBorder)
+        topBorder = UIView()
+        topBorder.backgroundColor = themeColor
+        addSubview(topBorder)
         
-        self.bottomBorder = UIView()
-        self.bottomBorder.backgroundColor = self.themeColor
-        self.addSubview(bottomBorder)
+        bottomBorder = UIView()
+        bottomBorder.backgroundColor = themeColor
+        addSubview(bottomBorder)
         // width for left and right overlay views
-        self.overlayWidth = self.width - CGFloat(self.minLength) * self.widthPerSecond
+        overlayWidth = width - CGFloat(minLength) * widthPerSecond
         // add left overlay view
-        let leftOverlayFrame = CGRectMake(self.thumbWidth - self.overlayWidth, 0, self.overlayWidth, self.frameView.height)
-        self.leftOverlayView = UIView(frame: leftOverlayFrame)
-        let leftThumbFrame = CGRectMake(self.overlayWidth - self.thumbWidth, 0, self.thumbWidth, self.frameView.height)
+        let leftOverlayFrame = CGRectMake(thumbWidth - overlayWidth, 0, overlayWidth, frameView.height)
+        leftOverlayView = UIView(frame: leftOverlayFrame)
+        let leftThumbFrame = CGRectMake(overlayWidth - thumbWidth, 0, thumbWidth, frameView.height)
         let leftThumbView: ThumbView
-        if self.leftThumbImage != nil {
-            leftThumbView = ThumbView(frame: leftThumbFrame, thumbImage: self.leftThumbImage!, right: false)
+        if leftThumbImage != nil {
+            leftThumbView = ThumbView(frame: leftThumbFrame, thumbImage: leftThumbImage!, right: false)
         } else {
-            leftThumbView = ThumbView(frame: leftThumbFrame, color: self.themeColor, right: false)
+            leftThumbView = ThumbView(frame: leftThumbFrame, color: themeColor, right: false)
         }
         
         //这里frame应该是瞎写的
-        self.trackerView = UIView(frame: CGRectMake(self.thumbWidth, -5, 3 , self.height + 10))
-        self.trackerView.backgroundColor = self.trackerColor
-        self.trackerView.layer.masksToBounds = true
-        self.trackerView.layer.cornerRadius = 2
-        self.addSubview(self.trackerView)
+        trackerView = UIView(frame: CGRectMake(thumbWidth, -5, 3 , height + 10))
+        trackerView.backgroundColor = trackerColor
+        trackerView.layer.masksToBounds = true
+        trackerView.layer.cornerRadius = 2
+        addSubview(trackerView)
         
         leftThumbView.layer.masksToBounds = true
-        self.leftOverlayView.addSubview(leftThumbView)
-        self.leftOverlayView.userInteractionEnabled = true
+        leftOverlayView.addSubview(leftThumbView)
+        leftOverlayView.userInteractionEnabled = true
         let leftPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(moveLeftOverlayView))
         //加手势的内容不对
-        self.leftOverlayView.addGestureRecognizer(leftPanGestureRecognizer)
+        leftOverlayView.addGestureRecognizer(leftPanGestureRecognizer)
         //这算蒙板， 但是不应该整个蒙版都是手势
-        self.leftOverlayView.backgroundColor = UIColor(white: 0, alpha: 0.8)
-        self.addSubview(self.leftOverlayView)
+        leftOverlayView.backgroundColor = UIColor(white: 0, alpha: 0.8)
+        addSubview(leftOverlayView)
         
         // add right overlay view
         let rightViewFrameX: CGFloat
-        if self.frameView.width < self.width {
-            rightViewFrameX = CGRectGetMaxX(self.frameView.frame)
+        if frameView.width < width {
+            rightViewFrameX = CGRectGetMaxX(frameView.frame)
         } else {
-            rightViewFrameX = self.width - self.thumbWidth
+            rightViewFrameX = width - thumbWidth
         }
-        self.rightOverlayView = UIView(frame: CGRectMake(rightViewFrameX,0,self.overlayWidth,self.frameView.height))
+        rightOverlayView = UIView(frame: CGRectMake(rightViewFrameX,0,overlayWidth,frameView.height))
         let rightThumbView:ThumbView
-        if self.rightThumbImage != nil {
-            rightThumbView = ThumbView(frame: CGRectMake(0, 0, self.thumbWidth, frameView.height), thumbImage: self.rightThumbImage!, right: true)
+        if rightThumbImage != nil {
+            rightThumbView = ThumbView(frame: CGRectMake(0, 0, thumbWidth, frameView.height), thumbImage: rightThumbImage!, right: true)
         } else {
-            rightThumbView = ThumbView(frame: CGRectMake(0, 0, self.thumbWidth, frameView.height), color: self.themeColor, right: true)
+            rightThumbView = ThumbView(frame: CGRectMake(0, 0, thumbWidth, frameView.height), color: themeColor, right: true)
         }
         rightThumbView.layer.masksToBounds = true
         rightOverlayView.addSubview(rightThumbView)
@@ -156,8 +156,8 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         let rightPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(moveRightOverlayView))
         rightOverlayView.addGestureRecognizer(rightPanGestureRecognizer)
         rightOverlayView.backgroundColor = UIColor(white: 0, alpha: 0.8)
-        self.addSubview(rightOverlayView)
-        self.updateBorderFrames()
+        addSubview(rightOverlayView)
+        updateBorderFrames()
         
         
         
@@ -168,19 +168,19 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
     
     func notifyDelegate() {
         //这个start算法也是不对的， 不应该用overlayView来算， 应该用thumbView的内侧
-        let start:CGFloat = CGRectGetMaxX(self.leftOverlayView.frame) / self.widthPerSecond + (self.scrollView.contentOffset.x - self.thumbWidth) / self.widthPerSecond;
-        if self.trackerView.hidden == true &&  start != self.startTime{
-            self.seekToTime(start)
+        let start:CGFloat = CGRectGetMaxX(leftOverlayView.frame) / widthPerSecond + (scrollView.contentOffset.x - thumbWidth) / widthPerSecond;
+        if trackerView.hidden == true &&  start != startTime{
+            seekToTime(start)
         }
-        self.startTime = start
+        startTime = start
         //显然endTime算法也不对
-        self.endTime = CGRectGetMinX(self.rightOverlayView.frame) / self.widthPerSecond + (self.scrollView.contentOffset.x - self.thumbWidth) / self.widthPerSecond;
+        endTime = CGRectGetMinX(rightOverlayView.frame) / widthPerSecond + (scrollView.contentOffset.x - thumbWidth) / widthPerSecond;
         
 
     }
     
     func seekToTime(time:CGFloat) {
-        trackerView.frame.origin.x = time * self.widthPerSecond + self.thumbWidth - scrollView.contentOffset.x
+        trackerView.frame.origin.x = time * widthPerSecond + thumbWidth - scrollView.contentOffset.x
     }
     
     //这写的是啥, 不应该用overlay来计算
@@ -197,10 +197,10 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
             
             let maxWidth =  CGRectGetMinX(rightOverlayView.frame) - (CGFloat(minLength) * widthPerSecond);
             let newLeftViewMinX = newLeftViewMidX - overlayWidth/2
-            if newLeftViewMinX < self.thumbWidth - self.overlayWidth {
-                newLeftViewMidX = self.thumbWidth - self.overlayWidth + self.overlayWidth/2
-            } else if newLeftViewMinX + self.overlayWidth > maxWidth {
-                newLeftViewMidX = maxWidth - self.overlayWidth / 2
+            if newLeftViewMinX < thumbWidth - overlayWidth {
+                newLeftViewMidX = thumbWidth - overlayWidth + overlayWidth/2
+            } else if newLeftViewMinX + overlayWidth > maxWidth {
+                newLeftViewMidX = maxWidth - overlayWidth / 2
             }
             leftOverlayView.center = CGPointMake(newLeftViewMidX, leftOverlayView.center.y)
             leftStartPoint = point
@@ -221,15 +221,15 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
             center.x += deltaX
             var newRightViewMidX = center.x
             
-            let minX = CGRectGetMaxX(self.leftOverlayView.frame) + CGFloat(self.minLength) * self.widthPerSecond
-            let maxX = asset.seconds <= self.maxLength ? CGRectGetMaxX(self.frameView.frame) : CGRectGetWidth(self.frame) - self.thumbWidth
-            if (newRightViewMidX - self.overlayWidth/2 < minX) {
-                newRightViewMidX = minX + self.overlayWidth/2;
-            } else if (newRightViewMidX - self.overlayWidth/2 > maxX) {
-                newRightViewMidX = maxX + self.overlayWidth/2;
+            let minX = CGRectGetMaxX(leftOverlayView.frame) + CGFloat(minLength) * widthPerSecond
+            let maxX = asset.seconds <= maxLength ? CGRectGetMaxX(frameView.frame) : CGRectGetWidth(frame) - thumbWidth
+            if (newRightViewMidX - overlayWidth/2 < minX) {
+                newRightViewMidX = minX + overlayWidth/2;
+            } else if (newRightViewMidX - overlayWidth/2 > maxX) {
+                newRightViewMidX = maxX + overlayWidth/2;
             }
             
-            rightOverlayView.center = CGPointMake(newRightViewMidX, self.rightOverlayView.center.y)
+            rightOverlayView.center = CGPointMake(newRightViewMidX, rightOverlayView.center.y)
             rightStartPoint = point
             updateBorderFrames()
             notifyDelegate()
@@ -241,13 +241,13 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
     func updateBorderFrames() {
         let height = borderWidth
         topBorder.frame = CGRectMake(CGRectGetMaxX(leftOverlayView.frame), 0, CGRectGetMinX(rightOverlayView.frame)-CGRectGetMinX(leftOverlayView.frame), height)
-        bottomBorder.frame = CGRectMake(CGRectGetMaxX(self.leftOverlayView.frame), CGRectGetHeight(self.frameView.frame)-height, CGRectGetMinX(self.rightOverlayView.frame)-CGRectGetMaxX(self.leftOverlayView.frame), height)
+        bottomBorder.frame = CGRectMake(CGRectGetMaxX(leftOverlayView.frame), CGRectGetHeight(frameView.frame)-height, CGRectGetMinX(rightOverlayView.frame)-CGRectGetMaxX(leftOverlayView.frame), height)
     }
     
     func addFrames() {
-        let imageGenerator = AVAssetImageGenerator(asset: self.asset)
+        let imageGenerator = AVAssetImageGenerator(asset: asset)
         imageGenerator.appliesPreferredTrackTransform = true
-        imageGenerator.maximumSize = CGSizeMake(self.frameView.width * ScreenScale, self.frameView.height * ScreenScale)
+        imageGenerator.maximumSize = CGSizeMake(frameView.width * ScreenScale, frameView.height * ScreenScale)
         
         var picWidth: CGFloat = 0
         var actualTime: CMTime = kCMTimeZero
@@ -271,40 +271,40 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         var rect = tmp.frame
         rect.size.width = videoScreen.size.width
         tmp.frame = rect
-        self.frameView.addSubview(tmp)
+        frameView.addSubview(tmp)
         picWidth = tmp.width
         
-        let duration = self.asset.seconds
+        let duration = asset.seconds
         //screenWidth指的是不算thumbWidth的屏幕宽度
-        let screenWidth = self.width - 2 * self.thumbWidth
+        let screenWidth = width - 2 * thumbWidth
         
         //好像设置了2次frameView的frame， 应该有一次是多余的
-        //这个frameViweWidth 就是scrollView的内容的宽度减去2个thumbWidth， 意义和CGFloat(duration/self.maxLength) * screenWidth一样
-        let frameViewFrameWidth = CGFloat(duration/self.maxLength) * screenWidth
-        self.frameView.frame = CGRectMake(self.thumbWidth, 0, frameViewFrameWidth, self.frameView.height)
+        //这个frameViweWidth 就是scrollView的内容的宽度减去2个thumbWidth， 意义和CGFloat(duration/maxLength) * screenWidth一样
+        let frameViewFrameWidth = CGFloat(duration/maxLength) * screenWidth
+        frameView.frame = CGRectMake(thumbWidth, 0, frameViewFrameWidth, frameView.height)
         //这里莫名加了个0.5，和30， 先不加吧
         //30好像是瞎猜2个thumb的宽度
         //0.5不知道是干什么的
-        //        let contentViewFrameWidth = self.asset.seconds <= self.maxLength + 0.5 ? screenWidth + 30 : frameViewFrameWidth
-        //        let contentViewFrameWidth = self.asset.seconds <= self.maxLength ? screenWidth + 2 * self.thumbWidth:frameViewFrameWidth
+        //        let contentViewFrameWidth = asset.seconds <= maxLength + 0.5 ? screenWidth + 30 : frameViewFrameWidth
+        //        let contentViewFrameWidth = asset.seconds <= maxLength ? screenWidth + 2 * thumbWidth:frameViewFrameWidth
         let contentViewFrameWidth: CGFloat
         //视频太短
-        if self.asset.seconds <= self.maxLength {
-            contentViewFrameWidth = screenWidth + 2 * self.thumbWidth
+        if asset.seconds <= maxLength {
+            contentViewFrameWidth = screenWidth + 2 * thumbWidth
         } else {
             //足够长
             contentViewFrameWidth = frameViewFrameWidth
         }
-        self.contentView.frame = CGRectMake(0, 0, contentViewFrameWidth, self.contentView.height)
+        contentView.frame = CGRectMake(0, 0, contentViewFrameWidth, contentView.height)
         
-        self.scrollView.contentSize = self.contentView.frame.size
+        scrollView.contentSize = contentView.frame.size
         
         //Int符合含义， CGFloat方便计算
         let minFramesNeeded: CGFloat = ceil(screenWidth/picWidth)
-        let actualFramesNeeded:CGFloat = CGFloat(duration/self.maxLength) * minFramesNeeded
+        let actualFramesNeeded:CGFloat = CGFloat(duration/maxLength) * minFramesNeeded
         //每个图片表示的时间长度
         let durationPerFrame:CGFloat = ceil(CGFloat(duration)/actualFramesNeeded)
-        self.widthPerSecond = frameViewFrameWidth/CGFloat(duration)
+        widthPerSecond = frameViewFrameWidth/CGFloat(duration)
         
         var preferredWidth:CGFloat = 0
         var times:[NSValue] = []
@@ -331,7 +331,7 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
             tmp.frame = currentFrame
             
             //这里好像没必要进入主线程把
-            self.frameView.addSubview(tmp)
+            frameView.addSubview(tmp)
             
             
             
