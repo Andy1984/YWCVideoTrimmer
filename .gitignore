@@ -1,3 +1,12 @@
+
+YWCVideoTrimmer.xcworkspace/xcuserdata/*.xcuserdatad/
+YWCVideoTrimmer.xcodeproj/xcuserdata/*.xcuserdatad/
+YWCVideoTrimmer.xcodeproj/project.xcworkspace/xcuserdata/*.xcuserdatad/
+
+#下面是github的模板
+
+
+
 # Xcode
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
