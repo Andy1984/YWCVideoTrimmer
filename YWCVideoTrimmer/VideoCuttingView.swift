@@ -98,7 +98,6 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         // add left overlay view
         let leftOverlayFrame = CGRectMake(self.thumbWidth - self.overlayWidth, 0, self.overlayWidth, self.frameView.height)
         self.leftOverlayView = UIView(frame: leftOverlayFrame)
-//        let leftThumbFrame = CGRectMake(self.overlayWidth - self.thumbWidth, 0, self.thumbWidth, self.frameView.height)
         let leftThumbFrame = CGRectMake(self.overlayWidth - self.thumbWidth, 0, self.thumbWidth, self.frameView.height)
         let leftThumbView: ThumbView
         if self.leftThumbImage != nil {

@@ -66,7 +66,7 @@ class RulerView: UIView {
                 if minutes > 0 {
                     attrStr = NSAttributedString(string: String(format: "%ld:%02ld",minutes,seconds), attributes: stringAttrs)
                 } else {
-                    attrStr = NSAttributedString(string: String(format: ":%02ld",minutes,seconds), attributes: stringAttrs)
+                    attrStr = NSAttributedString(string: String(format: ":%02ld",seconds), attributes: stringAttrs)
                 }
                 attrStr.drawAtPoint(CGPoint(x: x-7, y: majorY-15))
             } else {
