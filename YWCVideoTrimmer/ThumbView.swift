@@ -20,6 +20,12 @@ class ThumbView: UIView {
         self.right = right
     }
     
+    init(frame: CGRect, thumbImage:UIImage, right:Bool) {
+        super.init(frame: frame)
+        self.thumbImage = thumbImage
+        self.right = right
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -28,7 +34,7 @@ class ThumbView: UIView {
     
     override func drawRect(rect: CGRect) {
         
-        guard self.thumbImage != nil else {
+        guard self.thumbImage == nil else {
             self.thumbImage!.drawInRect(rect)
             return
         }
