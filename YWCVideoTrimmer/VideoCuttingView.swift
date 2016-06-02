@@ -27,6 +27,11 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
     var scrollView:UIScrollView!
     //contentView是包括刻度的
     var contentView:UIView!
+    var showTrackerView:Bool = true {
+        didSet {
+            trackerView.hidden = !showTrackerView
+        }
+    }
     var showsRulerView:Bool = false
     //frameView是不包括刻度的
     var frameView:UIView!
@@ -63,7 +68,10 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         super.init(coder: aDecoder)
     }
     
-    
+    //UIScrollViewDelegate
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        notifyDelegate()
+    }
     
     
     func resetSubviews() {
@@ -368,9 +376,6 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         
         
     }
-    
-    
-    
     
     
     
