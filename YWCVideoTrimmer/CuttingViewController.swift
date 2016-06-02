@@ -18,7 +18,9 @@ class CuttingViewController: UIViewController, YWCVideoCuttingDelegate {
     var tempVideoPath = NSTemporaryDirectory() + "tmpMov.mov"
     var startTime:CGFloat = 0
     var endTime:CGFloat = 0
-    
+    var videoPlaybackPosition:CGFloat = 0
+    var player:AVPlayer!
+    var cuttingView:VideoCuttingView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,18 +40,18 @@ class CuttingViewController: UIViewController, YWCVideoCuttingDelegate {
         playerVC.view.frame = CGRectMake(0, 0, ScreenWidth, ScreenWidth)
         view.addSubview(playerVC.view)
         playerVC.player?.play()
+        player = playerVC.player
         
         
+        cuttingView = VideoCuttingView(frame: CGRectZero, asset: asset)
+        self.view.addSubview(cuttingView)
+        cuttingView.frame = CGRectMake(0, 400, 300, 100)
+        cuttingView.showsRulerView = true
+        cuttingView.trackerColor = .cyanColor()
+        cuttingView.resetSubviews()
         
-        let trimmerView = VideoCuttingView(frame: CGRectZero, asset: asset)
-        self.view.addSubview(trimmerView)
-        trimmerView.frame = CGRectMake(0, 400, 300, 100)
-        trimmerView.showsRulerView = true
-        trimmerView.trackerColor = .cyanColor()
-        trimmerView.resetSubviews()
         
-        
-        trimmerView.delegate = self
+        cuttingView.delegate = self
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cut", style: .Plain, target: self, action: #selector(cutVideo))
         
@@ -86,7 +88,7 @@ class CuttingViewController: UIViewController, YWCVideoCuttingDelegate {
         exportSession?.outputFileType = AVFileTypeQuickTimeMovie
         
         let start = CMTimeMakeWithSeconds(Float64(startTime), asset.duration.timescale)
-        let duration = CMTimeMakeWithSeconds(Float64(endTime), asset.duration.timescale)
+        let duration = CMTimeMakeWithSeconds(Float64(endTime - startTime), asset.duration.timescale)
         let range = CMTimeRangeMake(start, duration)
         exportSession?.timeRange = range
         
@@ -146,7 +148,20 @@ class CuttingViewController: UIViewController, YWCVideoCuttingDelegate {
     
     
     func changePositionOfCuttingView(cuttingView: VideoCuttingView, startTime: CGFloat, endTime: CGFloat) {
+        if startTime != self.startTime {
+            self.seekVideoToPosition(startTime)
+        }
+        self.startTime = startTime
+        self.endTime = endTime
+    }
+    
+    func seekVideoToPosition(position:CGFloat) {
+        self.videoPlaybackPosition = position
+        let time = CMTimeMakeWithSeconds(Double(self.videoPlaybackPosition), self.player.currentTime().timescale)
+        self.player.seekToTime(time, toleranceBefore: CMTimeMakeWithSeconds(1.0, 1), toleranceAfter: CMTimeMakeWithSeconds(1.0, 1))
         
+        
+
     }
     
     func back() {

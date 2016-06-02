@@ -183,7 +183,7 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         startTime = start
         //显然endTime算法也不对
         endTime = CGRectGetMinX(rightOverlayView.frame) / widthPerSecond + (scrollView.contentOffset.x - thumbWidth) / widthPerSecond;
-        
+        delegate?.changePositionOfCuttingView(self, startTime: startTime, endTime: endTime)
 
     }
     
