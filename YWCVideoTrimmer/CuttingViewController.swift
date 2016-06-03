@@ -20,6 +20,7 @@ class CuttingViewController: UIViewController, YWCVideoCuttingDelegate {
     var endTime:CGFloat = 0
     var videoPlaybackPosition:CGFloat = 0
     var player:AVPlayer!
+    var playButton:UIButton!
     var cuttingView:VideoCuttingView!
     
     let disposeBag = DisposeBag()
@@ -34,10 +35,11 @@ class CuttingViewController: UIViewController, YWCVideoCuttingDelegate {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "back", style: .Plain, target: self, action: #selector(back))
         self.navigationController?.navigationBar.translucent = false
         
-        guard let URLString = NSBundle.mainBundle().pathForResource("mv", ofType: "mp4") else {
+        guard let URLString = NSBundle.mainBundle().pathForResource("mxsf", ofType: "mp4") else {
             print("Cannot get video")
             return
         }
+        
         let URL = NSURL(fileURLWithPath: URLString)
         asset = AVURLAsset(URL: URL)
         let playerVC = AVPlayerViewController()
@@ -49,25 +51,9 @@ class CuttingViewController: UIViewController, YWCVideoCuttingDelegate {
         playerVC.player?.play()
         player = playerVC.player
         
-        let playButton = UIButton(frame: playerVC.view.bounds)
+        playButton = UIButton(frame: playerVC.view.bounds)
         playerVC.view.addSubview(playButton)
-        playButton
-            .rx_tap
-            .subscribeNext { () in
-                playButton.selected = !playButton.selected
-            }.addDisposableTo(disposeBag)
-        playButton
-            .rx_tap
-            .scan(false) { selected, _ in
-                playButton.selected = !selected
-                return !selected
-            }.subscribeNext { [weak self] isPlaying in
-                if isPlaying {
-                    self?.player.pause()
-                } else {
-                    self?.player.play()
-                }
-            }.addDisposableTo(disposeBag)
+        playButton.addTarget(self, action: #selector(playButtonClicked), forControlEvents: .TouchUpInside)
         
         let emptyImage = createImage(UIColor(red: 0, green: 0, blue: 0, alpha: 0), size: CGSizeMake(1, 1))
         playButton.setImage(emptyImage, forState: .Normal)
@@ -76,7 +62,7 @@ class CuttingViewController: UIViewController, YWCVideoCuttingDelegate {
         self.view.addSubview(cuttingView)
         cuttingView.frame = CGRectMake(0, 400, 300, 100)
         cuttingView.showsRulerView = true
-        cuttingView.trackerColor = .cyanColor()
+        cuttingView.trackerColor = .whiteColor()
         cuttingView.resetSubviews()
         
         
@@ -84,6 +70,15 @@ class CuttingViewController: UIViewController, YWCVideoCuttingDelegate {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cut", style: .Plain, target: self, action: #selector(cutVideo))
         
+    }
+    
+    func playButtonClicked(){
+        playButton.selected = !playButton.selected
+        if playButton.selected {
+            self.player.pause()
+        } else {
+            self.player.play()
+        }
     }
     
     func deleteTempFile() {
@@ -182,6 +177,9 @@ class CuttingViewController: UIViewController, YWCVideoCuttingDelegate {
         }
         self.startTime = startTime
         self.endTime = endTime
+        self.player.pause()
+        playButton.selected = true
+        
     }
     
     func seekVideoToPosition(position:CGFloat) {

@@ -22,6 +22,7 @@
 		17F20B981CEAC38900CA4BF4 /* RealTimeFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F20B971CEAC38900CA4BF4 /* RealTimeFilterViewController.swift */; };
 		17F20B9A1CEAC48600CA4BF4 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17F20B991CEAC48600CA4BF4 /* OpenGLES.framework */; };
 		E42865CA1D016BCA0088A10F /* success@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E42865C91D016BCA0088A10F /* success@3x.png */; };
+		E42865D21D019AED0088A10F /* mxsf.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = E42865D11D019AED0088A10F /* mxsf.mp4 */; };
 		E44DFBC91CF32176002778A1 /* CuttingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44DFBC81CF32176002778A1 /* CuttingViewController.swift */; };
 		E4AE5FE31CF98DC800D1C156 /* ThumbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AE5FE21CF98DC800D1C156 /* ThumbView.swift */; };
 		E4AE5FE71CF99E6F00D1C156 /* RulerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AE5FE61CF99E6F00D1C156 /* RulerView.swift */; };
@@ -48,6 +49,7 @@
 		B95D305B7E64BFCC6155A73A /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE2B564F8B3932BF0F71CDBF /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		E42865C91D016BCA0088A10F /* success@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "success@3x.png"; sourceTree = "<group>"; };
+		E42865D11D019AED0088A10F /* mxsf.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = mxsf.mp4; sourceTree = "<group>"; };
 		E44DFBC81CF32176002778A1 /* CuttingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CuttingViewController.swift; sourceTree = "<group>"; };
 		E4AE5FE21CF98DC800D1C156 /* ThumbView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbView.swift; sourceTree = "<group>"; };
 		E4AE5FE61CF99E6F00D1C156 /* RulerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RulerView.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 				1796C7231CEDD43C005E7250 /* UIView+Extension.swift */,
 				1796C71F1CEDA256005E7250 /* AVAsset+Extension.swift */,
 				1798275A1CE71FBF0072996D /* Tool.swift */,
+				E42865D11D019AED0088A10F /* mxsf.mp4 */,
 				1726D3671CEEB62F00C8146B /* mv.mp4 */,
 				17686B831CEC63F900BE1FEA /* launchScreen.mp4 */,
 				1710262B1CE49EE6009A9233 /* Main.storyboard */,
@@ -203,6 +206,7 @@
 				E42865CA1D016BCA0088A10F /* success@3x.png in Resources */,
 				17686B841CEC63F900BE1FEA /* launchScreen.mp4 in Resources */,
 				1710262D1CE49EE6009A9233 /* Main.storyboard in Resources */,
+				E42865D21D019AED0088A10F /* mxsf.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

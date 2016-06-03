@@ -14,6 +14,8 @@ protocol YWCVideoCuttingDelegate: class {
 }
 
 class VideoCuttingView: UIView, UIScrollViewDelegate {
+    //必须由外部传值
+    var asset:AVAsset!
     
     var themeColor:UIColor = .lightGrayColor()
     var maxLength:NSTimeInterval = 15.0;
@@ -35,7 +37,7 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
     var showsRulerView:Bool = false
     //frameView是不包括刻度的
     var frameView:UIView!
-    var asset:AVAsset!
+    
     var widthPerSecond:CGFloat!
     var topBorder:UIView!
     var bottomBorder:UIView!
@@ -86,7 +88,7 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         scrollView.delegate = self
         scrollView.showsHorizontalScrollIndicator = false
         
-        //contentView是scrollView的内容，好像没必要创建
+        //contentView是scrollView的内容
         contentView = UIView(frame: CGRectMake(0,0,scrollView.width,scrollView.height))
         scrollView.contentSize = contentView.frame.size
         scrollView.addSubview(contentView)
@@ -175,7 +177,7 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
     }
     
     func notifyDelegate() {
-        //这个start算法也是不对的， 不应该用overlayView来算， 应该用thumbView的内侧
+        //这个start算法也是不对的， 不应该用overlayView的内侧就是thumbView的内侧
         let start:CGFloat = CGRectGetMaxX(leftOverlayView.frame) / widthPerSecond + (scrollView.contentOffset.x - thumbWidth) / widthPerSecond;
         if trackerView.hidden == true &&  start != startTime{
             seekToTime(start)
@@ -191,7 +193,7 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         trackerView.frame.origin.x = time * widthPerSecond + thumbWidth - scrollView.contentOffset.x
     }
     
-    //这写的是啥, 不应该用overlay来计算
+    
     func moveLeftOverlayView(gesture:UIPanGestureRecognizer) {
         switch gesture.state {
         case .Began:
@@ -284,24 +286,19 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         
         let duration = asset.seconds
         //screenWidth指的是不算thumbWidth的屏幕宽度
-        let screenWidth = width - 2 * thumbWidth
+        let screenWidth = self.width - 2 * thumbWidth
         
         //好像设置了2次frameView的frame， 应该有一次是多余的
-        //这个frameViweWidth 就是scrollView的内容的宽度减去2个thumbWidth， 意义和CGFloat(duration/maxLength) * screenWidth一样
+        //frameViewFrameWidth， 先计算有几个屏 * 屏的宽度
         let frameViewFrameWidth = CGFloat(duration/maxLength) * screenWidth
         frameView.frame = CGRectMake(thumbWidth, 0, frameViewFrameWidth, frameView.height)
-        //这里莫名加了个0.5，和30， 先不加吧
-        //30好像是瞎猜2个thumb的宽度
-        //0.5不知道是干什么的
-        //        let contentViewFrameWidth = asset.seconds <= maxLength + 0.5 ? screenWidth + 30 : frameViewFrameWidth
-        //        let contentViewFrameWidth = asset.seconds <= maxLength ? screenWidth + 2 * thumbWidth:frameViewFrameWidth
         let contentViewFrameWidth: CGFloat
         //视频太短
         if asset.seconds <= maxLength {
             contentViewFrameWidth = screenWidth + 2 * thumbWidth
         } else {
             //足够长
-            contentViewFrameWidth = frameViewFrameWidth
+            contentViewFrameWidth = frameViewFrameWidth + 2 * thumbWidth
         }
         contentView.frame = CGRectMake(0, 0, contentViewFrameWidth, contentView.height)
         
@@ -318,6 +315,7 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         var times:[NSValue] = []
         
         var i: CGFloat = 1
+        //这里是算没个imageView的frame
         while i < actualFramesNeeded {
             let time = CMTimeMakeWithSeconds(Double(i * durationPerFrame), 600)
             let timeValue = NSValue(CMTime:time)
@@ -350,16 +348,12 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         imageGenerator.generateCGImagesAsynchronouslyForTimes(times) { (requestedTime, image, actualTime, result, error) in
             switch result {
             case .Succeeded:
-                
-                
                 dispatch_async(dispatch_get_main_queue(), {
                     i += 1
                     let videoScreen = UIImage(CGImage: image!, scale: ScreenScale, orientation: .Up)
                     if let imageView:UIImageView = self.frameView.viewWithTag(Int(i)) as? UIImageView {
                         imageView.image = videoScreen
                     }
-                    print(i)
-                    
                 })
             case .Failed:
                 print(error)
