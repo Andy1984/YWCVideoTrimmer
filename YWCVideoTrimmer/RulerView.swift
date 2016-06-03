@@ -12,12 +12,13 @@ class RulerView: UIView {
     
     var widthPerSecond:CGFloat = 25
     var themeColor:UIColor = .lightGrayColor()
+    var leftMargin:CGFloat = 0
     
-    init(frame: CGRect, widthPerSecond:CGFloat, themeColor:UIColor) {
+    init(frame: CGRect, widthPerSecond:CGFloat, themeColor:UIColor, leftMargin:CGFloat) {
         super.init(frame: frame)
         self.widthPerSecond = widthPerSecond
         self.themeColor = themeColor
-        
+        self.leftMargin = leftMargin
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -26,8 +27,6 @@ class RulerView: UIView {
     
     override func drawRect(rect: CGRect) {
         let context = UIGraphicsGetCurrentContext()
-        // MARK: 这是10是给个差不多的， 要重写！
-        let leftMargin:CGFloat = 10.0
         let topMargin:CGFloat = 0.0
         let height:CGFloat = self.frame.height
         let width:CGFloat = self.frame.width

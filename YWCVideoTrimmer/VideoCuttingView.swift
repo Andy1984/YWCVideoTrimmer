@@ -17,6 +17,9 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
     //必须由外部传值
     var asset:AVAsset!
     
+    //如果使用rulerView， 最右边出现刻度数字不全的情况
+    var rightExtend:CGFloat = 100
+    
     var themeColor:UIColor = .lightGrayColor()
     var maxLength:NSTimeInterval = 15.0;
     var minLength:NSTimeInterval = 3.0;
@@ -105,7 +108,7 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         
         if showsRulerView {
             let rulerFrame = CGRectMake(0, contentView.height * 0.7, contentView.width, contentView.height * 0.3)
-            let rulerView = RulerView(frame: rulerFrame, widthPerSecond: widthPerSecond, themeColor: themeColor)
+            let rulerView = RulerView(frame: rulerFrame, widthPerSecond: widthPerSecond, themeColor: themeColor, leftMargin: self.thumbWidth)
             contentView.addSubview(rulerView)
         }
         // add borders
@@ -303,6 +306,7 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         contentView.frame = CGRectMake(0, 0, contentViewFrameWidth, contentView.height)
         
         scrollView.contentSize = contentView.frame.size
+        contentView.frame.size.width += rightExtend
         
         //Int符合含义， CGFloat方便计算
         let minFramesNeeded: CGFloat = ceil(screenWidth/picWidth)
