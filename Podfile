@@ -4,3 +4,4 @@ use_frameworks!
 pod 'RxSwift'
 pod 'RxCocoa'
 pod 'SVProgressHUD'
+pod 'SnapKit'

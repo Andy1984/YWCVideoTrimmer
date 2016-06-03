@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+
 /// 屏幕的宽度
 let ScreenWidth = UIScreen.mainScreen().bounds.size.width
 /// 屏幕的高度
@@ -26,5 +27,9 @@ func createImage(color:UIColor!, size:CGSize!) -> UIImage {
     let image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
     return image
-    
 }
+
+
+
+
+
