@@ -16,3 +16,15 @@ let ScreenHeight = UIScreen.mainScreen().bounds.size.height
 /// WINDOW
 let Window = UIApplication.sharedApplication().delegate!.window
 let ScreenScale = UIScreen.mainScreen().scale
+
+func createImage(color:UIColor!, size:CGSize!) -> UIImage {
+    let rect = CGRectMake(0, 0, size.width, size.height)
+    UIGraphicsBeginImageContextWithOptions(rect.size, false, 0)
+    let context:CGContextRef = UIGraphicsGetCurrentContext()!
+    CGContextSetFillColor(context, CGColorGetComponents(color.CGColor))
+    CGContextFillRect(context, rect)
+    let image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    return image
+    
+}

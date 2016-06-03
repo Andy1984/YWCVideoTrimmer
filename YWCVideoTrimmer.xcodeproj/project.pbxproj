@@ -21,6 +21,7 @@
 		1798275B1CE71FBF0072996D /* Tool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1798275A1CE71FBF0072996D /* Tool.swift */; };
 		17F20B981CEAC38900CA4BF4 /* RealTimeFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F20B971CEAC38900CA4BF4 /* RealTimeFilterViewController.swift */; };
 		17F20B9A1CEAC48600CA4BF4 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17F20B991CEAC48600CA4BF4 /* OpenGLES.framework */; };
+		E42865CA1D016BCA0088A10F /* success@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E42865C91D016BCA0088A10F /* success@3x.png */; };
 		E44DFBC91CF32176002778A1 /* CuttingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44DFBC81CF32176002778A1 /* CuttingViewController.swift */; };
 		E4AE5FE31CF98DC800D1C156 /* ThumbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AE5FE21CF98DC800D1C156 /* ThumbView.swift */; };
 		E4AE5FE71CF99E6F00D1C156 /* RulerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AE5FE61CF99E6F00D1C156 /* RulerView.swift */; };
@@ -46,6 +47,7 @@
 		24DF6F57B73E420BAC1D8B03 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B95D305B7E64BFCC6155A73A /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE2B564F8B3932BF0F71CDBF /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		E42865C91D016BCA0088A10F /* success@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "success@3x.png"; sourceTree = "<group>"; };
 		E44DFBC81CF32176002778A1 /* CuttingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CuttingViewController.swift; sourceTree = "<group>"; };
 		E4AE5FE21CF98DC800D1C156 /* ThumbView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbView.swift; sourceTree = "<group>"; };
 		E4AE5FE61CF99E6F00D1C156 /* RulerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RulerView.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 		171026261CE49EE6009A9233 /* YWCVideoTrimmer */ = {
 			isa = PBXGroup;
 			children = (
+				E42865C91D016BCA0088A10F /* success@3x.png */,
 				E4AE5FE11CF98DAE00D1C156 /* Cut */,
 				171026271CE49EE6009A9233 /* AppDelegate.swift */,
 				171026291CE49EE6009A9233 /* ViewController.swift */,
@@ -197,6 +200,7 @@
 				1726D3681CEEB62F00C8146B /* mv.mp4 in Resources */,
 				171026321CE49EE6009A9233 /* LaunchScreen.storyboard in Resources */,
 				1710262F1CE49EE6009A9233 /* Assets.xcassets in Resources */,
+				E42865CA1D016BCA0088A10F /* success@3x.png in Resources */,
 				17686B841CEC63F900BE1FEA /* launchScreen.mp4 in Resources */,
 				1710262D1CE49EE6009A9233 /* Main.storyboard in Resources */,
 			);

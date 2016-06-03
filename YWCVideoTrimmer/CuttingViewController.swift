@@ -21,11 +21,18 @@ class CuttingViewController: UIViewController, YWCVideoCuttingDelegate {
     var videoPlaybackPosition:CGFloat = 0
     var player:AVPlayer!
     var cuttingView:VideoCuttingView!
+    
+    let disposeBag = DisposeBag()
+    
+    deinit {
+        print("销毁")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.whiteColor()
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "back", style: .Plain, target: self, action: #selector(back))
+        self.navigationController?.navigationBar.translucent = false
         
         guard let URLString = NSBundle.mainBundle().pathForResource("mv", ofType: "mp4") else {
             print("Cannot get video")
@@ -42,7 +49,29 @@ class CuttingViewController: UIViewController, YWCVideoCuttingDelegate {
         playerVC.player?.play()
         player = playerVC.player
         
+        let playButton = UIButton(frame: playerVC.view.bounds)
+        playerVC.view.addSubview(playButton)
+        playButton
+            .rx_tap
+            .subscribeNext { () in
+                playButton.selected = !playButton.selected
+            }.addDisposableTo(disposeBag)
+        playButton
+            .rx_tap
+            .scan(false) { selected, _ in
+                playButton.selected = !selected
+                return !selected
+            }.subscribeNext { [weak self] isPlaying in
+                if isPlaying {
+                    self?.player.pause()
+                } else {
+                    self?.player.play()
+                }
+            }.addDisposableTo(disposeBag)
         
+        let emptyImage = createImage(UIColor(red: 0, green: 0, blue: 0, alpha: 0), size: CGSizeMake(1, 1))
+        playButton.setImage(emptyImage, forState: .Normal)
+        playButton.setImage(UIImage(named: "success@3x"), forState: .Selected)
         cuttingView = VideoCuttingView(frame: CGRectZero, asset: asset)
         self.view.addSubview(cuttingView)
         cuttingView.frame = CGRectMake(0, 400, 300, 100)
