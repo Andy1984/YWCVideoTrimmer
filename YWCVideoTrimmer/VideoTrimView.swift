@@ -1,5 +1,5 @@
 //
-//  VideoCuttingView.swift
+//  TrimView.swift
 //  YWCVideoTrimmer
 //
 //  Created by YangWeicheng on 5/28/16.
@@ -10,11 +10,11 @@ import UIKit
 import AVFoundation
 import SnapKit
 
-protocol YWCVideoCuttingDelegate: class {
-    func changePositionOfCuttingView(cuttingView:VideoCuttingView, startTime:CGFloat, endTime:CGFloat)
+protocol YWCVideoTrimViewDelegate: class {
+    func changePositionOfVideoTrimView(trimView:VideoTrimView, startTime:CGFloat, endTime:CGFloat)
 }
 
-class VideoCuttingView: UIView, UIScrollViewDelegate {
+class VideoTrimView: UIView, UIScrollViewDelegate {
     //必须由外部传值
     var asset:AVAsset!
     
@@ -34,7 +34,7 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
     var rightInvisiblePanView: UIView?
     
     
-    weak var delegate:YWCVideoCuttingDelegate?
+    weak var delegate:YWCVideoTrimViewDelegate?
     //scrollView是整个可以滑动的
     var scrollView:UIScrollView!
     //contentView是包括刻度的
@@ -217,8 +217,7 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         startTime = start
         //显然endTime算法也不对
         endTime = CGRectGetMinX(rightOverlayView.frame) / widthPerSecond + (scrollView.contentOffset.x - thumbWidth) / widthPerSecond;
-        delegate?.changePositionOfCuttingView(self, startTime: startTime, endTime: endTime)
-
+        delegate?.changePositionOfVideoTrimView(self, startTime: startTime, endTime: endTime)
     }
     
     func seekToTime(time:CGFloat) {
