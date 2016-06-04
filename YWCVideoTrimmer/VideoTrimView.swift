@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 import SnapKit
+import RxSwift
 
 protocol YWCVideoTrimViewDelegate: class {
     func changePositionOfVideoTrimView(trimView:VideoTrimView, startTime:CGFloat, endTime:CGFloat)
@@ -17,6 +18,7 @@ protocol YWCVideoTrimViewDelegate: class {
 class VideoTrimView: UIView, UIScrollViewDelegate {
     //必须由外部传值
     var asset:AVAsset!
+    var player:AVPlayer?
     
     //如果使用rulerView， 最右边出现刻度数字不全的情况
     var rightExtend:CGFloat = 100
@@ -25,7 +27,7 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
     var maxLength:NSTimeInterval = 15.0;
     var minLength:NSTimeInterval = 3.0;
     var trackerColor:UIColor = .whiteColor()
-    var borderWidth:CGFloat = 15.0;
+    var borderWidth:CGFloat = 2.0;
     var thumbWidth:CGFloat = 10;
     
     var rightThumbView: ThumbView!
@@ -39,11 +41,6 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
     var scrollView:UIScrollView!
     //contentView是包括刻度的
     var contentView:UIView!
-    var showTrackerView:Bool = true {
-        didSet {
-            trackerView.hidden = !showTrackerView
-        }
-    }
     var showsRulerView:Bool = false
     //frameView是不包括刻度的
     var frameView:UIView!
@@ -90,8 +87,9 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
         notifyDelegate()
     }
     
-    
+    let disposeBag = DisposeBag()
     func resetSubviews() {
+        
         clipsToBounds = true
         backgroundColor = .blackColor()
         for view in subviews {
@@ -153,7 +151,7 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
         }
         
         //这里frame应该是瞎写的
-        trackerView = UIView(frame: CGRectMake(thumbWidth, -5, 3 , height + 10))
+        trackerView = UIView(frame: CGRectMake(thumbWidth, borderWidth, 3 , frameViewFrame.height - borderWidth * 2))
         trackerView.backgroundColor = trackerColor
         trackerView.layer.masksToBounds = true
         trackerView.layer.cornerRadius = 2
@@ -189,8 +187,16 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
         
         
         enlargeTriggerScope(extraTriggerScope)
+        realTimeSyncronizeTrackerView()
+        
+        
+        
+        
+        
         
     }
+    
+    
     
     func enlargeTriggerScope(scope:CGFloat) {
         leftInvisiblePanView = UIView()
@@ -428,8 +434,16 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
     
     
     
-    
-    
+    //MARK: TrackerView
+    func realTimeSyncronizeTrackerView() {
+        observer = self.player?.addPeriodicTimeObserverForInterval(CMTimeMake(1, 50), queue: dispatch_get_main_queue(), usingBlock: { [weak self] (time) in
+            self!.trackerView.frame.origin.x = CGFloat(CMTimeGetSeconds(time)) * self!.widthPerSecond + self!.thumbWidth - self!.scrollView.contentOffset.x
+            })
+    }
+    private var observer:AnyObject!//PeriodicTimeObserver
+    deinit {
+        self.player?.removeTimeObserver(observer)
+    }
     
     
     

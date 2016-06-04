@@ -63,13 +63,14 @@ class CuttingViewController: UIViewController, YWCVideoTrimViewDelegate {
         trimView.frame = CGRectMake(0, 400, 300, 100)
         trimView.showsRulerView = true
         trimView.trackerColor = .whiteColor()
-        
+        trimView.player = self.player
         trimView.resetSubviews()
         trimView.enlargeTriggerScope(10)
         
         
         
         trimView.delegate = self
+        
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cut", style: .Plain, target: self, action: #selector(cutVideo))
         
