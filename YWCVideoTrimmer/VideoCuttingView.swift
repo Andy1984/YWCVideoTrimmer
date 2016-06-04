@@ -156,7 +156,7 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         
         leftThumbView.layer.masksToBounds = true
         leftOverlayView.addSubview(leftThumbView)
-        leftOverlayView.userInteractionEnabled = true
+        leftOverlayView.userInteractionEnabled = false
         //这算蒙板， 但是不应该整个蒙版都是手势
         leftOverlayView.backgroundColor = UIColor(white: 0, alpha: 0.8)
         addSubview(leftOverlayView)
@@ -177,7 +177,7 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         }
         rightThumbView.layer.masksToBounds = true
         rightOverlayView.addSubview(rightThumbView)
-        rightOverlayView.userInteractionEnabled = true
+        rightOverlayView.userInteractionEnabled = false
         rightOverlayView.backgroundColor = UIColor(white: 0, alpha: 0.8)
         addSubview(rightOverlayView)
         updateBorderFrames()
