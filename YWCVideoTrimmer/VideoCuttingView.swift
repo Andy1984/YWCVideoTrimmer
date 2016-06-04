@@ -253,7 +253,7 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
     //不断调整border的长度
     func updateBorderFrames() {
         let height = borderWidth
-        topBorder.frame = CGRectMake(CGRectGetMaxX(leftOverlayView.frame), 0, CGRectGetMinX(rightOverlayView.frame)-CGRectGetMinX(leftOverlayView.frame), height)
+        topBorder.frame = CGRectMake(CGRectGetMaxX(leftOverlayView.frame), 0, CGRectGetMinX(rightOverlayView.frame)-CGRectGetMaxX(leftOverlayView.frame), height)
         bottomBorder.frame = CGRectMake(CGRectGetMaxX(leftOverlayView.frame), CGRectGetHeight(frameView.frame)-height, CGRectGetMinX(rightOverlayView.frame)-CGRectGetMaxX(leftOverlayView.frame), height)
     }
     
