@@ -49,7 +49,9 @@ class RulerView: UIView {
         while x <= (leftMargin + width) {
             
             CGContextMoveToPoint(context, x, baseY)
-            CGContextSetFillColor(context, CGColorGetComponents(self.themeColor.CGColor))
+            CGContextSetFillColorWithColor(context, self.themeColor.CGColor)
+            //这个注释的方法是错误的， 但是看不出和上面方法的区别
+//            CGContextSetFillColor(context, CGColorGetComponents(self.themeColor.CGColor))
             //如果到了大格
             if step % multiple == 0 {
                 //画长线
