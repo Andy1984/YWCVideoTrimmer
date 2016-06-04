@@ -63,7 +63,10 @@ class CuttingViewController: UIViewController, YWCVideoCuttingDelegate {
         cuttingView.frame = CGRectMake(0, 400, 300, 100)
         cuttingView.showsRulerView = true
         cuttingView.trackerColor = .whiteColor()
+        
         cuttingView.resetSubviews()
+        cuttingView.enlargeTriggerScope(10)
+        
         
         
         cuttingView.delegate = self

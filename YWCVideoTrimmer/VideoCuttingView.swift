@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import SnapKit
 
 protocol YWCVideoCuttingDelegate: class {
     func changePositionOfCuttingView(cuttingView:VideoCuttingView, startTime:CGFloat, endTime:CGFloat)
@@ -27,6 +28,12 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
     var borderWidth:CGFloat = 15.0;
     var thumbWidth:CGFloat = 10;
     
+    var rightThumbView: ThumbView!
+    var leftThumbView: ThumbView!
+    var leftInvisiblePanView: UIView?
+    var rightInvisiblePanView: UIView?
+    
+    
     weak var delegate:YWCVideoCuttingDelegate?
     //scrollView是整个可以滑动的
     var scrollView:UIScrollView!
@@ -40,6 +47,11 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
     var showsRulerView:Bool = false
     //frameView是不包括刻度的
     var frameView:UIView!
+    
+    var extraTriggerScope:CGFloat = 15
+    
+    
+    
     
     var widthPerSecond:CGFloat!
     var topBorder:UIView!
@@ -85,6 +97,9 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         for view in subviews {
             view.performSelector(#selector(removeFromSuperview))
         }
+        leftInvisiblePanView?.removeFromSuperview()
+        rightInvisiblePanView?.removeFromSuperview()
+        
         //整个scrollView
         scrollView = UIScrollView(frame: CGRectMake(0,0,width,height))
         addSubview(scrollView)
@@ -125,7 +140,7 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         let leftOverlayFrame = CGRectMake(thumbWidth - overlayWidth, 0, overlayWidth, frameView.height)
         leftOverlayView = UIView(frame: leftOverlayFrame)
         let leftThumbFrame = CGRectMake(overlayWidth - thumbWidth, 0, thumbWidth, frameView.height)
-        let leftThumbView: ThumbView
+        
         if leftThumbImage != nil {
             leftThumbView = ThumbView(frame: leftThumbFrame, thumbImage: leftThumbImage!, right: false)
         } else {
@@ -142,9 +157,6 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         leftThumbView.layer.masksToBounds = true
         leftOverlayView.addSubview(leftThumbView)
         leftOverlayView.userInteractionEnabled = true
-        let leftPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(moveLeftOverlayView))
-        //加手势的内容不对
-        leftOverlayView.addGestureRecognizer(leftPanGestureRecognizer)
         //这算蒙板， 但是不应该整个蒙版都是手势
         leftOverlayView.backgroundColor = UIColor(white: 0, alpha: 0.8)
         addSubview(leftOverlayView)
@@ -157,7 +169,7 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
             rightViewFrameX = width - thumbWidth
         }
         rightOverlayView = UIView(frame: CGRectMake(rightViewFrameX,0,overlayWidth,frameView.height))
-        let rightThumbView:ThumbView
+        
         if rightThumbImage != nil {
             rightThumbView = ThumbView(frame: CGRectMake(0, 0, thumbWidth, frameView.height), thumbImage: rightThumbImage!, right: true)
         } else {
@@ -166,18 +178,35 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         rightThumbView.layer.masksToBounds = true
         rightOverlayView.addSubview(rightThumbView)
         rightOverlayView.userInteractionEnabled = true
-        let rightPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(moveRightOverlayView))
-        rightOverlayView.addGestureRecognizer(rightPanGestureRecognizer)
         rightOverlayView.backgroundColor = UIColor(white: 0, alpha: 0.8)
         addSubview(rightOverlayView)
         updateBorderFrames()
         
         
-        
-        
-        
+        enlargeTriggerScope(extraTriggerScope)
         
     }
+    
+    func enlargeTriggerScope(scope:CGFloat) {
+        leftInvisiblePanView = UIView()
+        self.superview?.addSubview(leftInvisiblePanView!)
+        leftInvisiblePanView!.snp_remakeConstraints { (make) in
+            make.edges.equalTo(leftThumbView).inset(-scope)
+        }
+        let leftPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(moveLeftOverlayView))
+        leftInvisiblePanView!.addGestureRecognizer(leftPanGestureRecognizer)
+        
+        rightInvisiblePanView = UIView()
+        self.superview?.addSubview(rightInvisiblePanView!)
+        rightInvisiblePanView!.snp_remakeConstraints { (make) in
+            make.edges.equalTo(rightThumbView).inset(-scope)
+        }
+        let rightPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(moveRightOverlayView))
+        rightInvisiblePanView!.addGestureRecognizer(rightPanGestureRecognizer)
+    }
+
+    
+    
     
     func notifyDelegate() {
         //这个start算法也是不对的， 不应该用overlayView的内侧就是thumbView的内侧
