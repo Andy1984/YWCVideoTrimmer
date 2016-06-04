@@ -30,8 +30,8 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
     
     var rightThumbView: ThumbView!
     var leftThumbView: ThumbView!
-    var leftInvisiblePanView: UIView?
-    var rightInvisiblePanView: UIView?
+    var leftInvisiblePanView: UIView!
+    var rightInvisiblePanView: UIView!
     
     
     weak var delegate:YWCVideoTrimViewDelegate?
@@ -97,8 +97,13 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
         for view in subviews {
             view.performSelector(#selector(removeFromSuperview))
         }
-        leftInvisiblePanView?.removeFromSuperview()
-        rightInvisiblePanView?.removeFromSuperview()
+        if leftInvisiblePanView != nil {
+            leftInvisiblePanView.removeFromSuperview()
+        }
+        if rightInvisiblePanView != nil {
+            rightInvisiblePanView.removeFromSuperview()
+        }
+        
         
         //整个scrollView
         scrollView = UIScrollView(frame: CGRectMake(0,0,width,height))
@@ -189,16 +194,16 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
     
     func enlargeTriggerScope(scope:CGFloat) {
         leftInvisiblePanView = UIView()
-        self.superview?.addSubview(leftInvisiblePanView!)
-        leftInvisiblePanView!.snp_remakeConstraints { (make) in
+        self.superview!.addSubview(leftInvisiblePanView)
+        leftInvisiblePanView.snp_remakeConstraints { (make) in
             make.edges.equalTo(leftThumbView).inset(-scope)
         }
         let leftPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(moveLeftThumbView))
         leftInvisiblePanView!.addGestureRecognizer(leftPanGestureRecognizer)
         
         rightInvisiblePanView = UIView()
-        self.superview?.addSubview(rightInvisiblePanView!)
-        rightInvisiblePanView!.snp_remakeConstraints { (make) in
+        self.superview!.addSubview(rightInvisiblePanView)
+        rightInvisiblePanView.snp_remakeConstraints { (make) in
             make.edges.equalTo(rightThumbView).inset(-scope)
         }
         let rightPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(moveRightThumbView))
