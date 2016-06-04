@@ -193,7 +193,7 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         leftInvisiblePanView!.snp_remakeConstraints { (make) in
             make.edges.equalTo(leftThumbView).inset(-scope)
         }
-        let leftPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(moveLeftOverlayView))
+        let leftPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(moveLeftThumbView))
         leftInvisiblePanView!.addGestureRecognizer(leftPanGestureRecognizer)
         
         rightInvisiblePanView = UIView()
@@ -201,7 +201,7 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         rightInvisiblePanView!.snp_remakeConstraints { (make) in
             make.edges.equalTo(rightThumbView).inset(-scope)
         }
-        let rightPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(moveRightOverlayView))
+        let rightPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(moveRightThumbView))
         rightInvisiblePanView!.addGestureRecognizer(rightPanGestureRecognizer)
     }
 
@@ -226,7 +226,7 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
     }
     
     
-    func moveLeftOverlayView(gesture:UIPanGestureRecognizer) {
+    func moveLeftThumbView(gesture:UIPanGestureRecognizer) {
         switch gesture.state {
         case .Began:
             leftStartPoint = gesture.locationInView(self)
@@ -252,7 +252,7 @@ class VideoCuttingView: UIView, UIScrollViewDelegate {
         }
     }
     
-    func moveRightOverlayView(gesture:UIPanGestureRecognizer) {
+    func moveRightThumbView(gesture:UIPanGestureRecognizer) {
         switch gesture.state {
         case .Began:
             rightStartPoint = gesture.locationInView(self)
