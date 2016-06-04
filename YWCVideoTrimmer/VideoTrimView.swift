@@ -68,6 +68,14 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
     var startTime:CGFloat = 0
     var endTime:CGFloat = 0
     
+    //With tracker
+    init(frame:CGRect, player:AVPlayer) {
+        super.init(frame: frame)
+        self.player = player
+        self.asset = player.currentItem?.asset
+    }
+    
+    //Without tracker
     init(frame: CGRect, asset:AVAsset) {
         super.init(frame: frame)
         self.asset = asset
@@ -152,6 +160,9 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
         
         //这里frame应该是瞎写的
         trackerView = UIView(frame: CGRectMake(thumbWidth, borderWidth, 3 , frameViewFrame.height - borderWidth * 2))
+        if self.player == nil {
+            trackerView.hidden = true
+        }
         trackerView.backgroundColor = trackerColor
         trackerView.layer.masksToBounds = true
         trackerView.layer.cornerRadius = 2
@@ -436,8 +447,14 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
     
     //MARK: TrackerView
     func realTimeSyncronizeTrackerView() {
-        observer = self.player?.addPeriodicTimeObserverForInterval(CMTimeMake(1, 50), queue: dispatch_get_main_queue(), usingBlock: { [weak self] (time) in
+        observer = self.player?.addPeriodicTimeObserverForInterval(CMTimeMake(1,30), queue: dispatch_get_main_queue(), usingBlock: { [weak self] (time) in
             self!.trackerView.frame.origin.x = CGFloat(CMTimeGetSeconds(time)) * self!.widthPerSecond + self!.thumbWidth - self!.scrollView.contentOffset.x
+            if self?.player?.rate == 0 {
+                self?.trackerView.hidden = true
+            } else {
+                self?.trackerView.hidden = false
+            }
+            
             })
     }
     private var observer:AnyObject!//PeriodicTimeObserver

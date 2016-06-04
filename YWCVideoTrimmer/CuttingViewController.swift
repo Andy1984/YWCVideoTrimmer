@@ -58,12 +58,12 @@ class CuttingViewController: UIViewController, YWCVideoTrimViewDelegate {
         let emptyImage = createImage(UIColor(red: 0, green: 0, blue: 0, alpha: 0), size: CGSizeMake(1, 1))
         playButton.setImage(emptyImage, forState: .Normal)
         playButton.setImage(UIImage(named: "success@3x"), forState: .Selected)
-        trimView = VideoTrimView(frame: CGRectZero, asset: asset)
+        trimView = VideoTrimView(frame: CGRectZero, player: self.player)
+//        trimView = VideoTrimView(frame: CGRectZero, asset: asset)
         self.view.addSubview(trimView)
         trimView.frame = CGRectMake(0, 400, 300, 100)
         trimView.showsRulerView = true
         trimView.trackerColor = .whiteColor()
-        trimView.player = self.player
         trimView.resetSubviews()
         trimView.enlargeTriggerScope(10)
         
