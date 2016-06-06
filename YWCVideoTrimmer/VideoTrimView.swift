@@ -16,6 +16,7 @@ protocol YWCVideoTrimViewDelegate: class {
 }
 
 class VideoTrimView: UIView, UIScrollViewDelegate {
+    
     //必须由外部传值
     var asset:AVAsset!
     var player:AVPlayer?
@@ -28,7 +29,7 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
     var trackerColor:UIColor = .whiteColor()
     
     
-    var extraTriggerScope:CGFloat = 15
+    var extraTriggerScope:CGFloat = 25
     
     //如果使用rulerView， 最右边出现刻度数字不全的情况
     var rightExtend:CGFloat = 100
@@ -53,26 +54,26 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
     var frameView:UIView!
     
     
+    var leftDimView:UIView!
+    var rightDimView:UIView!
     
     
+    var rightThumbView: ThumbView!
+    var leftThumbView: ThumbView!
+    var leftInvisiblePanView: UIView!
+    var rightInvisiblePanView: UIView!
+    var widthPerSecond:CGFloat!
+    var topBorder:UIView!
+    var bottomBorder:UIView!
     
-    private var rightThumbView: ThumbView!
-    private var leftThumbView: ThumbView!
-    private var leftInvisiblePanView: UIView!
-    private var rightInvisiblePanView: UIView!
-    private var widthPerSecond:CGFloat!
-    private var topBorder:UIView!
-    private var bottomBorder:UIView!
-    private var leftOverlayView:UIView!
-    private var rightOverlayView:UIView!
-    private var overlayWidth:CGFloat!
+    var overlayWidth:CGFloat!
     //这里的start表示初始
-    private var leftStartPoint:CGPoint!
-    private var rightStartPoint:CGPoint!
+    var leftStartPoint:CGPoint!
+    var rightStartPoint:CGPoint!
     
     //应该是NSTimeInterval比较合适
-    private var startTime:CGFloat = 0
-    private var endTime:CGFloat = 0
+    var startTime:CGFloat = 0
+    var endTime:CGFloat = 0
     
     //With tracker
     init(frame:CGRect, player:AVPlayer) {
@@ -155,7 +156,7 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
         overlayWidth = width - CGFloat(minLength) * widthPerSecond
         // add left overlay view
         let leftOverlayFrame = CGRectMake(thumbWidth - overlayWidth, 0, overlayWidth, frameView.height)
-        leftOverlayView = UIView(frame: leftOverlayFrame)
+        leftDimView = UIView(frame: leftOverlayFrame)
         let leftThumbFrame = CGRectMake(overlayWidth - thumbWidth, 0, thumbWidth, frameView.height)
         
         if leftThumbImage != nil {
@@ -175,11 +176,11 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
         addSubview(trackerView)
         
         leftThumbView.layer.masksToBounds = true
-        leftOverlayView.addSubview(leftThumbView)
-        leftOverlayView.userInteractionEnabled = false
+        leftDimView.addSubview(leftThumbView)
+        leftDimView.userInteractionEnabled = false
         //这算蒙板， 但是不应该整个蒙版都是手势
-        leftOverlayView.backgroundColor = UIColor(white: 0, alpha: 0.8)
-        addSubview(leftOverlayView)
+        leftDimView.backgroundColor = UIColor(white: 0, alpha: 0.7)
+        addSubview(leftDimView)
         
         // add right overlay view
         let rightViewFrameX: CGFloat
@@ -188,7 +189,7 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
         } else {
             rightViewFrameX = width - thumbWidth
         }
-        rightOverlayView = UIView(frame: CGRectMake(rightViewFrameX,0,overlayWidth,frameView.height))
+        rightDimView = UIView(frame: CGRectMake(rightViewFrameX,0,overlayWidth,frameView.height))
         
         if rightThumbImage != nil {
             rightThumbView = ThumbView(frame: CGRectMake(0, 0, thumbWidth, frameView.height), thumbImage: rightThumbImage!, right: true)
@@ -196,10 +197,10 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
             rightThumbView = ThumbView(frame: CGRectMake(0, 0, thumbWidth, frameView.height), color: themeColor, right: true)
         }
         rightThumbView.layer.masksToBounds = true
-        rightOverlayView.addSubview(rightThumbView)
-        rightOverlayView.userInteractionEnabled = false
-        rightOverlayView.backgroundColor = UIColor(white: 0, alpha: 0.8)
-        addSubview(rightOverlayView)
+        rightDimView.addSubview(rightThumbView)
+        rightDimView.userInteractionEnabled = false
+        rightDimView.backgroundColor = UIColor(white: 0, alpha: 0.7)
+        addSubview(rightDimView)
         updateBorderFrames()
         
         
@@ -237,18 +238,16 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
     
     
     func notifyDelegate() {
-        //这个start算法也是不对的， 不应该用overlayView的内侧就是thumbView的内侧
-        let start:CGFloat = CGRectGetMaxX(leftOverlayView.frame) / widthPerSecond + (scrollView.contentOffset.x - thumbWidth) / widthPerSecond;
+        let start:CGFloat = CGRectGetMaxX(leftDimView.frame) / widthPerSecond + (scrollView.contentOffset.x - thumbWidth) / widthPerSecond;
         if trackerView.hidden == true &&  start != startTime{
-            seekToTime(start)
+            trackerMoveToTime(start)
         }
         startTime = start
-        //显然endTime算法也不对
-        endTime = CGRectGetMinX(rightOverlayView.frame) / widthPerSecond + (scrollView.contentOffset.x - thumbWidth) / widthPerSecond;
+        endTime = CGRectGetMinX(rightDimView.frame) / widthPerSecond + (scrollView.contentOffset.x - thumbWidth) / widthPerSecond;
         delegate?.changePositionOfVideoTrimView(self, startTime: startTime, endTime: endTime)
     }
     
-    func seekToTime(time:CGFloat) {
+    func trackerMoveToTime(time:CGFloat) {
         trackerView.frame.origin.x = time * widthPerSecond + thumbWidth - scrollView.contentOffset.x
     }
     
@@ -260,18 +259,18 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
         case .Changed:
             let point = gesture.locationInView(self)
             let deltaX = point.x - leftStartPoint.x
-            var center = leftOverlayView.center
+            var center = leftDimView.center
             center.x += deltaX
             var newLeftViewMidX = center.x
             
-            let maxWidth =  CGRectGetMinX(rightOverlayView.frame) - (CGFloat(minLength) * widthPerSecond);
+            let maxWidth =  CGRectGetMinX(rightDimView.frame) - (CGFloat(minLength) * widthPerSecond);
             let newLeftViewMinX = newLeftViewMidX - overlayWidth/2
             if newLeftViewMinX < thumbWidth - overlayWidth {
                 newLeftViewMidX = thumbWidth - overlayWidth + overlayWidth/2
             } else if newLeftViewMinX + overlayWidth > maxWidth {
                 newLeftViewMidX = maxWidth - overlayWidth / 2
             }
-            leftOverlayView.center = CGPointMake(newLeftViewMidX, leftOverlayView.center.y)
+            leftDimView.center = CGPointMake(newLeftViewMidX, leftDimView.center.y)
             leftStartPoint = point
             updateBorderFrames()
             notifyDelegate()
@@ -286,11 +285,11 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
         case .Changed:
             let point = gesture.locationInView(self)
             let deltaX = point.x - rightStartPoint.x
-            var center = rightOverlayView.center
+            var center = rightDimView.center
             center.x += deltaX
             var newRightViewMidX = center.x
             
-            let minX = CGRectGetMaxX(leftOverlayView.frame) + CGFloat(minLength) * widthPerSecond
+            let minX = CGRectGetMaxX(leftDimView.frame) + CGFloat(minLength) * widthPerSecond
             let maxX = asset.seconds <= maxLength ? CGRectGetMaxX(frameView.frame) : CGRectGetWidth(frame) - thumbWidth
             if (newRightViewMidX - overlayWidth/2 < minX) {
                 newRightViewMidX = minX + overlayWidth/2;
@@ -298,7 +297,7 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
                 newRightViewMidX = maxX + overlayWidth/2;
             }
             
-            rightOverlayView.center = CGPointMake(newRightViewMidX, rightOverlayView.center.y)
+            rightDimView.center = CGPointMake(newRightViewMidX, rightDimView.center.y)
             rightStartPoint = point
             updateBorderFrames()
             notifyDelegate()
@@ -309,8 +308,8 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
     //不断调整border的长度
     func updateBorderFrames() {
         let height = borderWidth
-        topBorder.frame = CGRectMake(CGRectGetMaxX(leftOverlayView.frame), 0, CGRectGetMinX(rightOverlayView.frame)-CGRectGetMaxX(leftOverlayView.frame), height)
-        bottomBorder.frame = CGRectMake(CGRectGetMaxX(leftOverlayView.frame), CGRectGetHeight(frameView.frame)-height, CGRectGetMinX(rightOverlayView.frame)-CGRectGetMaxX(leftOverlayView.frame), height)
+        topBorder.frame = CGRectMake(CGRectGetMaxX(leftDimView.frame), 0, CGRectGetMinX(rightDimView.frame)-CGRectGetMaxX(leftDimView.frame), height)
+        bottomBorder.frame = CGRectMake(CGRectGetMaxX(leftDimView.frame), CGRectGetHeight(frameView.frame)-height, CGRectGetMinX(rightDimView.frame)-CGRectGetMaxX(leftDimView.frame), height)
     }
     
     func addFrames() {
@@ -463,7 +462,7 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
             
             })
     }
-    private var observer:AnyObject!//PeriodicTimeObserver
+    var observer:AnyObject!//PeriodicTimeObserver
     deinit {
         self.player?.removeTimeObserver(observer)
     }
