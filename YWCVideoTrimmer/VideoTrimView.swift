@@ -160,9 +160,9 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
         let leftThumbFrame = CGRectMake(overlayWidth - thumbWidth, 0, thumbWidth, frameView.height)
         
         if leftThumbImage != nil {
-            leftThumbView = ThumbView(frame: leftThumbFrame, thumbImage: leftThumbImage!, right: false)
+            leftThumbView = ThumbView(frame: leftThumbFrame, thumbImage: leftThumbImage!, isRightSide: false)
         } else {
-            leftThumbView = ThumbView(frame: leftThumbFrame, color: themeColor, right: false)
+            leftThumbView = ThumbView(frame: leftThumbFrame, color: themeColor, isRightSide: false)
         }
         
         //这里frame应该是瞎写的
@@ -192,9 +192,9 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
         rightDimView = UIView(frame: CGRectMake(rightViewFrameX,0,overlayWidth,frameView.height))
         
         if rightThumbImage != nil {
-            rightThumbView = ThumbView(frame: CGRectMake(0, 0, thumbWidth, frameView.height), thumbImage: rightThumbImage!, right: true)
+            rightThumbView = ThumbView(frame: CGRectMake(0, 0, thumbWidth, frameView.height), thumbImage: rightThumbImage!, isRightSide: true)
         } else {
-            rightThumbView = ThumbView(frame: CGRectMake(0, 0, thumbWidth, frameView.height), color: themeColor, right: true)
+            rightThumbView = ThumbView(frame: CGRectMake(0, 0, thumbWidth, frameView.height), color: themeColor, isRightSide: true)
         }
         rightThumbView.layer.masksToBounds = true
         rightDimView.addSubview(rightThumbView)

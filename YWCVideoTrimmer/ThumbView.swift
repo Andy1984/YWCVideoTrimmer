@@ -10,20 +10,20 @@ import UIKit
 
 class ThumbView: UIView {
     
-    var right:Bool?
+    var isRightSide:Bool?
     var thumbImage:UIImage?
     
     var color:UIColor?
-    init(frame:CGRect, color:UIColor, right:Bool) {
+    init(frame:CGRect, color:UIColor, isRightSide:Bool) {
         super.init(frame: frame)
         self.color = color
-        self.right = right
+        self.isRightSide = isRightSide
     }
     
-    init(frame: CGRect, thumbImage:UIImage, right:Bool) {
+    init(frame: CGRect, thumbImage:UIImage, isRightSide:Bool) {
         super.init(frame: frame)
         self.thumbImage = thumbImage
-        self.right = right
+        self.isRightSide = isRightSide
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -52,7 +52,7 @@ class ThumbView: UIView {
     
     func drawRoundedRectangle() {
         let roundedRectanglePath:UIBezierPath!
-        if right == false {
+        if isRightSide == false {
             roundedRectanglePath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: [UIRectCorner.TopLeft, UIRectCorner.BottomLeft], cornerRadii: CGSizeMake(3, 3))
         } else {
             roundedRectanglePath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: [UIRectCorner.TopRight, UIRectCorner.BottomRight], cornerRadii: CGSizeMake(3, 3))
