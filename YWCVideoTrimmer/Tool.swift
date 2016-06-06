@@ -11,9 +11,9 @@ import UIKit
 
 
 /// 屏幕的宽度
-let ScreenWidth = UIScreen.mainScreen().bounds.size.width
+let ScreenWidth:CGFloat = UIScreen.mainScreen().bounds.size.width
 /// 屏幕的高度
-let ScreenHeight = UIScreen.mainScreen().bounds.size.height
+let ScreenHeight:CGFloat = UIScreen.mainScreen().bounds.size.height
 /// WINDOW
 let Window = UIApplication.sharedApplication().delegate!.window
 let ScreenScale = UIScreen.mainScreen().scale

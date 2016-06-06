@@ -12,6 +12,7 @@ import AVFoundation
 import SVProgressHUD
 import RxCocoa
 import RxSwift
+import SnapKit
 
 class CuttingViewController: UIViewController, YWCVideoTrimViewDelegate {
     var asset:AVAsset!
@@ -23,43 +24,49 @@ class CuttingViewController: UIViewController, YWCVideoTrimViewDelegate {
     var playButton:UIButton!
     var trimView:VideoTrimView!
     
+    var durationLabel:UILabel!
+    
     let disposeBag = DisposeBag()
     
     deinit {
         print("销毁")
+    }
+    
+    //隐藏状态栏
+    override func prefersStatusBarHidden() -> Bool {
+        return true
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.whiteColor()
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "back", style: .Plain, target: self, action: #selector(back))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cut", style: .Plain, target: self, action: #selector(cutVideo))
         self.navigationController?.navigationBar.translucent = false
         
         guard let URLString = NSBundle.mainBundle().pathForResource("mxsf", ofType: "mp4") else {
             print("Cannot get video")
             return
         }
+    
+        
         
         let URL = NSURL(fileURLWithPath: URLString)
         asset = AVURLAsset(URL: URL)
-        let playerVC = AVPlayerViewController()
-        let playItem = AVPlayerItem(asset: asset)
-        playerVC.player = AVPlayer(playerItem: playItem)
-        playerVC.showsPlaybackControls = false
-        playerVC.view.frame = CGRectMake(0, 0, ScreenWidth, ScreenWidth)
-        view.addSubview(playerVC.view)
-        playerVC.player?.play()
-        player = playerVC.player
+        player = AVPlayer(URL: URL)
+        let playerLayer = AVPlayerLayer(player: player)
+        playerLayer.frame = CGRectMake(0, 0, ScreenWidth, ScreenWidth)
+        self.view.layer.addSublayer(playerLayer)
+        playerLayer.backgroundColor = UIColor.blackColor().CGColor
         
-        playButton = UIButton(frame: playerVC.view.bounds)
-        playerVC.view.addSubview(playButton)
+        playButton = UIButton(frame: playerLayer.bounds)
+        self.view.addSubview(playButton)
         playButton.addTarget(self, action: #selector(playButtonClicked), forControlEvents: .TouchUpInside)
         
         let emptyImage = createImage(UIColor(red: 0, green: 0, blue: 0, alpha: 0), size: CGSizeMake(1, 1))
         playButton.setImage(emptyImage, forState: .Normal)
         playButton.setImage(UIImage(named: "success@3x"), forState: .Selected)
         trimView = VideoTrimView(frame: CGRectZero, player: self.player)
-//        trimView = VideoTrimView(frame: CGRectZero, asset: asset)
         self.view.addSubview(trimView)
         trimView.frame = CGRectMake(0, 400, 300, 100)
         trimView.showsRulerView = true
@@ -72,8 +79,20 @@ class CuttingViewController: UIViewController, YWCVideoTrimViewDelegate {
         trimView.delegate = self
         
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cut", style: .Plain, target: self, action: #selector(cutVideo))
         
+        
+        
+        let functionBar = UIView(frame: CGRectMake(0, ScreenWidth, ScreenWidth, 44))
+        functionBar.backgroundColor = .yellowColor()
+        view.addSubview(functionBar)
+        durationLabel = UILabel(frame: CGRectMake(0,0,150,44))
+        functionBar.addSubview(durationLabel)
+        durationLabel.textColor = .darkGrayColor()
+        let duration = trimView.endTime - trimView.startTime
+        durationLabel.text = String(format: " %.1fs", duration)
+        durationLabel.font = UIFont.systemFontOfSize(12)
+        
+
     }
     
     func playButtonClicked(){
