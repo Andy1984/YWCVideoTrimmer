@@ -20,20 +20,27 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
     var asset:AVAsset!
     var player:AVPlayer?
     
+    var leftThumbImage: UIImage?
+    var rightThumbImage: UIImage?
+    
+    //Tracker
+    var trackerView:UIView!
+    var trackerColor:UIColor = .whiteColor()
+    
+    
+    var extraTriggerScope:CGFloat = 15
+    
     //如果使用rulerView， 最右边出现刻度数字不全的情况
     var rightExtend:CGFloat = 100
     
     var themeColor:UIColor = .lightGrayColor()
     var maxLength:NSTimeInterval = 15.0;
     var minLength:NSTimeInterval = 3.0;
-    var trackerColor:UIColor = .whiteColor()
+    
     var borderWidth:CGFloat = 2.0;
     var thumbWidth:CGFloat = 10;
     
-    var rightThumbView: ThumbView!
-    var leftThumbView: ThumbView!
-    var leftInvisiblePanView: UIView!
-    var rightInvisiblePanView: UIView!
+    
     
     
     weak var delegate:YWCVideoTrimViewDelegate?
@@ -45,28 +52,27 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
     //frameView是不包括刻度的
     var frameView:UIView!
     
-    var extraTriggerScope:CGFloat = 15
     
     
     
     
-    var widthPerSecond:CGFloat!
-    var topBorder:UIView!
-    var bottomBorder:UIView!
-    var leftOverlayView:UIView!
-    var rightOverlayView:UIView!
-    var overlayWidth:CGFloat!
-    var leftThumbImage: UIImage?
-    var rightThumbImage: UIImage?
-    var trackerView:UIView!
-    
+    private var rightThumbView: ThumbView!
+    private var leftThumbView: ThumbView!
+    private var leftInvisiblePanView: UIView!
+    private var rightInvisiblePanView: UIView!
+    private var widthPerSecond:CGFloat!
+    private var topBorder:UIView!
+    private var bottomBorder:UIView!
+    private var leftOverlayView:UIView!
+    private var rightOverlayView:UIView!
+    private var overlayWidth:CGFloat!
     //这里的start表示初始
-    var leftStartPoint:CGPoint!
-    var rightStartPoint:CGPoint!
+    private var leftStartPoint:CGPoint!
+    private var rightStartPoint:CGPoint!
     
     //应该是NSTimeInterval比较合适
-    var startTime:CGFloat = 0
-    var endTime:CGFloat = 0
+    private var startTime:CGFloat = 0
+    private var endTime:CGFloat = 0
     
     //With tracker
     init(frame:CGRect, player:AVPlayer) {
