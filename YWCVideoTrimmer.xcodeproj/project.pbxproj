@@ -23,6 +23,10 @@
 		17F20B9A1CEAC48600CA4BF4 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17F20B991CEAC48600CA4BF4 /* OpenGLES.framework */; };
 		E42865CA1D016BCA0088A10F /* success@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E42865C91D016BCA0088A10F /* success@3x.png */; };
 		E42865D21D019AED0088A10F /* mxsf.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = E42865D11D019AED0088A10F /* mxsf.mp4 */; };
+		E42CFB991D054F950040DB53 /* trim_11_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E42CFB951D054F950040DB53 /* trim_11_selected@2x.png */; };
+		E42CFB9A1D054F950040DB53 /* trim_11_unselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E42CFB961D054F950040DB53 /* trim_11_unselected@2x.png */; };
+		E42CFB9B1D054F950040DB53 /* trim_169_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E42CFB971D054F950040DB53 /* trim_169_selected@2x.png */; };
+		E42CFB9C1D054F950040DB53 /* trim_169_unselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E42CFB981D054F950040DB53 /* trim_169_unselected@2x.png */; };
 		E44DFBC91CF32176002778A1 /* CuttingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44DFBC81CF32176002778A1 /* CuttingViewController.swift */; };
 		E4AE5FE31CF98DC800D1C156 /* ThumbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AE5FE21CF98DC800D1C156 /* ThumbView.swift */; };
 		E4AE5FE71CF99E6F00D1C156 /* RulerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AE5FE61CF99E6F00D1C156 /* RulerView.swift */; };
@@ -50,6 +54,10 @@
 		BE2B564F8B3932BF0F71CDBF /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		E42865C91D016BCA0088A10F /* success@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "success@3x.png"; sourceTree = "<group>"; };
 		E42865D11D019AED0088A10F /* mxsf.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = mxsf.mp4; sourceTree = "<group>"; };
+		E42CFB951D054F950040DB53 /* trim_11_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trim_11_selected@2x.png"; sourceTree = "<group>"; };
+		E42CFB961D054F950040DB53 /* trim_11_unselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trim_11_unselected@2x.png"; sourceTree = "<group>"; };
+		E42CFB971D054F950040DB53 /* trim_169_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trim_169_selected@2x.png"; sourceTree = "<group>"; };
+		E42CFB981D054F950040DB53 /* trim_169_unselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trim_169_unselected@2x.png"; sourceTree = "<group>"; };
 		E44DFBC81CF32176002778A1 /* CuttingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CuttingViewController.swift; sourceTree = "<group>"; };
 		E4AE5FE21CF98DC800D1C156 /* ThumbView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbView.swift; sourceTree = "<group>"; };
 		E4AE5FE61CF99E6F00D1C156 /* RulerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RulerView.swift; sourceTree = "<group>"; };
@@ -129,9 +137,21 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E42CFB841D054DDC0040DB53 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				E42CFB951D054F950040DB53 /* trim_11_selected@2x.png */,
+				E42CFB961D054F950040DB53 /* trim_11_unselected@2x.png */,
+				E42CFB971D054F950040DB53 /* trim_169_selected@2x.png */,
+				E42CFB981D054F950040DB53 /* trim_169_unselected@2x.png */,
+			);
+			name = images;
+			sourceTree = "<group>";
+		};
 		E4AE5FE11CF98DAE00D1C156 /* Cut */ = {
 			isa = PBXGroup;
 			children = (
+				E42CFB841D054DDC0040DB53 /* images */,
 				E4AE5FE21CF98DC800D1C156 /* ThumbView.swift */,
 				E4AE5FE61CF99E6F00D1C156 /* RulerView.swift */,
 				E4AE5FE81CF9B42900D1C156 /* VideoTrimView.swift */,
@@ -200,11 +220,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E42CFB9B1D054F950040DB53 /* trim_169_selected@2x.png in Resources */,
+				E42CFB9A1D054F950040DB53 /* trim_11_unselected@2x.png in Resources */,
 				1726D3681CEEB62F00C8146B /* mv.mp4 in Resources */,
 				171026321CE49EE6009A9233 /* LaunchScreen.storyboard in Resources */,
 				1710262F1CE49EE6009A9233 /* Assets.xcassets in Resources */,
+				E42CFB991D054F950040DB53 /* trim_11_selected@2x.png in Resources */,
 				E42865CA1D016BCA0088A10F /* success@3x.png in Resources */,
 				17686B841CEC63F900BE1FEA /* launchScreen.mp4 in Resources */,
+				E42CFB9C1D054F950040DB53 /* trim_169_unselected@2x.png in Resources */,
 				1710262D1CE49EE6009A9233 /* Main.storyboard in Resources */,
 				E42865D21D019AED0088A10F /* mxsf.mp4 in Resources */,
 			);

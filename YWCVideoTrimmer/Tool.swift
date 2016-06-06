@@ -15,7 +15,9 @@ let ScreenWidth:CGFloat = UIScreen.mainScreen().bounds.size.width
 /// 屏幕的高度
 let ScreenHeight:CGFloat = UIScreen.mainScreen().bounds.size.height
 /// WINDOW
-let Window = UIApplication.sharedApplication().delegate!.window
+let Window = UIApplication.sharedApplication().keyWindow!
+
+
 let ScreenScale = UIScreen.mainScreen().scale
 
 func createImage(color:UIColor!, size:CGSize!) -> UIImage {

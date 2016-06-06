@@ -23,6 +23,8 @@ class CuttingViewController: UIViewController, YWCVideoTrimViewDelegate {
     var player:AVPlayer!
     var playButton:UIButton!
     var trimView:VideoTrimView!
+    var button169:UIButton!
+    var button11:UIButton!
     
     var durationLabel:UILabel!
     
@@ -81,19 +83,60 @@ class CuttingViewController: UIViewController, YWCVideoTrimViewDelegate {
         
         
         
+        newFunctionBar()
         
-        let functionBar = UIView(frame: CGRectMake(0, ScreenWidth, ScreenWidth, 44))
-        functionBar.backgroundColor = .yellowColor()
-        view.addSubview(functionBar)
-        durationLabel = UILabel(frame: CGRectMake(0,0,150,44))
-        functionBar.addSubview(durationLabel)
-        durationLabel.textColor = .darkGrayColor()
-        let duration = trimView.endTime - trimView.startTime
-        durationLabel.text = String(format: " %.1fs", duration)
-        durationLabel.font = UIFont.systemFontOfSize(12)
         
 
     }
+    
+    func newFunctionBar() {
+        let functionBar = UIView(frame: CGRectMake(0, ScreenWidth, ScreenWidth, 50))
+        view.addSubview(functionBar)
+        
+        //DurationLabel
+        durationLabel = UILabel(frame: CGRectMake(0,0,150,50))
+        functionBar.addSubview(durationLabel)
+        durationLabel.textColor = .darkGrayColor()
+        let duration = trimView.endTime - trimView.startTime
+        durationLabel.text = String(format: "  %.1fs", duration)
+        durationLabel.font = UIFont.systemFontOfSize(14)
+        
+        
+        //16:9Button
+        button169 = UIButton()
+        functionBar.addSubview(button169)
+        button169.snp_makeConstraints { (make) in
+            make.width.height.equalTo(50)
+            make.right.equalTo(functionBar.snp_right)
+            make.centerY.equalTo(functionBar.snp_centerY)
+        }
+        button169.setImage(UIImage(named: "trim_169_selected"), forState: .Selected)
+        button169.setImage(UIImage(named: "trim_169_unselected"), forState: .Normal)
+        button169.addTarget(self, action: #selector(switchTo169), forControlEvents: .TouchUpInside)
+        
+        //1:1Button
+        button11 = UIButton()
+        functionBar.addSubview(button11)
+        button11.snp_makeConstraints { (make) in
+            make.width.height.equalTo(50)
+            make.right.equalTo(button169.snp_left).offset(-10)
+            make.centerY.equalTo(functionBar.snp_centerY)
+        }
+        button11.setImage(UIImage(named: "trim_11_selected"), forState: .Selected)
+        button11.setImage(UIImage(named: "trim_11_unselected"), forState: .Normal)
+        button11.addTarget(self, action: #selector(switchTo11), forControlEvents: .TouchUpInside)
+    }
+    
+    func switchTo169() {
+        button169.selected = true
+        button11.selected = false
+    }
+    
+    func switchTo11() {
+        button11.selected = true
+        button169.selected = false
+    }
+    
     
     func playButtonClicked(){
         playButton.selected = !playButton.selected
