@@ -14,7 +14,7 @@ import RxCocoa
 import RxSwift
 import SnapKit
 
-class CuttingViewController: UIViewController, YWCVideoTrimViewDelegate {
+class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
     var asset:AVAsset!
     var tempVideoPath = NSTemporaryDirectory() + "tmpMov.mov"
     var startTime:CGFloat = 0
@@ -56,6 +56,10 @@ class CuttingViewController: UIViewController, YWCVideoTrimViewDelegate {
         let URL = NSURL(fileURLWithPath: URLString)
         asset = AVURLAsset(URL: URL)
         player = AVPlayer(URL: URL)
+        player.addPeriodicTimeObserverForInterval(CMTimeMake(1, 2), queue: dispatch_get_main_queue()) { (time) in
+            let t = CMTimeGetSeconds(time)
+            print(t)
+        }
         let playerLayer = AVPlayerLayer(player: player)
         playerLayer.frame = CGRectMake(0, 0, ScreenWidth, ScreenWidth)
         self.view.layer.addSublayer(playerLayer)
