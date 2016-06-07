@@ -98,7 +98,6 @@
 		171026261CE49EE6009A9233 /* YWCVideoTrimmer */ = {
 			isa = PBXGroup;
 			children = (
-				E42865C91D016BCA0088A10F /* success@3x.png */,
 				E4AE5FE11CF98DAE00D1C156 /* Cut */,
 				171026271CE49EE6009A9233 /* AppDelegate.swift */,
 				171026291CE49EE6009A9233 /* ViewController.swift */,
@@ -108,6 +107,7 @@
 				1796C7231CEDD43C005E7250 /* UIView+Extension.swift */,
 				1796C71F1CEDA256005E7250 /* AVAsset+Extension.swift */,
 				1798275A1CE71FBF0072996D /* Tool.swift */,
+				E42865C91D016BCA0088A10F /* success@3x.png */,
 				E42865D11D019AED0088A10F /* mxsf.mp4 */,
 				1726D3671CEEB62F00C8146B /* mv.mp4 */,
 				17686B831CEC63F900BE1FEA /* launchScreen.mp4 */,

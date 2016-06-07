@@ -167,6 +167,7 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
         
         //这里frame应该是瞎写的
         trackerView = UIView(frame: CGRectMake(thumbWidth, borderWidth, 3 , frameViewFrame.height - borderWidth * 2))
+        trackerView.hidden = true
         if self.player == nil {
             trackerView.hidden = true
         }
