@@ -13,6 +13,7 @@ import SVProgressHUD
 import RxCocoa
 import RxSwift
 import SnapKit
+import HMSegmentedControl
 
 class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
     var asset:AVAsset!
@@ -29,6 +30,8 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
     var durationLabel:UILabel!
     
     let disposeBag = DisposeBag()
+    
+    var playScrollView:UIScrollView!
     
     deinit {
         print("销毁")
@@ -60,14 +63,25 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
             let t = CMTimeGetSeconds(time)
             print(t)
         }
+        
+        playScrollView = UIScrollView(frame: CGRectMake(0,0,ScreenWidth, ScreenWidth))
+        view.addSubview(playScrollView)
+        playScrollView.contentSize = CGSizeMake(ScreenWidth*asset.width/asset.height, ScreenWidth)
+        playScrollView.showsHorizontalScrollIndicator = true
+        playScrollView.showsVerticalScrollIndicator = true
+        playScrollView.backgroundColor = UIColor.blueColor()
+        
+        
         let playerLayer = AVPlayerLayer(player: player)
-        playerLayer.frame = CGRectMake(0, 0, ScreenWidth, ScreenWidth)
-        self.view.layer.addSublayer(playerLayer)
+        playerLayer.frame = CGRectMake(0, 0, ScreenWidth*asset.width/asset.height, ScreenWidth)
+        playScrollView.layer.addSublayer(playerLayer)
         playerLayer.backgroundColor = UIColor.blackColor().CGColor
         
-        playButton = UIButton(frame: playerLayer.bounds)
+        playButton = UIButton(frame: CGRectMake(0,0,ScreenWidth,ScreenWidth))
+        playButton.userInteractionEnabled = false
         self.view.addSubview(playButton)
-        playButton.addTarget(self, action: #selector(playButtonClicked), forControlEvents: .TouchUpInside)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(playButtonClicked))
+        playScrollView.addGestureRecognizer(tap)
         
         let emptyImage = createImage(UIColor(red: 0, green: 0, blue: 0, alpha: 0), size: CGSizeMake(1, 1))
         playButton.setImage(emptyImage, forState: .Normal)
@@ -106,41 +120,25 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         durationLabel.font = UIFont.systemFontOfSize(14)
         
         
-        //16:9Button
-        button169 = UIButton()
-        functionBar.addSubview(button169)
-        button169.snp_makeConstraints { (make) in
-            make.width.height.equalTo(50)
+        let videoSizeSegmentedControl = HMSegmentedControl(sectionImages: [UIImage(named: "trim_11_unselected")!,UIImage(named: "trim_169_unselected")!], sectionSelectedImages: [UIImage(named: "trim_11_selected")!,UIImage(named: "trim_169_selected")!])
+        functionBar.addSubview(videoSizeSegmentedControl)
+        videoSizeSegmentedControl.snp_makeConstraints { (make) in
+            make.height.equalTo(50)
+            make.centerY.equalTo(functionBar.snp_centerY)
             make.right.equalTo(functionBar.snp_right)
-            make.centerY.equalTo(functionBar.snp_centerY)
+            make.width.equalTo(100)
         }
-        button169.setImage(UIImage(named: "trim_169_selected"), forState: .Selected)
-        button169.setImage(UIImage(named: "trim_169_unselected"), forState: .Normal)
-        button169.addTarget(self, action: #selector(switchTo169), forControlEvents: .TouchUpInside)
-        
-        //1:1Button
-        button11 = UIButton()
-        functionBar.addSubview(button11)
-        button11.snp_makeConstraints { (make) in
-            make.width.height.equalTo(50)
-            make.right.equalTo(button169.snp_left).offset(-10)
-            make.centerY.equalTo(functionBar.snp_centerY)
+        videoSizeSegmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationNone
+        videoSizeSegmentedControl.indexChangeBlock = { [weak self] index in
+            if index == 0 {
+                
+            }
+            
+            if index == 1 {
+                
+            }
         }
-        button11.setImage(UIImage(named: "trim_11_selected"), forState: .Selected)
-        button11.setImage(UIImage(named: "trim_11_unselected"), forState: .Normal)
-        button11.addTarget(self, action: #selector(switchTo11), forControlEvents: .TouchUpInside)
     }
-    
-    func switchTo169() {
-        button169.selected = true
-        button11.selected = false
-    }
-    
-    func switchTo11() {
-        button11.selected = true
-        button169.selected = false
-    }
-    
     
     func playButtonClicked(){
         playButton.selected = !playButton.selected

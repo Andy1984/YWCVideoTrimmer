@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>HMSegmentedControl.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -32,27 +37,32 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>19EEEF65AFEA90B228983F31AB309102</key>
+		<key>151AA4EB5BEDE68BC0434F94FF3CBA22</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>34F265DE28D857913F2C1054FCC370FC</key>
+		<key>416CC6623903D43CDEF2D3E66C352E8A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>44EE9646E1BFA697D2666560C39B5386</key>
+		<key>71C1DF39EE1271EA1147F993CA1439A0</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>76C5BB5719446299CA6DDCC979194D44</key>
+		<key>B076079FE22B4415B2A3FA7738AF9AF5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7C174A2C3FFF74A0D501D0FEF4045F1A</key>
+		<key>B3B1BDE5A396A994A9057D4DC621AE09</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D9DB6CF8B0131E52C04B3CFC03872737</key>
 		<dict>
 			<key>primary</key>
 			<true/>
