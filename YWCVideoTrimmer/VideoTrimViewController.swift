@@ -105,12 +105,12 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         playButton.setImage(UIImage(named: "success@3x"), forState: .Selected)
     }
     
-    var videoSizeSegmentedControl: HMSegmentedControl!
+    var videoSizeSegmentedControl: YWCSegmentedControl!
     
     func newFunctionBar() {
         let functionBar = UIView(frame: CGRectMake(0, ScreenWidth, ScreenWidth, 50))
         view.addSubview(functionBar)
-//        UISegmentedControlNoSegment x
+        
         //DurationLabel
         durationLabel = UILabel(frame: CGRectMake(0,0,150,50))
         functionBar.addSubview(durationLabel)
@@ -119,7 +119,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         let duration = trimView.maxLength
         durationLabel.text = String(format: "  %.1fs", duration)
         
-        videoSizeSegmentedControl = HMSegmentedControl(sectionImages: [UIImage(named: "trim_11_unselected")!,UIImage(named: "trim_169_unselected")!], sectionSelectedImages: [UIImage(named: "trim_11_selected")!,UIImage(named: "trim_169_selected")!])
+        videoSizeSegmentedControl = YWCSegmentedControl(sectionImages: [UIImage(named: "trim_11_unselected")!,UIImage(named: "trim_169_unselected")!], sectionSelectedImages: [UIImage(named: "trim_11_selected")!,UIImage(named: "trim_169_selected")!])
         functionBar.addSubview(videoSizeSegmentedControl)
         videoSizeSegmentedControl.snp_makeConstraints { (make) in
             make.height.equalTo(50)
@@ -127,6 +127,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
             make.right.equalTo(functionBar.snp_right)
             make.width.equalTo(100)
         }
+        
         videoSizeSegmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationNone
         videoSizeSegmentedControl.indexChangeBlock = { [weak self] index in
             if index == 0 {
