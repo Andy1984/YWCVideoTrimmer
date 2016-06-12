@@ -24,14 +24,12 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
     var player:AVPlayer!
     var playButton:UIButton!
     var trimView:VideoTrimView!
-    var button169:UIButton!
-    var button11:UIButton!
-    
     var durationLabel:UILabel!
     
     let disposeBag = DisposeBag()
     
     var playScrollView:UIScrollView!
+    var playerLayer:CALayer!
     
     deinit {
         print("销毁")
@@ -69,10 +67,9 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         playScrollView.contentSize = CGSizeMake(ScreenWidth*asset.width/asset.height, ScreenWidth)
         playScrollView.showsHorizontalScrollIndicator = true
         playScrollView.showsVerticalScrollIndicator = true
-        playScrollView.backgroundColor = UIColor.blueColor()
         
         
-        let playerLayer = AVPlayerLayer(player: player)
+        playerLayer = AVPlayerLayer(player: player)
         playerLayer.frame = CGRectMake(0, 0, ScreenWidth*asset.width/asset.height, ScreenWidth)
         playScrollView.layer.addSublayer(playerLayer)
         playerLayer.backgroundColor = UIColor.blackColor().CGColor
@@ -93,9 +90,6 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         trimView.trackerColor = .whiteColor()
         trimView.resetSubviews()
         trimView.enlargeTriggerScope(10)
-        
-        
-        
         trimView.delegate = self
         
         
@@ -131,12 +125,13 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         videoSizeSegmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationNone
         videoSizeSegmentedControl.indexChangeBlock = { [weak self] index in
             if index == 0 {
-                
+                self!.playScrollView.contentSize = CGSizeMake(ScreenWidth*self!.asset.width/self!.asset.height, ScreenWidth)
+                self!.playerLayer.frame = CGRectMake(0, 0, ScreenWidth*self!.asset.width/self!.asset.height, ScreenWidth)
+            } else if index == 1 {
+                self!.playScrollView.contentSize = CGSizeMake(ScreenWidth, ScreenWidth)
+                self!.playerLayer.frame = CGRectMake(0, 0, ScreenWidth, ScreenWidth)
             }
             
-            if index == 1 {
-                
-            }
         }
     }
     
