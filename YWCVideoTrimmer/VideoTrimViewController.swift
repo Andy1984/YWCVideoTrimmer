@@ -51,23 +51,35 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
             print("Cannot get video")
             return
         }
-    
-        
-        
         let URL = NSURL(fileURLWithPath: URLString)
         asset = AVURLAsset(URL: URL)
-        player = AVPlayer(URL: URL)
-        player.addPeriodicTimeObserverForInterval(CMTimeMake(1, 2), queue: dispatch_get_main_queue()) { (time) in
-            let t = CMTimeGetSeconds(time)
-            print(t)
-        }
+        
+        newPlayerView(asset)
+        newFunctionBar()
+        newTrimView()
+    }
+    
+    func newTrimView() {
+        trimView = VideoTrimView(frame: CGRectZero, player: self.player)
+        self.view.addSubview(trimView)
+        trimView.frame = CGRectMake(0, 400, 300, 100)
+        trimView.showsRulerView = true
+        trimView.trackerColor = .whiteColor()
+        trimView.resetSubviews()
+        trimView.enlargeTriggerScope(10)
+        trimView.delegate = self
+    }
+    
+    func newPlayerView(asset:AVAsset) {
+        let item = AVPlayerItem(asset: asset)
+        player = AVPlayer(playerItem: item)
+        
         
         playerScrollView = UIScrollView(frame: CGRectMake(0,0,ScreenWidth, ScreenWidth))
         view.addSubview(playerScrollView)
         playerScrollView.contentSize = CGSizeMake(ScreenWidth*asset.width/asset.height, ScreenWidth)
         playerScrollView.showsHorizontalScrollIndicator = true
         playerScrollView.showsVerticalScrollIndicator = true
-        
         
         playerLayer = AVPlayerLayer(player: player)
         playerLayer.frame = CGRectMake(0, 0, ScreenWidth*asset.width/asset.height, ScreenWidth)
@@ -83,22 +95,6 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         let emptyImage = createImage(UIColor(red: 0, green: 0, blue: 0, alpha: 0), size: CGSizeMake(1, 1))
         playButton.setImage(emptyImage, forState: .Normal)
         playButton.setImage(UIImage(named: "success@3x"), forState: .Selected)
-        trimView = VideoTrimView(frame: CGRectZero, player: self.player)
-        self.view.addSubview(trimView)
-        trimView.frame = CGRectMake(0, 400, 300, 100)
-        trimView.showsRulerView = true
-        trimView.trackerColor = .whiteColor()
-        trimView.resetSubviews()
-        trimView.enlargeTriggerScope(10)
-        trimView.delegate = self
-        
-        
-        
-        
-        newFunctionBar()
-        
-        
-
     }
     
     func newFunctionBar() {
@@ -109,10 +105,9 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         durationLabel = UILabel(frame: CGRectMake(0,0,150,50))
         functionBar.addSubview(durationLabel)
         durationLabel.textColor = .darkGrayColor()
-        let duration = trimView.endTime - trimView.startTime
-        durationLabel.text = String(format: "  %.1fs", duration)
         durationLabel.font = UIFont.systemFontOfSize(14)
-        
+        let duration = trimView.maxLength
+        durationLabel.text = String(format: "  %.1fs", duration)
         
         let videoSizeSegmentedControl = HMSegmentedControl(sectionImages: [UIImage(named: "trim_11_unselected")!,UIImage(named: "trim_169_unselected")!], sectionSelectedImages: [UIImage(named: "trim_11_selected")!,UIImage(named: "trim_169_selected")!])
         functionBar.addSubview(videoSizeSegmentedControl)
@@ -125,13 +120,12 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         videoSizeSegmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationNone
         videoSizeSegmentedControl.indexChangeBlock = { [weak self] index in
             if index == 0 {
-                self!.playerScrollView.contentSize = CGSizeMake(ScreenWidth*self!.asset.width/self!.asset.height, ScreenWidth)
                 self!.playerLayer.frame = CGRectMake(0, 0, ScreenWidth*self!.asset.width/self!.asset.height, ScreenWidth)
+                self!.playerScrollView.contentSize = CGSizeMake(ScreenWidth*self!.asset.width/self!.asset.height, ScreenWidth)
             } else if index == 1 {
-                self!.playerScrollView.contentSize = CGSizeMake(ScreenWidth, ScreenWidth)
                 self!.playerLayer.frame = CGRectMake(0, 0, ScreenWidth, ScreenWidth)
+                self!.playerScrollView.contentSize = CGSizeMake(ScreenWidth, ScreenWidth)
             }
-            
         }
     }
     
@@ -240,7 +234,9 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         self.endTime = endTime
         self.player.pause()
         playButton.selected = true
-
+        
+        let duration = trimView.endTime - trimView.startTime
+        durationLabel.text = String(format: "  %.1fs", duration)
     }
     
     func seekVideoToPosition(position:CGFloat) {
