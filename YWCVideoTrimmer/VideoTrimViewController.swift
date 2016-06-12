@@ -28,7 +28,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
     
     let disposeBag = DisposeBag()
     
-    var playScrollView:UIScrollView!
+    var playerScrollView:UIScrollView!
     var playerLayer:CALayer!
     
     deinit {
@@ -62,23 +62,23 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
             print(t)
         }
         
-        playScrollView = UIScrollView(frame: CGRectMake(0,0,ScreenWidth, ScreenWidth))
-        view.addSubview(playScrollView)
-        playScrollView.contentSize = CGSizeMake(ScreenWidth*asset.width/asset.height, ScreenWidth)
-        playScrollView.showsHorizontalScrollIndicator = true
-        playScrollView.showsVerticalScrollIndicator = true
+        playerScrollView = UIScrollView(frame: CGRectMake(0,0,ScreenWidth, ScreenWidth))
+        view.addSubview(playerScrollView)
+        playerScrollView.contentSize = CGSizeMake(ScreenWidth*asset.width/asset.height, ScreenWidth)
+        playerScrollView.showsHorizontalScrollIndicator = true
+        playerScrollView.showsVerticalScrollIndicator = true
         
         
         playerLayer = AVPlayerLayer(player: player)
         playerLayer.frame = CGRectMake(0, 0, ScreenWidth*asset.width/asset.height, ScreenWidth)
-        playScrollView.layer.addSublayer(playerLayer)
+        playerScrollView.layer.addSublayer(playerLayer)
         playerLayer.backgroundColor = UIColor.blackColor().CGColor
         
         playButton = UIButton(frame: CGRectMake(0,0,ScreenWidth,ScreenWidth))
         playButton.userInteractionEnabled = false
         self.view.addSubview(playButton)
         let tap = UITapGestureRecognizer(target: self, action: #selector(playButtonClicked))
-        playScrollView.addGestureRecognizer(tap)
+        playerScrollView.addGestureRecognizer(tap)
         
         let emptyImage = createImage(UIColor(red: 0, green: 0, blue: 0, alpha: 0), size: CGSizeMake(1, 1))
         playButton.setImage(emptyImage, forState: .Normal)
@@ -125,10 +125,10 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         videoSizeSegmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationNone
         videoSizeSegmentedControl.indexChangeBlock = { [weak self] index in
             if index == 0 {
-                self!.playScrollView.contentSize = CGSizeMake(ScreenWidth*self!.asset.width/self!.asset.height, ScreenWidth)
+                self!.playerScrollView.contentSize = CGSizeMake(ScreenWidth*self!.asset.width/self!.asset.height, ScreenWidth)
                 self!.playerLayer.frame = CGRectMake(0, 0, ScreenWidth*self!.asset.width/self!.asset.height, ScreenWidth)
             } else if index == 1 {
-                self!.playScrollView.contentSize = CGSizeMake(ScreenWidth, ScreenWidth)
+                self!.playerScrollView.contentSize = CGSizeMake(ScreenWidth, ScreenWidth)
                 self!.playerLayer.frame = CGRectMake(0, 0, ScreenWidth, ScreenWidth)
             }
             
