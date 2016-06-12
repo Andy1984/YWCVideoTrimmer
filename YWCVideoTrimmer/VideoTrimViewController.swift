@@ -30,6 +30,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
     
     var playerScrollView:UIScrollView!
     var playerLayer:CALayer!
+    var addBackgroundViewController:AddBackgroundViewController!
     
     deinit {
         print("销毁")
@@ -55,8 +56,15 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         asset = AVURLAsset(URL: URL)
         
         newPlayerView(asset)
-        newFunctionBar()
+        
         newTrimView()
+        
+        newFunctionBar()
+        
+        addBackgroundViewController = AddBackgroundViewController()
+        self.addChildViewController(self.addBackgroundViewController)
+        self.view.addSubview(self.addBackgroundViewController.view)
+        addBackgroundViewController.dismiss()
     }
     
     func newTrimView() {
@@ -97,10 +105,12 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         playButton.setImage(UIImage(named: "success@3x"), forState: .Selected)
     }
     
+    var videoSizeSegmentedControl: HMSegmentedControl!
+    
     func newFunctionBar() {
         let functionBar = UIView(frame: CGRectMake(0, ScreenWidth, ScreenWidth, 50))
         view.addSubview(functionBar)
-        
+//        UISegmentedControlNoSegment x
         //DurationLabel
         durationLabel = UILabel(frame: CGRectMake(0,0,150,50))
         functionBar.addSubview(durationLabel)
@@ -109,7 +119,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         let duration = trimView.maxLength
         durationLabel.text = String(format: "  %.1fs", duration)
         
-        let videoSizeSegmentedControl = HMSegmentedControl(sectionImages: [UIImage(named: "trim_11_unselected")!,UIImage(named: "trim_169_unselected")!], sectionSelectedImages: [UIImage(named: "trim_11_selected")!,UIImage(named: "trim_169_selected")!])
+        videoSizeSegmentedControl = HMSegmentedControl(sectionImages: [UIImage(named: "trim_11_unselected")!,UIImage(named: "trim_169_unselected")!], sectionSelectedImages: [UIImage(named: "trim_11_selected")!,UIImage(named: "trim_169_selected")!])
         functionBar.addSubview(videoSizeSegmentedControl)
         videoSizeSegmentedControl.snp_makeConstraints { (make) in
             make.height.equalTo(50)
@@ -125,6 +135,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
             } else if index == 1 {
                 self!.playerLayer.frame = CGRectMake(0, 0, ScreenWidth, ScreenWidth)
                 self!.playerScrollView.contentSize = CGSizeMake(ScreenWidth, ScreenWidth)
+                self?.addBackgroundViewController.present()
             }
         }
     }
