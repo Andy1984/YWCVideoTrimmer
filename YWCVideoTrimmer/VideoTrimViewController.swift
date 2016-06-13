@@ -16,6 +16,8 @@ import SnapKit
 import HMSegmentedControl
 
 class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
+    var playerLayerFrame:CGRect!
+    var playerScrollViewContentSize:CGSize!
     var asset:AVAsset!
     var tempVideoPath = NSTemporaryDirectory() + "tmpMov.mov"
     var startTime:CGFloat = 0
@@ -31,7 +33,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
     var playerScrollView:UIScrollView!
     var playerLayer:CALayer!
     var addBackgroundViewController:AddBackgroundViewController!
-    
+    var backgroundLayerImage:UIImage = UIImage(named: "pattern_0.jpg")!
     deinit {
         print("销毁")
     }
@@ -55,6 +57,15 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         let URL = NSURL(fileURLWithPath: URLString)
         asset = AVURLAsset(URL: URL)
         
+        if asset.width >= asset.height {
+            playerLayerFrame = CGRectMake(0, 0, ScreenWidth * asset.width/asset.height, ScreenWidth)
+            playerScrollViewContentSize = CGSizeMake(ScreenWidth * asset.width / asset.height, ScreenWidth)
+        } else {
+            playerLayerFrame = CGRectMake(0, 0, ScreenWidth, ScreenWidth * asset.height / asset.width)
+            playerScrollViewContentSize = CGSizeMake(ScreenWidth, ScreenWidth * asset.height / asset.width)
+        }
+        
+        
         newPlayerView(asset)
         
         newTrimView()
@@ -66,7 +77,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         self.view.addSubview(self.addBackgroundViewController.view)
         addBackgroundViewController.dismiss()
         addBackgroundViewController.didSelectBackground = { [weak self] image in
-            self!.playerLayer.backgroundColor = UIColor(patternImage: image).CGColor
+            self!.playerLayer.backgroundColor = UIColor(patternImage: self!.backgroundLayerImage).CGColor
         }
     }
     
@@ -87,13 +98,14 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         
         
         playerScrollView = UIScrollView(frame: CGRectMake(0,0,ScreenWidth, ScreenWidth))
+        playerScrollView.backgroundColor = .blackColor()
         view.addSubview(playerScrollView)
-        playerScrollView.contentSize = CGSizeMake(ScreenWidth*asset.width/asset.height, ScreenWidth)
+        playerScrollView.contentSize = playerScrollViewContentSize
         playerScrollView.showsHorizontalScrollIndicator = true
         playerScrollView.showsVerticalScrollIndicator = true
         
         playerLayer = AVPlayerLayer(player: player)
-        playerLayer.frame = CGRectMake(0, 0, ScreenWidth*asset.width/asset.height, ScreenWidth)
+        playerLayer.frame = playerLayerFrame
         playerScrollView.layer.addSublayer(playerLayer)
         playerLayer.backgroundColor = UIColor.blackColor().CGColor
         
@@ -134,8 +146,8 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         videoSizeSegmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationNone
         videoSizeSegmentedControl.indexChangeBlock = { [weak self] index in
             if index == 0 {
-                self!.playerLayer.frame = CGRectMake(0, 0, ScreenWidth*self!.asset.width/self!.asset.height, ScreenWidth)
-                self!.playerScrollView.contentSize = CGSizeMake(ScreenWidth*self!.asset.width/self!.asset.height, ScreenWidth)
+                self!.playerLayer.frame = self!.playerLayerFrame
+                self!.playerScrollView.contentSize = self!.playerScrollViewContentSize
             } else if index == 1 {
                 self!.playerLayer.frame = CGRectMake(0, 0, ScreenWidth, ScreenWidth)
                 self!.playerScrollView.contentSize = CGSizeMake(ScreenWidth, ScreenWidth)
@@ -165,6 +177,18 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         } else {
             print("Regular: no file by that name")
         }
+    }
+
+    func applyVideoEffects(composition:AVMutableComposition, size:CGSize) {
+        let backgroundLayer = CALayer()
+        backgroundLayer.contents = self.backgroundLayerImage.CGImage
+        backgroundLayer.frame = CGRectMake(0, 0, size.width, size.height)
+        backgroundLayer.masksToBounds = true
+        
+        let videoLayer = CALayer()
+        videoLayer.bounds = CGRectMake(0, 0, size.width, size.height)
+        
+        
     }
     
     func cutVideo() {
