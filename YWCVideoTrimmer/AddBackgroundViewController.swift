@@ -123,4 +123,47 @@ class AddBackgroundCollectionViewCell: UICollectionViewCell {
             selectedBorder.hidden = !selected
         }
     }
+    
+    override var highlighted: Bool {
+        didSet {
+            if highlighted {
+                
+                let damping:CGFloat = 1
+                let scale:CGFloat = 0.9
+                let duration:NSTimeInterval = 0.3
+                var n:NSTimeInterval = 0
+                UIView.animateWithDuration(duration, delay: n * duration, usingSpringWithDamping: damping, initialSpringVelocity: 0, options: .LayoutSubviews, animations: {
+                    self.transform = CGAffineTransformMakeScale(scale, scale)
+                    n += 1
+                    }, completion: { (_) in
+                        
+                })
+                
+                UIView.animateWithDuration(duration, delay: n * duration, usingSpringWithDamping: damping, initialSpringVelocity: 0, options: .LayoutSubviews, animations: {
+                    self.transform = CGAffineTransformMakeScale(scale+0.05, scale+0.05)
+                    n += 1
+                    }, completion: { (_) in
+                        
+                })
+                
+                UIView.animateWithDuration(duration, delay: n * duration, usingSpringWithDamping: damping, initialSpringVelocity: 0, options: .LayoutSubviews, animations: {
+                    self.transform = CGAffineTransformMakeScale(scale, scale)
+                    n += 1
+                    }, completion: { (_) in
+                        
+                })
+                
+                UIView.animateWithDuration(duration, delay: n * duration, usingSpringWithDamping: damping, initialSpringVelocity: 0, options: .LayoutSubviews, animations: {
+                    self.transform = CGAffineTransformIdentity
+                    n += 1
+                    }, completion: { (_) in
+                        
+                })
+            }
+            
+            
+            
+            
+        }
+    }
 }
