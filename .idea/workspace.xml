@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="042c982e-c691-4a73-9527-cc59d2d9efa9" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/YWCVideoTrimmer/AddBackgroundViewController.swift" afterPath="$PROJECT_DIR$/YWCVideoTrimmer/AddBackgroundViewController.swift" />
     </list>
     <ignored path="YWCVideoTrimmer.iws" />
@@ -22,7 +23,18 @@
     <favorites_list name="YWCVideoTrimmer" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="AddBackgroundViewController.swift" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/YWCVideoTrimmer/AddBackgroundViewController.swift">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="733">
+              <caret line="96" column="29" selection-start-line="96" selection-start-column="29" selection-end-line="96" selection-end-column="29" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -107,6 +119,10 @@
       <pane id="Cidr.FilesView" />
     </panes>
   </component>
+  <component name="PropertiesComponent">
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
+  </component>
   <component name="RunManager" selected="Application.YWCVideoTrimmer">
     <configuration default="true" type="AppleRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="YWCVideoTrimmer" TARGET_NAME="YWCVideoTrimmer" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="YWCVideoTrimmer" RUN_TARGET_NAME="YWCVideoTrimmer" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
       <envs />
@@ -189,7 +205,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="1337" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -198,7 +214,7 @@
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32886437" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32886437" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
@@ -222,14 +238,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/YWCVideoTrimmer/AddBackgroundViewController.swift">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="793">
-          <caret line="84" column="8" selection-start-line="84" selection-start-column="8" selection-end-line="84" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/YWCVideoTrimmer/VideoTrimViewController.swift">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -254,5 +262,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/YWCVideoTrimmer/AddBackgroundViewController.swift">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="733">
+          <caret line="96" column="29" selection-start-line="96" selection-start-column="29" selection-end-line="96" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>

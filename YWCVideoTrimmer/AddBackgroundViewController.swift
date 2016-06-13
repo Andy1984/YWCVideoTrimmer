@@ -26,7 +26,7 @@ class AddBackgroundViewController: UIViewController, UICollectionViewDelegate, U
         let dismissButton = UIButton()
         view.addSubview(dismissButton)
         dismissButton.setImage(UIImage(named: "dismissButton"), forState: .Normal)
-        dismissButton.setImage(UIImage(named: "dismissButton"), forState: .Normal)
+        dismissButton.setImage(UIImage(named: "dismissButton"), forState: .Highlighted)
         dismissButton.snp_makeConstraints { (make) in
             make.left.right.bottom.equalTo(self.view)
             make.height.equalTo(44)
@@ -49,7 +49,7 @@ class AddBackgroundViewController: UIViewController, UICollectionViewDelegate, U
         }
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "AddBackgroundCollectionViewCell")
+        collectionView.registerClass(AddBackgroundCollectionViewCell.self, forCellWithReuseIdentifier: "AddBackgroundCollectionViewCell")
         collectionView.backgroundColor = .clearColor()
         collectionView.showsHorizontalScrollIndicator = false
     }
@@ -63,15 +63,15 @@ class AddBackgroundViewController: UIViewController, UICollectionViewDelegate, U
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell:UICollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("AddBackgroundCollectionViewCell", forIndexPath: indexPath)
-        
-        cell.backgroundColor = UIColor(patternImage: images[indexPath.row])
+        let cell:AddBackgroundCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("AddBackgroundCollectionViewCell", forIndexPath: indexPath) as! AddBackgroundCollectionViewCell
+        cell.imageView.image = images[indexPath.row]
+        //Just for the white one
         if indexPath.row == 1 {
-            cell.layer.borderColor = UIColor.lightGrayColor().CGColor
-            cell.layer.borderWidth = 2
+            cell.grayBorder.hidden = false
         } else {
-            cell.layer.borderWidth = 0
+            cell.grayBorder.hidden = true
         }
+        
         return cell
     }
     
@@ -92,4 +92,35 @@ class AddBackgroundViewController: UIViewController, UICollectionViewDelegate, U
 
 class AddBackgroundCollectionViewCell: UICollectionViewCell {
     var imageView:UIImageView!
+    //Just for the white one
+    var grayBorder:UIView!
+    var selectedBorder:UIView!
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        imageView = UIImageView(frame: self.bounds)
+        addSubview(imageView)
+        
+        grayBorder = UIView(frame: self.bounds)
+        addSubview(grayBorder)
+        grayBorder.layer.borderWidth = 2
+        grayBorder.layer.borderColor = UIColor.grayColor().CGColor
+        grayBorder.hidden = true
+        
+        selectedBorder = UIView(frame: self.bounds)
+        addSubview(selectedBorder)
+        selectedBorder.layer.borderWidth = 2
+        selectedBorder.layer.borderColor = UIColor(red: 254.0/255, green: 204.0/255, blue: 82.0/255, alpha: 1.0).CGColor
+        selectedBorder.hidden = true
+        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override var selected: Bool {
+        didSet {
+            selectedBorder.hidden = !selected
+        }
+    }
 }
