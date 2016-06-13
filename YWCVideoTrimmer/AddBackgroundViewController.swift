@@ -10,6 +10,8 @@ import UIKit
 
 class AddBackgroundViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
+    
+    var didSelectBackground:(UIImage -> Void) = {_ in }
     var images:[UIImage] = []
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +25,7 @@ class AddBackgroundViewController: UIViewController, UICollectionViewDelegate, U
         
         let dismissButton = UIButton()
         view.addSubview(dismissButton)
+        dismissButton.setImage(UIImage(named: "dismissButton"), forState: .Normal)
         dismissButton.setImage(UIImage(named: "dismissButton"), forState: .Normal)
         dismissButton.snp_makeConstraints { (make) in
             make.left.right.bottom.equalTo(self.view)
@@ -49,6 +52,10 @@ class AddBackgroundViewController: UIViewController, UICollectionViewDelegate, U
         collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "AddBackgroundCollectionViewCell")
         collectionView.backgroundColor = .clearColor()
         collectionView.showsHorizontalScrollIndicator = false
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        self.didSelectBackground(images[indexPath.row])
     }
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
