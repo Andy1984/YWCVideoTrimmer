@@ -77,6 +77,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         self.view.addSubview(self.addBackgroundViewController.view)
         addBackgroundViewController.dismiss()
         addBackgroundViewController.didSelectBackground = { [weak self] image in
+            self!.backgroundLayerImage = image
             self!.playerLayer.backgroundColor = UIColor(patternImage: self!.backgroundLayerImage).CGColor
         }
     }
