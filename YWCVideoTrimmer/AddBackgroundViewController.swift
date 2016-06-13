@@ -13,6 +13,7 @@ class AddBackgroundViewController: UIViewController, UICollectionViewDelegate, U
     var images:[UIImage] = []
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.bounds = CGRectMake(0 , 0, ScreenWidth, ScreenHeight - ScreenWidth - 44)
         self.view.backgroundColor = UIColor.whiteColor()
         for i in 0...6 {
             let name = "pattern_" + "\(i)" + ".jpg"
@@ -30,18 +31,26 @@ class AddBackgroundViewController: UIViewController, UICollectionViewDelegate, U
         dismissButton.addTarget(self, action: #selector(dismiss), forControlEvents: .TouchUpInside)
         
         let flowLayout = UICollectionViewFlowLayout()
+        let cellLength:CGFloat = 70
+        flowLayout.itemSize = CGSizeMake(cellLength,cellLength)
+        flowLayout.scrollDirection = .Horizontal
+        flowLayout.minimumInteritemSpacing = 10
+        flowLayout.sectionInset = UIEdgeInsetsMake(0, 10, 0, 0)
         let collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: flowLayout)
         view.addSubview(collectionView)
         collectionView.snp_makeConstraints { (make) in
-            make.left.right.top.equalTo(self.view)
-            make.bottom.equalTo(dismissButton.snp_top)
+            make.left.right.equalTo(self.view)
+            make.height.equalTo(cellLength)
+            make.centerY.equalTo(self.view.snp_centerY).offset(-22)
+
         }
-        
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "AddBackgroundCollectionViewCell")
+        collectionView.backgroundColor = .clearColor()
+        collectionView.showsHorizontalScrollIndicator = false
     }
-    
+
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return images.count
     }
@@ -50,6 +59,12 @@ class AddBackgroundViewController: UIViewController, UICollectionViewDelegate, U
         let cell:UICollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("AddBackgroundCollectionViewCell", forIndexPath: indexPath)
         
         cell.backgroundColor = UIColor(patternImage: images[indexPath.row])
+        if indexPath.row == 1 {
+            cell.layer.borderColor = UIColor.lightGrayColor().CGColor
+            cell.layer.borderWidth = 2
+        } else {
+            cell.layer.borderWidth = 0
+        }
         return cell
     }
     
