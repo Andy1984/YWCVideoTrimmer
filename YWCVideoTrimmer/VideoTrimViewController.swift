@@ -184,7 +184,17 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
     }
     
     func videoOutput() {
+        
+        // 1 - Early exit if there's no video file selected
+        if self.asset == nil {
+            SVProgressHUD.showErrorWithStatus("No video asset")
+            return
+        }
+        
+        // 2 - Create AVMutableComposition object. This object will hold your AVMutableCompositionTrack instances.
         let mixComposition = AVMutableComposition()
+        
+        // 3 - Video track
         let videoTrack = mixComposition.addMutableTrackWithMediaType(AVMediaTypeVideo, preferredTrackID: kCMPersistentTrackID_Invalid)
         do {
             try videoTrack.insertTimeRange(CMTimeRangeMake(kCMTimeZero, self.asset.duration), ofTrack: self.asset.tracksWithMediaType(AVMediaTypeVideo).first!, atTime: kCMTimeZero)
@@ -193,19 +203,51 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
             return
         }
         
-        //省略instruction
         // 3.1 - Create AVMutableVideoCompositionInstruction
         let mainInstruction = AVMutableVideoCompositionInstruction()
         mainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, self.asset.duration)
         
         
-        //省略旋转视频
         // 3.2 - Create an AVMutableVideoCompositionLayerInstruction for the video track and fix the orientation.
+        let videoLayerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: videoTrack)
+        guard let videoAssetTrack = self.asset.tracksWithMediaType(AVMediaTypeVideo).first else {
+            SVProgressHUD.showErrorWithStatus("Cannot create video Asset Track")
+            return
+        }
+        var videoAssetOrientation = UIImageOrientation.Up
+        var isVideoAssetPortrait = false
+        let videoTransform = videoTrack.preferredTransform
+        if (videoTransform.a == 0 && videoTransform.b == 1.0 && videoTransform.c == -1.0 && videoTransform.d == 0) {
+            videoAssetOrientation = UIImageOrientation.Right;
+            isVideoAssetPortrait = true;
+        }
+        if (videoTransform.a == 0 && videoTransform.b == -1.0 && videoTransform.c == 1.0 && videoTransform.d == 0) {
+            videoAssetOrientation =  UIImageOrientation.Left;
+            isVideoAssetPortrait = true;
+        }
+        if (videoTransform.a == 1.0 && videoTransform.b == 0 && videoTransform.c == 0 && videoTransform.d == 1.0) {
+            videoAssetOrientation =  UIImageOrientation.Up;
+        }
+        if (videoTransform.a == -1.0 && videoTransform.b == 0 && videoTransform.c == 0 && videoTransform.d == -1.0) {
+            videoAssetOrientation = UIImageOrientation.Down;
+        }
+        videoLayerInstruction.setTransform(videoAssetTrack.preferredTransform, atTime: kCMTimeZero)
+        //opacity不应该是1.0吗
+        videoLayerInstruction.setOpacity(0.0, atTime: self.asset.duration)
         
         // 3.3 - Add instructions
+        mainInstruction.layerInstructions = [videoLayerInstruction]
         
         let mainCompositionInst = AVMutableVideoComposition()
-        let naturalSize = CGSizeMake(self.asset.width, self.asset.height)
+        var naturalSize:CGSize;
+        if isVideoAssetPortrait == true{
+            naturalSize = CGSizeMake(videoAssetTrack.naturalSize.height, videoAssetTrack.naturalSize.width)
+        } else {
+            naturalSize = videoAssetTrack.naturalSize
+        }
+        
+
+        
         
         mainCompositionInst.renderSize = naturalSize
         mainCompositionInst.instructions = [mainInstruction]
@@ -220,7 +262,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         let fileURL = NSURL.fileURLWithPath(self.tempVideoPath)
         
         
-        guard  let exporter = AVAssetExportSession(asset: mixComposition, presetName: AVAssetExportPresetHighestQuality) else {
+        guard  let exporter = AVAssetExportSession(asset: mixComposition, presetName: AVAssetExportPresetMediumQuality) else {
             SVProgressHUD.showErrorWithStatus("Create exporter fail")
             return
         }
