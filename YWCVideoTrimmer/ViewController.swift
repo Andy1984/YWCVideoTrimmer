@@ -32,9 +32,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 //        let navi = UINavigationController(rootViewController: trimVC)
 //        presentViewController(navi, animated: true, completion: nil)
         
-        let cutVC = VideoTrimViewController()
-        let navi = UINavigationController(rootViewController: cutVC)
-        self.presentViewController(navi, animated: true, completion: nil)
+//        let cutVC = VideoTrimViewController()
+//        let navi = UINavigationController(rootViewController: cutVC)
+//        self.presentViewController(navi, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
@@ -52,7 +52,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             .subscribe{ [weak self] (event) in
                 if let URL = event.element?[UIImagePickerControllerReferenceURL] as? NSURL {
                     let asset = AVURLAsset(URL: URL)
-                    let trimVC = TrimViewController()
+//                    let trimVC = TrimViewController()
+                    let trimVC = VideoTrimViewController()
                     trimVC.asset = asset
                     let navi = UINavigationController(rootViewController: trimVC)
                     picker.dismissViewControllerAnimated(true) {
