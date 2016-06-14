@@ -249,9 +249,9 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         }
         
 
-        
-        
-        mainCompositionInst.renderSize = naturalSize
+        let squareLength = max(naturalSize.width, naturalSize.height)
+        let squareSize = CGSizeMake(squareLength, squareLength)
+        mainCompositionInst.renderSize = squareSize
         mainCompositionInst.instructions = [mainInstruction]
         mainCompositionInst.frameDuration = CMTimeMake(1, 30)
         
@@ -298,15 +298,15 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
                     disposable.dispose()
                     SVProgressHUD.dismiss()
                     let movieURL = NSURL.fileURLWithPath(self.tempVideoPath)
-                    //                    let s = NSSelectorFromString("video:didFinishSavingWithError:contextInfo:")
+                                        let s = NSSelectorFromString("video:didFinishSavingWithError:contextInfo:")
                     
                     let avvc = AVPlayerViewController()
                     avvc.player = AVPlayer(URL: movieURL)
                     self.presentViewController(avvc, animated: true, completion: nil)
                     
                     
-                    //                    SVProgressHUD.showWithStatus("Saving...")
-                    //                    UISaveVideoAtPathToSavedPhotosAlbum(movieURL.relativePath!, self, s, nil)
+                                        SVProgressHUD.showWithStatus("Saving...")
+                                        UISaveVideoAtPathToSavedPhotosAlbum(movieURL.relativePath!, self, s, nil)
                 })
                 
                 
@@ -321,21 +321,52 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
     }
 
     func applyVideoEffects(composition:AVMutableVideoComposition, size:CGSize) {
+        
+        let squareLength = max(size.width, size.height)
+        
         let backgroundLayer = CALayer()
         backgroundLayer.contents = self.backgroundLayerImage.CGImage
-        backgroundLayer.frame = CGRectMake(0, 0, size.width, size.height)
+        backgroundLayer.frame = CGRectMake(0, 0, squareLength, squareLength)
         backgroundLayer.masksToBounds = true
         
         let videoLayer = CALayer()
-        let borderWidth:CGFloat = 130
-        videoLayer.frame = CGRectMake(borderWidth, borderWidth, size.width - 2 * borderWidth, size.height - 2 * borderWidth)
+        let w = size.width
+        let h = size.height
+        let x = size.width>size.height ? 0 : (squareLength-size.width)/2
+        let y = size.width>size.height ? (squareLength-size.height)/2  : 0
+        videoLayer.frame = CGRectMake(x, y, w, h)
         
         let parentLayer = CALayer()
-        parentLayer.frame = CGRectMake(0, 0, size.width, size.height)
+        parentLayer.frame = CGRectMake(0, 0, squareLength, squareLength)
         parentLayer.addSublayer(backgroundLayer)
         parentLayer.addSublayer(videoLayer)
         
         composition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, inLayer: parentLayer)
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+//        let backgroundLayer = CALayer()
+//        backgroundLayer.contents = self.backgroundLayerImage.CGImage
+//        backgroundLayer.frame = CGRectMake(0, 0, size.width, size.height)
+//        backgroundLayer.masksToBounds = true
+//        
+//        let videoLayer = CALayer()
+//        let borderWidth:CGFloat = 130
+//        videoLayer.frame = CGRectMake(borderWidth, borderWidth, size.width - 2 * borderWidth, size.height - 2 * borderWidth)
+//        
+//        let parentLayer = CALayer()
+//        parentLayer.frame = CGRectMake(0, 0, size.width, size.height)
+//        parentLayer.addSublayer(backgroundLayer)
+//        parentLayer.addSublayer(videoLayer)
+//        
+//        composition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, inLayer: parentLayer)
         
     }
     
