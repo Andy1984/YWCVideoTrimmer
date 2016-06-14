@@ -203,6 +203,17 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
             return
         }
         
+        // 3.0 - Audio track
+        if let audioTrack = self.asset.tracksWithMediaType(AVMediaTypeAudio).first {
+            let audioCompositionTrack = mixComposition.addMutableTrackWithMediaType(AVMediaTypeAudio, preferredTrackID: kCMPersistentTrackID_Invalid)
+            do {
+                try audioCompositionTrack.insertTimeRange(CMTimeRangeMake(kCMTimeZero, self.asset.duration), ofTrack: audioTrack, atTime: kCMTimeZero)
+            } catch {
+                SVProgressHUD.showErrorWithStatus("There is audio track, but cannot insert")
+                return
+            }
+        }
+        
         // 3.1 - Create AVMutableVideoCompositionInstruction
         let mainInstruction = AVMutableVideoCompositionInstruction()
         mainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, self.asset.duration)
@@ -214,23 +225,14 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
             SVProgressHUD.showErrorWithStatus("Cannot create video Asset Track")
             return
         }
-        var videoAssetOrientation = UIImageOrientation.Up
         var isVideoAssetPortrait = false
-        let videoTransform = videoTrack.preferredTransform
-        if (videoTransform.a == 0 && videoTransform.b == 1.0 && videoTransform.c == -1.0 && videoTransform.d == 0) {
-            videoAssetOrientation = UIImageOrientation.Right;
-            isVideoAssetPortrait = true;
-        }
-        if (videoTransform.a == 0 && videoTransform.b == -1.0 && videoTransform.c == 1.0 && videoTransform.d == 0) {
-            videoAssetOrientation =  UIImageOrientation.Left;
-            isVideoAssetPortrait = true;
-        }
-        if (videoTransform.a == 1.0 && videoTransform.b == 0 && videoTransform.c == 0 && videoTransform.d == 1.0) {
-            videoAssetOrientation =  UIImageOrientation.Up;
-        }
-        if (videoTransform.a == -1.0 && videoTransform.b == 0 && videoTransform.c == 0 && videoTransform.d == -1.0) {
-            videoAssetOrientation = UIImageOrientation.Down;
-        }
+//        let videoTransform = videoTrack.preferredTransform
+//        if (videoTransform.a == 0 && videoTransform.b == 1.0 && videoTransform.c == -1.0 && videoTransform.d == 0) {
+//            isVideoAssetPortrait = true;
+//        }
+//        if (videoTransform.a == 0 && videoTransform.b == -1.0 && videoTransform.c == 1.0 && videoTransform.d == 0) {
+//            isVideoAssetPortrait = true;
+//        }
         videoLayerInstruction.setTransform(videoAssetTrack.preferredTransform, atTime: kCMTimeZero)
         //opacity不应该是1.0吗
         videoLayerInstruction.setOpacity(0.0, atTime: self.asset.duration)
@@ -275,33 +277,36 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         let timer = Observable<Int>.interval(0.1, scheduler: MainScheduler.instance)
         SVProgressHUD.setDefaultMaskType(.Clear)
         let disposable = timer.subscribeNext { _ in
+            print(exporter.progress)
             SVProgressHUD.showProgress(exporter.progress, status: "Cutting")
         }
         
         exporter.exportAsynchronouslyWithCompletionHandler { 
             let status:AVAssetExportSessionStatus = exporter.status
-            
             switch status {
             case .Failed:
-                print(exporter.error)
+                dispatch_async(dispatch_get_main_queue(), {
+                    disposable.dispose()
+                    SVProgressHUD.showErrorWithStatus(exporter.error!.description)
+                    print(exporter.error!.description)
+                })
             case .Cancelled:
                 print("Cancel")
             case .Completed:
                 print("completed")
-                
                 dispatch_async(dispatch_get_main_queue(), {
                     disposable.dispose()
                     SVProgressHUD.dismiss()
                     let movieURL = NSURL.fileURLWithPath(self.tempVideoPath)
-//                    let s = NSSelectorFromString("video:didFinishSavingWithError:contextInfo:")
+                    //                    let s = NSSelectorFromString("video:didFinishSavingWithError:contextInfo:")
                     
                     let avvc = AVPlayerViewController()
                     avvc.player = AVPlayer(URL: movieURL)
                     self.presentViewController(avvc, animated: true, completion: nil)
                     
                     
-//                    SVProgressHUD.showWithStatus("Saving...")
-//                    UISaveVideoAtPathToSavedPhotosAlbum(movieURL.relativePath!, self, s, nil)
+                    //                    SVProgressHUD.showWithStatus("Saving...")
+                    //                    UISaveVideoAtPathToSavedPhotosAlbum(movieURL.relativePath!, self, s, nil)
                 })
                 
                 
@@ -369,6 +374,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
             switch status {
             case .Failed:
                 print(exportSession!.error)
+                SVProgressHUD.showErrorWithStatus(exportSession!.error?.description)
             case .Cancelled:
                 print("Cancel")
             case .Completed:
