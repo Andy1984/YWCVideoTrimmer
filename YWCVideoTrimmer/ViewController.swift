@@ -32,9 +32,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 //        let navi = UINavigationController(rootViewController: trimVC)
 //        presentViewController(navi, animated: true, completion: nil)
         
-//        let cutVC = VideoTrimViewController()
-//        let navi = UINavigationController(rootViewController: cutVC)
-//        self.presentViewController(navi, animated: true, completion: nil)
+        let cutVC = VideoTrimViewController()
+        let navi = UINavigationController(rootViewController: cutVC)
+        self.presentViewController(navi, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {

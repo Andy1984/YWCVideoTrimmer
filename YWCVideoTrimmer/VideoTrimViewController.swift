@@ -226,13 +226,13 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
             return
         }
         var isVideoAssetPortrait = false
-//        let videoTransform = videoTrack.preferredTransform
-//        if (videoTransform.a == 0 && videoTransform.b == 1.0 && videoTransform.c == -1.0 && videoTransform.d == 0) {
-//            isVideoAssetPortrait = true;
-//        }
-//        if (videoTransform.a == 0 && videoTransform.b == -1.0 && videoTransform.c == 1.0 && videoTransform.d == 0) {
-//            isVideoAssetPortrait = true;
-//        }
+        let videoTransform = videoAssetTrack.preferredTransform
+        if (videoTransform.a == 0 && videoTransform.b == 1.0 && videoTransform.c == -1.0 && videoTransform.d == 0) {
+            isVideoAssetPortrait = true;
+        }
+        if (videoTransform.a == 0 && videoTransform.b == -1.0 && videoTransform.c == 1.0 && videoTransform.d == 0) {
+            isVideoAssetPortrait = true;
+        }
         videoLayerInstruction.setTransform(videoAssetTrack.preferredTransform, atTime: kCMTimeZero)
         //opacity不应该是1.0吗
         videoLayerInstruction.setOpacity(0.0, atTime: self.asset.duration)
@@ -327,7 +327,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         backgroundLayer.masksToBounds = true
         
         let videoLayer = CALayer()
-        let borderWidth:CGFloat = 30
+        let borderWidth:CGFloat = 130
         videoLayer.frame = CGRectMake(borderWidth, borderWidth, size.width - 2 * borderWidth, size.height - 2 * borderWidth)
         
         let parentLayer = CALayer()
