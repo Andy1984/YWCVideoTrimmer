@@ -15,6 +15,9 @@ import RxSwift
 import SnapKit
 import HMSegmentedControl
 
+
+
+
 class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
     var playerLayerFrame:CGRect!
     var playerScrollViewContentSize:CGSize!
@@ -47,7 +50,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         super.viewDidLoad()
         view.backgroundColor = UIColor.whiteColor()
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "back", style: .Plain, target: self, action: #selector(back))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cut", style: .Plain, target: self, action: #selector(cutVideo))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cut", style: .Plain, target: self, action: #selector(videoOutput))
         self.navigationController?.navigationBar.translucent = false
         
         guard let URLString = NSBundle.mainBundle().pathForResource("mxsf", ofType: "mp4") else {
@@ -179,16 +182,113 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
             print("Regular: no file by that name")
         }
     }
+    
+    func videoOutput() {
+        let mixComposition = AVMutableComposition()
+        let videoTrack = mixComposition.addMutableTrackWithMediaType(AVMediaTypeVideo, preferredTrackID: kCMPersistentTrackID_Invalid)
+        do {
+            try videoTrack.insertTimeRange(CMTimeRangeMake(kCMTimeZero, self.asset.duration), ofTrack: self.asset.tracksWithMediaType(AVMediaTypeVideo).first!, atTime: kCMTimeZero)
+        } catch {
+            SVProgressHUD.showErrorWithStatus("Get video track error")
+            return
+        }
+        
+        //省略instruction
+        // 3.1 - Create AVMutableVideoCompositionInstruction
+        let mainInstruction = AVMutableVideoCompositionInstruction()
+        mainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, self.asset.duration)
+        
+        
+        //省略旋转视频
+        // 3.2 - Create an AVMutableVideoCompositionLayerInstruction for the video track and fix the orientation.
+        
+        // 3.3 - Add instructions
+        
+        let mainCompositionInst = AVMutableVideoComposition()
+        let naturalSize = CGSizeMake(self.asset.width, self.asset.height)
+        
+        mainCompositionInst.renderSize = naturalSize
+        mainCompositionInst.instructions = [mainInstruction]
+        mainCompositionInst.frameDuration = CMTimeMake(1, 30)
+        
+        
+        self.applyVideoEffects(mainCompositionInst, size: naturalSize)
+        
+        // 4 - Get path
+        deleteTempFile()
+        
+        let fileURL = NSURL.fileURLWithPath(self.tempVideoPath)
+        
+        
+        guard  let exporter = AVAssetExportSession(asset: mixComposition, presetName: AVAssetExportPresetHighestQuality) else {
+            SVProgressHUD.showErrorWithStatus("Create exporter fail")
+            return
+        }
+        exporter.outputURL = fileURL
+        exporter.outputFileType = AVFileTypeQuickTimeMovie
+        exporter.videoComposition = mainCompositionInst
+        exporter.shouldOptimizeForNetworkUse = true
+        exporter.videoComposition = mainCompositionInst
+        
+        let timer = Observable<Int>.interval(0.1, scheduler: MainScheduler.instance)
+        SVProgressHUD.setDefaultMaskType(.Clear)
+        let disposable = timer.subscribeNext { _ in
+            SVProgressHUD.showProgress(exporter.progress, status: "Cutting")
+        }
+        
+        exporter.exportAsynchronouslyWithCompletionHandler { 
+            let status:AVAssetExportSessionStatus = exporter.status
+            
+            switch status {
+            case .Failed:
+                print(exporter.error)
+            case .Cancelled:
+                print("Cancel")
+            case .Completed:
+                print("completed")
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    disposable.dispose()
+                    SVProgressHUD.dismiss()
+                    let movieURL = NSURL.fileURLWithPath(self.tempVideoPath)
+//                    let s = NSSelectorFromString("video:didFinishSavingWithError:contextInfo:")
+                    
+                    let avvc = AVPlayerViewController()
+                    avvc.player = AVPlayer(URL: movieURL)
+                    self.presentViewController(avvc, animated: true, completion: nil)
+                    
+                    
+//                    SVProgressHUD.showWithStatus("Saving...")
+//                    UISaveVideoAtPathToSavedPhotosAlbum(movieURL.relativePath!, self, s, nil)
+                })
+                
+                
+                
+                
+            default: "Never enter into status"
+            }
+        }
+        
+        
+        
+    }
 
-    func applyVideoEffects(composition:AVMutableComposition, size:CGSize) {
+    func applyVideoEffects(composition:AVMutableVideoComposition, size:CGSize) {
         let backgroundLayer = CALayer()
         backgroundLayer.contents = self.backgroundLayerImage.CGImage
         backgroundLayer.frame = CGRectMake(0, 0, size.width, size.height)
         backgroundLayer.masksToBounds = true
         
         let videoLayer = CALayer()
-        videoLayer.bounds = CGRectMake(0, 0, size.width, size.height)
+        let borderWidth:CGFloat = 30
+        videoLayer.frame = CGRectMake(borderWidth, borderWidth, size.width - 2 * borderWidth, size.height - 2 * borderWidth)
         
+        let parentLayer = CALayer()
+        parentLayer.frame = CGRectMake(0, 0, size.width, size.height)
+        parentLayer.addSublayer(backgroundLayer)
+        parentLayer.addSublayer(videoLayer)
+        
+        composition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, inLayer: parentLayer)
         
     }
     

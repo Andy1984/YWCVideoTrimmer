@@ -5,7 +5,7 @@ YWCVideoTrimmer.xcodeproj/project.xcworkspace/xcuserdata/*.xcuserdatad/
 .DS_Store
 
 #AppCode自动生成的文件
-.idea/*
+.idea/
 
 #下面是github的模板
 
