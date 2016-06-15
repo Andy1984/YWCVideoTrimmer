@@ -105,8 +105,8 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         playerScrollView.backgroundColor = .blackColor()
         view.addSubview(playerScrollView)
         playerScrollView.contentSize = playerScrollViewContentSize
-        playerScrollView.showsHorizontalScrollIndicator = true
-        playerScrollView.showsVerticalScrollIndicator = true
+        playerScrollView.showsHorizontalScrollIndicator = false
+        playerScrollView.showsVerticalScrollIndicator = false
         
         playerLayer = AVPlayerLayer(player: player)
         playerLayer.frame = playerLayerFrame
