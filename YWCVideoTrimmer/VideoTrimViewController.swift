@@ -94,6 +94,8 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         trimView.resetSubviews()
         trimView.enlargeTriggerScope(10)
         trimView.delegate = self
+        
+        self.endTime = CGFloat(trimView.maxLength)
     }
     
     func newPlayerView(asset:AVAsset) {
@@ -185,9 +187,8 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
     
     func videoOutput() {
         let startCMT = CMTimeMake(Int64(self.startTime * 1000000), 1000000)
-        let endCMT = CMTimeMake(Int64(self.endTime * 1000000), 1000000)
         let durationCMT = CMTimeMake(Int64((self.endTime - self.startTime) * 1000000), 1000000)
-        
+        let timeRange = CMTimeRangeMake(startCMT, durationCMT)
         
         
         // 1 - Early exit if there's no video file selected
@@ -200,19 +201,26 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         let mixComposition = AVMutableComposition()
         
         // 3 - Video track
-        let videoTrack = mixComposition.addMutableTrackWithMediaType(AVMediaTypeVideo, preferredTrackID: kCMPersistentTrackID_Invalid)
-        do {
-            try videoTrack.insertTimeRange(CMTimeRangeMake(startCMT, durationCMT), ofTrack: self.asset.tracksWithMediaType(AVMediaTypeVideo).first!, atTime: kCMTimeZero)
-        } catch {
+        // Guard let, because there must be videoTrack, or it is not a video
+        guard let videoTrack: AVAssetTrack = self.asset.tracksWithMediaType(AVMediaTypeVideo).first else {
             SVProgressHUD.showErrorWithStatus("Get video track error")
+            return
+        }
+        let videoCompositionTrack: AVMutableCompositionTrack = mixComposition.addMutableTrackWithMediaType(AVMediaTypeVideo, preferredTrackID: kCMPersistentTrackID_Invalid)
+        do {
+            try videoCompositionTrack.insertTimeRange(timeRange, ofTrack: videoTrack, atTime: kCMTimeZero)
+            
+        } catch {
+            SVProgressHUD.showErrorWithStatus("Get videoCompositionTrack error")
             return
         }
         
         // 3.0 - Audio track
+        // If let, because there might be no audioTrack
         if let audioTrack = self.asset.tracksWithMediaType(AVMediaTypeAudio).first {
             let audioCompositionTrack = mixComposition.addMutableTrackWithMediaType(AVMediaTypeAudio, preferredTrackID: kCMPersistentTrackID_Invalid)
             do {
-                try audioCompositionTrack.insertTimeRange(CMTimeRangeMake(startCMT, durationCMT), ofTrack: audioTrack, atTime: kCMTimeZero)
+                try audioCompositionTrack.insertTimeRange(timeRange, ofTrack: audioTrack, atTime: kCMTimeZero)
             } catch {
                 SVProgressHUD.showErrorWithStatus("There is audio track, but cannot insert")
                 return
