@@ -184,6 +184,11 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
     }
     
     func videoOutput() {
+        let startCMT = CMTimeMake(Int64(self.startTime * 1000000), 1000000)
+        let endCMT = CMTimeMake(Int64(self.endTime * 1000000), 1000000)
+        let durationCMT = CMTimeMake(Int64((self.endTime - self.startTime) * 1000000), 1000000)
+        
+        
         
         // 1 - Early exit if there's no video file selected
         if self.asset == nil {
@@ -197,7 +202,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         // 3 - Video track
         let videoTrack = mixComposition.addMutableTrackWithMediaType(AVMediaTypeVideo, preferredTrackID: kCMPersistentTrackID_Invalid)
         do {
-            try videoTrack.insertTimeRange(CMTimeRangeMake(kCMTimeZero, self.asset.duration), ofTrack: self.asset.tracksWithMediaType(AVMediaTypeVideo).first!, atTime: kCMTimeZero)
+            try videoTrack.insertTimeRange(CMTimeRangeMake(startCMT, durationCMT), ofTrack: self.asset.tracksWithMediaType(AVMediaTypeVideo).first!, atTime: kCMTimeZero)
         } catch {
             SVProgressHUD.showErrorWithStatus("Get video track error")
             return
@@ -207,7 +212,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         if let audioTrack = self.asset.tracksWithMediaType(AVMediaTypeAudio).first {
             let audioCompositionTrack = mixComposition.addMutableTrackWithMediaType(AVMediaTypeAudio, preferredTrackID: kCMPersistentTrackID_Invalid)
             do {
-                try audioCompositionTrack.insertTimeRange(CMTimeRangeMake(kCMTimeZero, self.asset.duration), ofTrack: audioTrack, atTime: kCMTimeZero)
+                try audioCompositionTrack.insertTimeRange(CMTimeRangeMake(startCMT, durationCMT), ofTrack: audioTrack, atTime: kCMTimeZero)
             } catch {
                 SVProgressHUD.showErrorWithStatus("There is audio track, but cannot insert")
                 return
@@ -216,7 +221,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         
         // 3.1 - Create AVMutableVideoCompositionInstruction
         let mainInstruction = AVMutableVideoCompositionInstruction()
-        mainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, self.asset.duration)
+        mainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, durationCMT)
         
         
         // 3.2 - Create an AVMutableVideoCompositionLayerInstruction for the video track and fix the orientation.
