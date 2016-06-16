@@ -234,19 +234,15 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         
         // 3.2 - Create an AVMutableVideoCompositionLayerInstruction for the video track and fix the orientation.
         let videoLayerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: videoTrack)
-        guard let videoAssetTrack = self.asset.tracksWithMediaType(AVMediaTypeVideo).first else {
-            SVProgressHUD.showErrorWithStatus("Cannot create video Asset Track")
-            return
-        }
         var isVideoAssetPortrait = false
-        let videoTransform = videoAssetTrack.preferredTransform
+        let videoTransform = videoTrack.preferredTransform
         if (videoTransform.a == 0 && videoTransform.b == 1.0 && videoTransform.c == -1.0 && videoTransform.d == 0) {
             isVideoAssetPortrait = true;
         }
         if (videoTransform.a == 0 && videoTransform.b == -1.0 && videoTransform.c == 1.0 && videoTransform.d == 0) {
             isVideoAssetPortrait = true;
         }
-        videoLayerInstruction.setTransform(videoAssetTrack.preferredTransform, atTime: kCMTimeZero)
+        videoLayerInstruction.setTransform(videoTrack.preferredTransform, atTime: kCMTimeZero)
         //opacity不应该是1.0吗
         videoLayerInstruction.setOpacity(0.0, atTime: self.asset.duration)
         
@@ -256,9 +252,9 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         let mainCompositionInst = AVMutableVideoComposition()
         var naturalSize:CGSize;
         if isVideoAssetPortrait == true{
-            naturalSize = CGSizeMake(videoAssetTrack.naturalSize.height, videoAssetTrack.naturalSize.width)
+            naturalSize = CGSizeMake(videoTrack.naturalSize.height, videoTrack.naturalSize.width)
         } else {
-            naturalSize = videoAssetTrack.naturalSize
+            naturalSize = videoTrack.naturalSize
         }
         
 
