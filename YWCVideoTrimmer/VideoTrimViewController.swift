@@ -251,10 +251,11 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         }
         
         //The transform is totally monkey patch, may be need to use videoTrack.preferredTransform
-        let transform: CGAffineTransform
+        var transform: CGAffineTransform
         if isVideoAssetPortrait == true {
             let scale = naturalSize.height / naturalSize.width
             transform = CGAffineTransformMakeScale(scale, 1)
+            transform = CGAffineTransformConcat(videoTrack.preferredTransform, transform)
         } else {
             let scale = naturalSize.width / naturalSize.height
             transform = CGAffineTransformMakeScale(1, scale)
