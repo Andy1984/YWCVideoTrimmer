@@ -242,7 +242,26 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         if (videoTransform.a == 0 && videoTransform.b == -1.0 && videoTransform.c == 1.0 && videoTransform.d == 0) {
             isVideoAssetPortrait = true;
         }
-        videoLayerInstruction.setTransform(videoTrack.preferredTransform, atTime: kCMTimeZero)
+        
+        var naturalSize:CGSize;
+        if isVideoAssetPortrait == true {
+            naturalSize = CGSizeMake(videoTrack.naturalSize.height, videoTrack.naturalSize.width)
+        } else {
+            naturalSize = videoTrack.naturalSize
+        }
+        
+        //The transform is totally monkey patch, may be need to use videoTrack.preferredTransform
+        let transform: CGAffineTransform
+        if isVideoAssetPortrait == true {
+            let scale = naturalSize.height / naturalSize.width
+            transform = CGAffineTransformMakeScale(scale, 1)
+        } else {
+            let scale = naturalSize.width / naturalSize.height
+            transform = CGAffineTransformMakeScale(1, scale)
+        }
+        
+        
+        videoLayerInstruction.setTransform(transform, atTime: kCMTimeZero)
         //opacity不应该是1.0吗
         videoLayerInstruction.setOpacity(0.0, atTime: self.asset.duration)
         
@@ -250,12 +269,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         mainInstruction.layerInstructions = [videoLayerInstruction]
         
         let mainCompositionInst = AVMutableVideoComposition()
-        var naturalSize:CGSize;
-        if isVideoAssetPortrait == true{
-            naturalSize = CGSizeMake(videoTrack.naturalSize.height, videoTrack.naturalSize.width)
-        } else {
-            naturalSize = videoTrack.naturalSize
-        }
+        
         
 
         let squareLength = max(naturalSize.width, naturalSize.height)
