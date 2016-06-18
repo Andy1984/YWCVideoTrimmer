@@ -28,8 +28,10 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
     var trackerView:UIView!
     var trackerColor:UIColor = .whiteColor()
     
-    
-    var extraTriggerScope:CGFloat = 25
+    /// Make thumbView easier to pan, default is 0.0
+    var extraVerticalScope: CGFloat = 0
+    /// Make thumbView easier to pan, default is 25.0
+    var extraHorizontalScope: CGFloat = 25
     
     //如果使用rulerView， 最右边出现刻度数字不全的情况
     var rightExtend:CGFloat = 100
@@ -205,23 +207,15 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
         updateBorderFrames()
         
         
-        enlargeTriggerScope(extraTriggerScope)
-        realTimeSyncronizeTrackerView()
         
-        
-        
-        
-        
-        
-    }
-    
-    
-    
-    func enlargeTriggerScope(scope:CGFloat) {
+        //Make thumbView easier to pan
         leftInvisiblePanView = UIView()
         self.superview!.addSubview(leftInvisiblePanView)
         leftInvisiblePanView.snp_remakeConstraints { (make) in
-            make.edges.equalTo(leftThumbView).inset(-scope)
+            make.left.equalTo(leftThumbView).offset(-extraHorizontalScope)
+            make.right.equalTo(leftThumbView).offset(extraHorizontalScope)
+            make.top.equalTo(leftThumbView).offset(-extraVerticalScope)
+            make.bottom.equalTo(leftThumbView).offset(extraVerticalScope)
         }
         let leftPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(moveLeftThumbView))
         leftInvisiblePanView!.addGestureRecognizer(leftPanGestureRecognizer)
@@ -229,10 +223,22 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
         rightInvisiblePanView = UIView()
         self.superview!.addSubview(rightInvisiblePanView)
         rightInvisiblePanView.snp_remakeConstraints { (make) in
-            make.edges.equalTo(rightThumbView).inset(-scope)
+            make.left.equalTo(rightThumbView).offset(-extraHorizontalScope)
+            make.right.equalTo(rightThumbView).offset(extraHorizontalScope)
+            make.top.equalTo(rightThumbView).offset(-extraVerticalScope)
+            make.bottom.equalTo(rightThumbView).offset(extraVerticalScope)
         }
         let rightPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(moveRightThumbView))
         rightInvisiblePanView!.addGestureRecognizer(rightPanGestureRecognizer)
+        
+        // Add tracker
+        realTimeSyncronizeTrackerView()
+    }
+    
+    
+    
+    func enlargeTriggerScope(scope:CGFloat) {
+        
     }
 
     

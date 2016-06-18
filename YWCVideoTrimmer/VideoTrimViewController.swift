@@ -91,9 +91,16 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         trimView.frame = CGRectMake(0, 400, 300, 100)
         trimView.showsRulerView = true
         trimView.trackerColor = .whiteColor()
+        if self.asset.seconds > 30 {
+            trimView.maxLength = 30
+        } else {
+            trimView.maxLength = self.asset.seconds
+        }
+        trimView.extraVerticalScope = 25
         trimView.resetSubviews()
-        trimView.enlargeTriggerScope(10)
+        
         trimView.delegate = self
+        
         
         self.endTime = CGFloat(trimView.maxLength)
     }
@@ -250,7 +257,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
             naturalSize = videoTrack.naturalSize
         }
         
-        //The transform is totally monkey patch, may be need to use videoTrack.preferredTransform
+        //Monkey patch
         var transform: CGAffineTransform
         if isVideoAssetPortrait == true {
             let scale = naturalSize.height / naturalSize.width
