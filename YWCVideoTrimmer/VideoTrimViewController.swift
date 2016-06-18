@@ -86,10 +86,14 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
     }
     
     func newTrimView() {
-        trimView = VideoTrimView(frame: CGRectZero, player: self.player)
+        let margin: CGFloat = 15
+        let x: CGFloat = margin
+        let w: CGFloat = ScreenWidth - 2 * margin
+        let h: CGFloat = 70
+        let y: CGFloat = ScreenWidth + 50 + (ScreenHeight - 44 - ScreenWidth - 50 - h)/2
+        let frame = CGRectMake(x, y, w, h)
+        trimView = VideoTrimView(frame: frame, player: self.player)
         self.view.addSubview(trimView)
-        trimView.frame = CGRectMake(0, 400, 300, 100)
-        trimView.showsRulerView = true
         trimView.trackerColor = .whiteColor()
         if self.asset.seconds > 30 {
             trimView.maxLength = 30
