@@ -196,7 +196,17 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         }
     }
     
+    enum TrimVideoMethod {
+        case Original
+        case FillSquare
+        case CropSquare
+    }
+    
     func videoOutput() {
+        
+        let method: TrimVideoMethod = .CropSquare
+        
+        
         let startCMT = CMTimeMake(Int64(self.startTime * 1000000), 1000000)
         let durationCMT = CMTimeMake(Int64((self.endTime - self.startTime) * 1000000), 1000000)
         let timeRange = CMTimeRangeMake(startCMT, durationCMT)
@@ -254,23 +264,42 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
             isVideoAssetPortrait = true;
         }
         
+        
         var naturalSize:CGSize;
         if isVideoAssetPortrait == true {
             naturalSize = CGSizeMake(videoTrack.naturalSize.height, videoTrack.naturalSize.width)
         } else {
             naturalSize = videoTrack.naturalSize
         }
-        
-        //Monkey patch
-        var transform: CGAffineTransform
-        if isVideoAssetPortrait == true {
-            let scale = naturalSize.height / naturalSize.width
-            transform = CGAffineTransformMakeScale(scale, 1)
-            transform = CGAffineTransformConcat(videoTrack.preferredTransform, transform)
-        } else {
-            let scale = naturalSize.width / naturalSize.height
-            transform = CGAffineTransformMakeScale(1, scale)
+        var transform: CGAffineTransform!
+        if method == .FillSquare {
+            // Monkey patch
+            if isVideoAssetPortrait == true {
+                let scale = naturalSize.height / naturalSize.width
+                transform = CGAffineTransformMakeScale(scale, 1)
+                transform = CGAffineTransformConcat(videoTrack.preferredTransform, transform)
+            } else {
+                let scale = naturalSize.width / naturalSize.height
+                transform = CGAffineTransformMakeScale(1, scale)
+            }
+        } else if method == .CropSquare {
+            if isVideoAssetPortrait == true {
+                //瞎写的
+                let scale = naturalSize.height / naturalSize.width
+                transform = CGAffineTransformMakeScale(scale, 1)
+                transform = CGAffineTransformConcat(videoTrack.preferredTransform, transform)
+            } else {
+                let scale = naturalSize.width / naturalSize.height
+                transform = CGAffineTransformMakeScale(scale, scale);
+                let translation = CGAffineTransformMakeTranslation(-(naturalSize.width - naturalSize.height), 0);
+                transform = CGAffineTransformConcat(transform, translation)
+            }
+        } else if method == .Original {
+            
         }
+        
+        
+        
         
         
         videoLayerInstruction.setTransform(transform, atTime: kCMTimeZero)
@@ -290,8 +319,13 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         mainCompositionInst.instructions = [mainInstruction]
         mainCompositionInst.frameDuration = CMTimeMake(1, 30)
         
-        
-        self.applyVideoEffects(mainCompositionInst, size: naturalSize)
+        if method == .FillSquare {
+            self.applyVideoEffects(mainCompositionInst, size: naturalSize)
+        } else if method == .CropSquare {
+
+        } else if method == .Original {
+            
+        }
         
         // 4 - Get path
         deleteTempFile()
