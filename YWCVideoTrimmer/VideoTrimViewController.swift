@@ -376,33 +376,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         parentLayer.addSublayer(backgroundLayer)
         parentLayer.addSublayer(videoLayer)
         
-        composition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, inLayer: parentLayer)
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-//        let backgroundLayer = CALayer()
-//        backgroundLayer.contents = self.backgroundLayerImage.CGImage
-//        backgroundLayer.frame = CGRectMake(0, 0, size.width, size.height)
-//        backgroundLayer.masksToBounds = true
-//        
-//        let videoLayer = CALayer()
-//        let borderWidth:CGFloat = 130
-//        videoLayer.frame = CGRectMake(borderWidth, borderWidth, size.width - 2 * borderWidth, size.height - 2 * borderWidth)
-//        
-//        let parentLayer = CALayer()
-//        parentLayer.frame = CGRectMake(0, 0, size.width, size.height)
-//        parentLayer.addSublayer(backgroundLayer)
-//        parentLayer.addSublayer(videoLayer)
-//        
-//        composition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, inLayer: parentLayer)
-        
+        composition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, inLayer: parentLayer)        
     }
     
     func cutVideo() {

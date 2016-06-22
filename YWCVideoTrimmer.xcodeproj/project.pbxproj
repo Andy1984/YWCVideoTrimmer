@@ -27,6 +27,7 @@
 		E42CFB9A1D054F950040DB53 /* trim_11_unselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E42CFB961D054F950040DB53 /* trim_11_unselected@2x.png */; };
 		E42CFB9B1D054F950040DB53 /* trim_169_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E42CFB971D054F950040DB53 /* trim_169_selected@2x.png */; };
 		E42CFB9C1D054F950040DB53 /* trim_169_unselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E42CFB981D054F950040DB53 /* trim_169_unselected@2x.png */; };
+		E44A75431D1A646100ED7EA6 /* VideoTrimManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44A75421D1A646100ED7EA6 /* VideoTrimManager.swift */; };
 		E44DFBC91CF32176002778A1 /* VideoTrimViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44DFBC81CF32176002778A1 /* VideoTrimViewController.swift */; };
 		E4986E391D10F1BA00804CBC /* cut_play@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E4986E381D10F1BA00804CBC /* cut_play@2x.png */; };
 		E4A02B4E1D0D4D8100EDB511 /* YWCSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A02B4D1D0D4D8100EDB511 /* YWCSegmentedControl.swift */; };
@@ -69,6 +70,7 @@
 		E42CFB961D054F950040DB53 /* trim_11_unselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trim_11_unselected@2x.png"; sourceTree = "<group>"; };
 		E42CFB971D054F950040DB53 /* trim_169_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trim_169_selected@2x.png"; sourceTree = "<group>"; };
 		E42CFB981D054F950040DB53 /* trim_169_unselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trim_169_unselected@2x.png"; sourceTree = "<group>"; };
+		E44A75421D1A646100ED7EA6 /* VideoTrimManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoTrimManager.swift; sourceTree = "<group>"; };
 		E44DFBC81CF32176002778A1 /* VideoTrimViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoTrimViewController.swift; sourceTree = "<group>"; };
 		E4986E381D10F1BA00804CBC /* cut_play@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cut_play@2x.png"; sourceTree = "<group>"; };
 		E4A02B4D1D0D4D8100EDB511 /* YWCSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YWCSegmentedControl.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				171026291CE49EE6009A9233 /* ViewController.swift */,
 				171026391CE4B1EA009A9233 /* TrimViewController.swift */,
 				E44DFBC81CF32176002778A1 /* VideoTrimViewController.swift */,
+				E44A75421D1A646100ED7EA6 /* VideoTrimManager.swift */,
 				E4A02B4D1D0D4D8100EDB511 /* YWCSegmentedControl.swift */,
 				17F20B971CEAC38900CA4BF4 /* RealTimeFilterViewController.swift */,
 				1796C7231CEDD43C005E7250 /* UIView+Extension.swift */,
@@ -346,6 +349,7 @@
 				E4AE5FE91CF9B42900D1C156 /* VideoTrimView.swift in Sources */,
 				1710263A1CE4B1EA009A9233 /* TrimViewController.swift in Sources */,
 				E44DFBC91CF32176002778A1 /* VideoTrimViewController.swift in Sources */,
+				E44A75431D1A646100ED7EA6 /* VideoTrimManager.swift in Sources */,
 				E4A02B4E1D0D4D8100EDB511 /* YWCSegmentedControl.swift in Sources */,
 				E4AE5FE31CF98DC800D1C156 /* ThumbView.swift in Sources */,
 				17F20B981CEAC38900CA4BF4 /* RealTimeFilterViewController.swift in Sources */,
