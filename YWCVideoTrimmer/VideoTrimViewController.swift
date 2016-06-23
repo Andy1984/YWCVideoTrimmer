@@ -130,7 +130,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         playerScrollView.addGestureRecognizer(tap)
         
         let emptyImage = createImage(UIColor(red: 0, green: 0, blue: 0, alpha: 0), size: CGSizeMake(1, 1))
-        playButton.setImage(emptyImage, forState: .Normal)
+        playButton.setImage(emptyImage, forState: .Selected)
         playButton.setImage(UIImage(named: "cut_play"), forState: .Normal)
     }
     
@@ -311,7 +311,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
             } else {
                 let scale = naturalSize.width / naturalSize.height
                 transform = CGAffineTransformMakeScale(scale, scale);
-                let translation = CGAffineTransformMakeTranslation(-(naturalSize.width - naturalSize.height), 0);
+                let translation = CGAffineTransformMakeTranslation(-(naturalSize.width * scale - naturalSize.height * scale), 0);
                 transform = CGAffineTransformConcat(transform, translation)
             }
         } else if method == .Original {
