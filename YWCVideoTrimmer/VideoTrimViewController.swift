@@ -74,6 +74,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         newTrimView()
         
         newFunctionBar()
+        button11Clicked()
         
         addBackgroundViewController = AddBackgroundViewController()
         self.addChildViewController(self.addBackgroundViewController)
@@ -134,11 +135,11 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         
         let emptyImage = createImage(UIColor(red: 0, green: 0, blue: 0, alpha: 0), size: CGSizeMake(1, 1))
         playButton.setImage(emptyImage, forState: .Normal)
-        playButton.setImage(UIImage(named: "success@3x"), forState: .Selected)
+        playButton.setImage(UIImage(named: "cut_play"), forState: .Normal)
     }
     
-    var videoSizeSegmentedControl: YWCSegmentedControl!
-    
+    var button11: UIButton!
+    var button169: UIButton!
     func newFunctionBar() {
         let functionBar = UIView(frame: CGRectMake(0, ScreenWidth, ScreenWidth, 50))
         view.addSubview(functionBar)
@@ -151,26 +152,73 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         let duration = trimView.maxLength
         durationLabel.text = String(format: "  %.1fs", duration)
         
-        videoSizeSegmentedControl = YWCSegmentedControl(sectionImages: [UIImage(named: "trim_11_unselected")!,UIImage(named: "trim_169_unselected")!], sectionSelectedImages: [UIImage(named: "trim_11_selected")!,UIImage(named: "trim_169_selected")!])
-        functionBar.addSubview(videoSizeSegmentedControl)
-        videoSizeSegmentedControl.snp_makeConstraints { (make) in
-            make.height.equalTo(50)
+        button169 = UIButton()
+        functionBar.addSubview(button169)
+        button169.snp_makeConstraints { (make) in
+            make.height.width.equalTo(50)
             make.centerY.equalTo(functionBar.snp_centerY)
-            make.right.equalTo(functionBar.snp_right)
-            make.width.equalTo(100)
+            make.right.equalTo(functionBar)
         }
+        button169.setImage(UIImage(named: "trim_169_selected"), forState: .Selected)
+        button169.setImage(UIImage(named: "trim_169_unselected"), forState: .Normal)
+        button169.addTarget(self, action: #selector(button169Clicked), forControlEvents: .TouchUpInside)
         
-        videoSizeSegmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationNone
-        videoSizeSegmentedControl.indexChangeBlock = { [weak self] index in
-            if index == 0 {
-                self!.playerLayer.frame = self!.playerLayerFrame
-                self!.playerScrollView.contentSize = self!.playerScrollViewContentSize
-            } else if index == 1 {
-                self!.playerLayer.frame = CGRectMake(0, 0, ScreenWidth, ScreenWidth)
-                self!.playerScrollView.contentSize = CGSizeMake(ScreenWidth, ScreenWidth)
-                self?.addBackgroundViewController.present()
-            }
+        button11 = UIButton()
+        functionBar.addSubview(button11)
+        button11.snp_makeConstraints { (make) in
+            make.height.width.equalTo(50)
+            make.centerY.equalTo(functionBar.snp_centerY)
+            make.right.equalTo(button169.snp_left)
         }
+        button11.setImage(UIImage(named: "trim_11_selected"), forState: .Selected)
+        button11.setImage(UIImage(named: "trim_11_unselected"), forState: .Normal)
+        button11.addTarget(self, action: #selector(button11Clicked), forControlEvents: .TouchUpInside)
+        
+        
+        
+        
+//        videoSizeSegmentedControl = YWCSegmentedControl(sectionImages: [UIImage(named: "trim_11_unselected")!,UIImage(named: "trim_169_unselected")!], sectionSelectedImages: [UIImage(named: "trim_11_selected")!,UIImage(named: "trim_169_selected")!])
+//        functionBar.addSubview(videoSizeSegmentedControl)
+//        videoSizeSegmentedControl.snp_makeConstraints { (make) in
+//            make.height.equalTo(50)
+//            make.centerY.equalTo(functionBar.snp_centerY)
+//            make.right.equalTo(functionBar.snp_right)
+//            make.width.equalTo(100)
+//        }
+//        
+//        videoSizeSegmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationNone
+//        videoSizeSegmentedControl.indexChangeBlock = { [weak self] index in
+//            if index == 0 {
+//                self!.playerLayer.frame = self!.playerLayerFrame
+//                self!.playerScrollView.contentSize = self!.playerScrollViewContentSize
+//            } else if index == 1 {
+//                self!.playerLayer.frame = CGRectMake(0, 0, ScreenWidth, ScreenWidth)
+//                self!.playerScrollView.contentSize = CGSizeMake(ScreenWidth, ScreenWidth)
+//                self?.addBackgroundViewController.present()
+//            }
+//        }
+        
+        
+    }
+    
+    func button11Clicked() {
+        button11.selected = true
+        button169.selected = false
+        
+        self.playerLayer.frame = self.playerLayerFrame
+        self.playerScrollView.contentSize = self.playerScrollViewContentSize
+
+        
+    }
+    
+    func button169Clicked() {
+        button169.selected = true
+        button11.selected = false
+        self.playerLayer.frame = CGRectMake(0, 0, ScreenWidth, ScreenWidth)
+        self.playerScrollView.contentSize = CGSizeMake(ScreenWidth, ScreenWidth)
+        self.addBackgroundViewController.present()
+
+        
     }
     
     func playButtonClicked(){

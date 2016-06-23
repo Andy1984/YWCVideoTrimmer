@@ -21,7 +21,6 @@
 		1798275B1CE71FBF0072996D /* Tool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1798275A1CE71FBF0072996D /* Tool.swift */; };
 		17F20B981CEAC38900CA4BF4 /* RealTimeFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F20B971CEAC38900CA4BF4 /* RealTimeFilterViewController.swift */; };
 		17F20B9A1CEAC48600CA4BF4 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17F20B991CEAC48600CA4BF4 /* OpenGLES.framework */; };
-		E42865CA1D016BCA0088A10F /* success@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E42865C91D016BCA0088A10F /* success@3x.png */; };
 		E42865D21D019AED0088A10F /* mxsf.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = E42865D11D019AED0088A10F /* mxsf.mp4 */; };
 		E42CFB991D054F950040DB53 /* trim_11_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E42CFB951D054F950040DB53 /* trim_11_selected@2x.png */; };
 		E42CFB9A1D054F950040DB53 /* trim_11_unselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E42CFB961D054F950040DB53 /* trim_11_unselected@2x.png */; };
@@ -30,7 +29,6 @@
 		E44A75431D1A646100ED7EA6 /* VideoTrimManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44A75421D1A646100ED7EA6 /* VideoTrimManager.swift */; };
 		E44DFBC91CF32176002778A1 /* VideoTrimViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44DFBC81CF32176002778A1 /* VideoTrimViewController.swift */; };
 		E4986E391D10F1BA00804CBC /* cut_play@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E4986E381D10F1BA00804CBC /* cut_play@2x.png */; };
-		E4A02B4E1D0D4D8100EDB511 /* YWCSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A02B4D1D0D4D8100EDB511 /* YWCSegmentedControl.swift */; };
 		E4A600751D0D330400993196 /* AddBackgroundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A600741D0D330400993196 /* AddBackgroundViewController.swift */; };
 		E4A600791D0D35D900993196 /* dismissButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A600781D0D35D900993196 /* dismissButton@2x.png */; };
 		E4A600801D0D3A3D00993196 /* pattern_2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E4A6007B1D0D3A3D00993196 /* pattern_2.jpg */; };
@@ -64,7 +62,6 @@
 		24DF6F57B73E420BAC1D8B03 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B95D305B7E64BFCC6155A73A /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE2B564F8B3932BF0F71CDBF /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		E42865C91D016BCA0088A10F /* success@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "success@3x.png"; sourceTree = "<group>"; };
 		E42865D11D019AED0088A10F /* mxsf.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = mxsf.mp4; sourceTree = "<group>"; };
 		E42CFB951D054F950040DB53 /* trim_11_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trim_11_selected@2x.png"; sourceTree = "<group>"; };
 		E42CFB961D054F950040DB53 /* trim_11_unselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trim_11_unselected@2x.png"; sourceTree = "<group>"; };
@@ -73,7 +70,6 @@
 		E44A75421D1A646100ED7EA6 /* VideoTrimManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoTrimManager.swift; sourceTree = "<group>"; };
 		E44DFBC81CF32176002778A1 /* VideoTrimViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoTrimViewController.swift; sourceTree = "<group>"; };
 		E4986E381D10F1BA00804CBC /* cut_play@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cut_play@2x.png"; sourceTree = "<group>"; };
-		E4A02B4D1D0D4D8100EDB511 /* YWCSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YWCSegmentedControl.swift; sourceTree = "<group>"; };
 		E4A600741D0D330400993196 /* AddBackgroundViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBackgroundViewController.swift; sourceTree = "<group>"; };
 		E4A600781D0D35D900993196 /* dismissButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dismissButton@2x.png"; sourceTree = "<group>"; };
 		E4A6007B1D0D3A3D00993196 /* pattern_2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pattern_2.jpg; sourceTree = "<group>"; };
@@ -130,12 +126,10 @@
 				171026391CE4B1EA009A9233 /* TrimViewController.swift */,
 				E44DFBC81CF32176002778A1 /* VideoTrimViewController.swift */,
 				E44A75421D1A646100ED7EA6 /* VideoTrimManager.swift */,
-				E4A02B4D1D0D4D8100EDB511 /* YWCSegmentedControl.swift */,
 				17F20B971CEAC38900CA4BF4 /* RealTimeFilterViewController.swift */,
 				1796C7231CEDD43C005E7250 /* UIView+Extension.swift */,
 				1796C71F1CEDA256005E7250 /* AVAsset+Extension.swift */,
 				1798275A1CE71FBF0072996D /* Tool.swift */,
-				E42865C91D016BCA0088A10F /* success@3x.png */,
 				E42865D11D019AED0088A10F /* mxsf.mp4 */,
 				1726D3671CEEB62F00C8146B /* mv.mp4 */,
 				17686B831CEC63F900BE1FEA /* launchScreen.mp4 */,
@@ -277,7 +271,6 @@
 				1710262F1CE49EE6009A9233 /* Assets.xcassets in Resources */,
 				E42CFB991D054F950040DB53 /* trim_11_selected@2x.png in Resources */,
 				E4A600801D0D3A3D00993196 /* pattern_2.jpg in Resources */,
-				E42865CA1D016BCA0088A10F /* success@3x.png in Resources */,
 				17686B841CEC63F900BE1FEA /* launchScreen.mp4 in Resources */,
 				E42CFB9C1D054F950040DB53 /* trim_169_unselected@2x.png in Resources */,
 				E4A600791D0D35D900993196 /* dismissButton@2x.png in Resources */,
@@ -350,7 +343,6 @@
 				1710263A1CE4B1EA009A9233 /* TrimViewController.swift in Sources */,
 				E44DFBC91CF32176002778A1 /* VideoTrimViewController.swift in Sources */,
 				E44A75431D1A646100ED7EA6 /* VideoTrimManager.swift in Sources */,
-				E4A02B4E1D0D4D8100EDB511 /* YWCSegmentedControl.swift in Sources */,
 				E4AE5FE31CF98DC800D1C156 /* ThumbView.swift in Sources */,
 				17F20B981CEAC38900CA4BF4 /* RealTimeFilterViewController.swift in Sources */,
 				1796C7201CEDA256005E7250 /* AVAsset+Extension.swift in Sources */,
