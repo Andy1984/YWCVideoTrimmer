@@ -7,4 +7,4 @@ pod 'SVProgressHUD'
 pod 'SnapKit'
 pod 'HMSegmentedControl'
 #录播
-pod 'SCRecorder'
+#pod 'SCRecorder'
