@@ -13,10 +13,6 @@ import SVProgressHUD
 import RxCocoa
 import RxSwift
 import SnapKit
-import HMSegmentedControl
-
-
-
 
 class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
     var playerLayerFrame:CGRect!
@@ -152,6 +148,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         let duration = trimView.maxLength
         durationLabel.text = String(format: "  %.1fs", duration)
         
+        //button169
         button169 = UIButton()
         functionBar.addSubview(button169)
         button169.snp_makeConstraints { (make) in
@@ -163,6 +160,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         button169.setImage(UIImage(named: "trim_169_unselected"), forState: .Normal)
         button169.addTarget(self, action: #selector(button169Clicked), forControlEvents: .TouchUpInside)
         
+        //button11
         button11 = UIButton()
         functionBar.addSubview(button11)
         button11.snp_makeConstraints { (make) in
@@ -173,32 +171,6 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         button11.setImage(UIImage(named: "trim_11_selected"), forState: .Selected)
         button11.setImage(UIImage(named: "trim_11_unselected"), forState: .Normal)
         button11.addTarget(self, action: #selector(button11Clicked), forControlEvents: .TouchUpInside)
-        
-        
-        
-        
-//        videoSizeSegmentedControl = YWCSegmentedControl(sectionImages: [UIImage(named: "trim_11_unselected")!,UIImage(named: "trim_169_unselected")!], sectionSelectedImages: [UIImage(named: "trim_11_selected")!,UIImage(named: "trim_169_selected")!])
-//        functionBar.addSubview(videoSizeSegmentedControl)
-//        videoSizeSegmentedControl.snp_makeConstraints { (make) in
-//            make.height.equalTo(50)
-//            make.centerY.equalTo(functionBar.snp_centerY)
-//            make.right.equalTo(functionBar.snp_right)
-//            make.width.equalTo(100)
-//        }
-//        
-//        videoSizeSegmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationNone
-//        videoSizeSegmentedControl.indexChangeBlock = { [weak self] index in
-//            if index == 0 {
-//                self!.playerLayer.frame = self!.playerLayerFrame
-//                self!.playerScrollView.contentSize = self!.playerScrollViewContentSize
-//            } else if index == 1 {
-//                self!.playerLayer.frame = CGRectMake(0, 0, ScreenWidth, ScreenWidth)
-//                self!.playerScrollView.contentSize = CGSizeMake(ScreenWidth, ScreenWidth)
-//                self?.addBackgroundViewController.present()
-//            }
-//        }
-        
-        
     }
     
     func button11Clicked() {

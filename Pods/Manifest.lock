@@ -1,5 +1,4 @@
 PODS:
-  - HMSegmentedControl (1.5.2)
   - RxCocoa (2.5.0):
     - RxSwift (~> 2.5)
   - RxSwift (2.5.0)
@@ -7,14 +6,12 @@ PODS:
   - SVProgressHUD (2.0.3)
 
 DEPENDENCIES:
-  - HMSegmentedControl
   - RxCocoa
   - RxSwift
   - SnapKit
   - SVProgressHUD
 
 SPEC CHECKSUMS:
-  HMSegmentedControl: 83b9686022d2176fb6457d2bdb61e5d6393fed7d
   RxCocoa: e1b1562e57a554d0fb2aabf9d71b637f177257c7
   RxSwift: 402b41a50e922a0368fc14cb3bc9f4427920e8ae
   SnapKit: bbad04cb016c7cead63965f16b00c09318d271ee
