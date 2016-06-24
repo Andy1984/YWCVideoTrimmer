@@ -301,6 +301,11 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
                 transform = CGAffineTransformMakeScale(1, scale)
             }
         } else if method == .CropSquare {
+            
+            let offset = self.playerScrollView.contentOffset
+            let offsetX = offset.x
+//            let offsetY = offset.y
+            
             if isVideoAssetPortrait == true {
                 //瞎写的
                 let scale = naturalSize.height / naturalSize.width
@@ -309,7 +314,9 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
             } else {
                 let scale = naturalSize.width / naturalSize.height
                 transform = CGAffineTransformMakeScale(scale, scale);
-                let translation = CGAffineTransformMakeTranslation(-(naturalSize.width * scale - naturalSize.height * scale), 0);
+                let translationX = -offsetX * naturalSize.width/self.playerScrollView.width
+                let translation = CGAffineTransformMakeTranslation(translationX, 0)
+                
                 transform = CGAffineTransformConcat(transform, translation)
             }
         } else if method == .Original {
