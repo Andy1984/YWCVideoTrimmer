@@ -32,7 +32,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
     var backgroundLayerImage:UIImage = UIImage(named: "pattern_0.jpg")!
     var exportSession: AVAssetExportSession?
     deinit {
-        print("销毁")
+        print("deinit")
     }
     
     //隐藏状态栏
@@ -335,9 +335,6 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         mainInstruction.layerInstructions = [videoLayerInstruction]
         
         let mainCompositionInst = AVMutableVideoComposition()
-        
-        
-
         let squareLength = max(naturalSize.width, naturalSize.height)
         let squareSize = CGSizeMake(squareLength, squareLength)
         mainCompositionInst.renderSize = squareSize
@@ -357,7 +354,6 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         
         let fileURL = NSURL.fileURLWithPath(self.tempVideoPath)
         
-
         guard let exportSession = AVAssetExportSession(asset: mixComposition, presetName: AVAssetExportPresetMediumQuality) else {
             SVProgressHUD.showErrorWithStatus("Create exportSession fail")
             return
@@ -386,12 +382,9 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
                 dispatch_async(dispatch_get_main_queue(), {
                     SVProgressHUD.dismiss()
                     let movieURL = NSURL.fileURLWithPath(self.tempVideoPath)
-                    let s = NSSelectorFromString("video:didFinishSavingWithError:contextInfo:")
                     let avvc = AVPlayerViewController()
                     avvc.player = AVPlayer(URL: movieURL)
                     self.presentViewController(avvc, animated: true, completion: nil)
-                    SVProgressHUD.showWithStatus("Saving...")
-                    UISaveVideoAtPathToSavedPhotosAlbum(movieURL.relativePath!, self, s, nil)
                 })
             default: "Never enter into status"
             }
@@ -491,17 +484,12 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
     }
     
     func video(videoPath: String, didFinishSavingWithError error: NSError, contextInfo info: UnsafeMutablePointer<Void>) {
-        
         let e:NSError? = error
         if e == nil {
             SVProgressHUD.showSuccessWithStatus("Success")
         } else {
             SVProgressHUD.showErrorWithStatus(e!.description)
         }
-        
-        
-        
-        
     }
     
     func changePositionOfVideoTrimView(trimView: VideoTrimView, startTime: CGFloat, endTime: CGFloat) {
