@@ -10,8 +10,6 @@ import UIKit
 import AVKit
 import AVFoundation
 import SVProgressHUD
-import RxCocoa
-import RxSwift
 import SnapKit
 
 class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
@@ -27,7 +25,6 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
     var trimView:VideoTrimView!
     var durationLabel:UILabel!
     
-    let disposeBag = DisposeBag()
     
     var playerScrollView:UIScrollView!
     var playerLayer:CALayer!
@@ -363,19 +360,19 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         exporter.shouldOptimizeForNetworkUse = true
         exporter.videoComposition = mainCompositionInst
         
-        let timer = Observable<Int>.interval(0.1, scheduler: MainScheduler.instance)
-        SVProgressHUD.setDefaultMaskType(.Clear)
-        let disposable = timer.subscribeNext { _ in
-            print(exporter.progress)
-            SVProgressHUD.showProgress(exporter.progress, status: "Cutting")
-        }
+//        let timer = Observable<Int>.interval(0.1, scheduler: MainScheduler.instance)
+//        SVProgressHUD.setDefaultMaskType(.Clear)
+//        let disposable = timer.subscribeNext { _ in
+//            print(exporter.progress)
+//            SVProgressHUD.showProgress(exporter.progress, status: "Cutting")
+//        }
         
         exporter.exportAsynchronouslyWithCompletionHandler { 
             let status:AVAssetExportSessionStatus = exporter.status
             switch status {
             case .Failed:
                 dispatch_async(dispatch_get_main_queue(), {
-                    disposable.dispose()
+                    
                     SVProgressHUD.showErrorWithStatus(exporter.error!.description)
                     print(exporter.error!.description)
                 })
@@ -384,7 +381,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
             case .Completed:
                 print("completed")
                 dispatch_async(dispatch_get_main_queue(), {
-                    disposable.dispose()
+                    
                     SVProgressHUD.dismiss()
                     let movieURL = NSURL.fileURLWithPath(self.tempVideoPath)
                                         let s = NSSelectorFromString("video:didFinishSavingWithError:contextInfo:")
@@ -454,11 +451,11 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         let range = CMTimeRangeMake(start, duration)
         exportSession?.timeRange = range
         
-        let timer = Observable<Int>.interval(0.1, scheduler: MainScheduler.instance)
-        SVProgressHUD.setDefaultMaskType(.Clear)
-        let disposable = timer.subscribeNext { _ in
-            SVProgressHUD.showProgress(exportSession!.progress, status: "Cutting")
-        }
+//        let timer = Observable<Int>.interval(0.1, scheduler: MainScheduler.instance)
+//        SVProgressHUD.setDefaultMaskType(.Clear)
+//        let disposable = timer.subscribeNext { _ in
+//            SVProgressHUD.showProgress(exportSession!.progress, status: "Cutting")
+//        }
         
         
         //这里应该加个progress
@@ -475,7 +472,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
                 print("completed")
                 
                 dispatch_async(dispatch_get_main_queue(), {
-                    disposable.dispose()
+                    
                     
                     let movieURL = NSURL.fileURLWithPath(self.tempVideoPath)
                     let s = NSSelectorFromString("video:didFinishSavingWithError:contextInfo:")

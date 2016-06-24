@@ -9,7 +9,6 @@
 import UIKit
 import AVFoundation
 import SnapKit
-import RxSwift
 
 protocol YWCVideoTrimViewDelegate: class {
     func changePositionOfVideoTrimView(trimView:VideoTrimView, startTime:CGFloat, endTime:CGFloat)
@@ -104,7 +103,6 @@ class VideoTrimView: UIView, UIScrollViewDelegate {
         notifyDelegate()
     }
     
-    let disposeBag = DisposeBag()
     func resetSubviews() {
         
         clipsToBounds = true

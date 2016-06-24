@@ -10,13 +10,11 @@ import UIKit
 
 import MobileCoreServices
 import AVFoundation
-import RxCocoa
-import RxSwift
 
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    let disposeBag = DisposeBag()
+    
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -47,24 +45,25 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let movieType: String = kUTTypeMovie as String
         let vidoeType: String = kUTTypeVideo as String
         picker.mediaTypes = [movieType,vidoeType]
+        picker.delegate = self
         presentViewController(picker, animated: true, completion: nil)
-        picker.rx_didFinishPickingMediaWithInfo
-            .subscribe{ [weak self] (event) in
-                if let URL = event.element?[UIImagePickerControllerReferenceURL] as? NSURL {
-                    let asset = AVURLAsset(URL: URL)
-//                    let trimVC = TrimViewController()
-                    let trimVC = VideoTrimViewController()
-                    trimVC.asset = asset
-                    let navi = UINavigationController(rootViewController: trimVC)
-                    picker.dismissViewControllerAnimated(true) {
-                        self!.presentViewController(navi, animated: true, completion: nil)
-                    }
-                }
-            }.addDisposableTo(disposeBag)
+    
         
     }
-        
-        
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        if let URL = info[UIImagePickerControllerMediaURL] as? NSURL {
+            let asset = AVURLAsset(URL: URL)
+            let trimVC = VideoTrimViewController()
+            trimVC.asset = asset
+            let navi = UINavigationController(rootViewController: trimVC)
+            picker.dismissViewControllerAnimated(true) {
+                self.presentViewController(navi, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    
     @IBAction func realTimeFilter(sender: AnyObject) {
         
         
