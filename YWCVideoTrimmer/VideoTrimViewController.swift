@@ -30,6 +30,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
     var playerLayer:CALayer!
     var addBackgroundViewController:AddBackgroundViewController!
     var backgroundLayerImage:UIImage = UIImage(named: "pattern_0.jpg")!
+    var exportSession: AVAssetExportSession?
     deinit {
         print("销毁")
     }
@@ -349,61 +350,52 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         
         let fileURL = NSURL.fileURLWithPath(self.tempVideoPath)
         
-        
-        guard  let exporter = AVAssetExportSession(asset: mixComposition, presetName: AVAssetExportPresetMediumQuality) else {
-            SVProgressHUD.showErrorWithStatus("Create exporter fail")
+
+        guard let exportSession = AVAssetExportSession(asset: mixComposition, presetName: AVAssetExportPresetMediumQuality) else {
+            SVProgressHUD.showErrorWithStatus("Create exportSession fail")
             return
         }
-        exporter.outputURL = fileURL
-        exporter.outputFileType = AVFileTypeQuickTimeMovie
-        exporter.videoComposition = mainCompositionInst
-        exporter.shouldOptimizeForNetworkUse = true
-        exporter.videoComposition = mainCompositionInst
+        self.exportSession = exportSession
+        exportSession.outputURL = fileURL
+        exportSession.outputFileType = AVFileTypeQuickTimeMovie
+        exportSession.videoComposition = mainCompositionInst
+        exportSession.shouldOptimizeForNetworkUse = true
+        exportSession.videoComposition = mainCompositionInst
         
-//        let timer = Observable<Int>.interval(0.1, scheduler: MainScheduler.instance)
-//        SVProgressHUD.setDefaultMaskType(.Clear)
-//        let disposable = timer.subscribeNext { _ in
-//            print(exporter.progress)
-//            SVProgressHUD.showProgress(exporter.progress, status: "Cutting")
-//        }
-        
-        exporter.exportAsynchronouslyWithCompletionHandler { 
-            let status:AVAssetExportSessionStatus = exporter.status
+        let progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(refreshProgress), userInfo: nil, repeats: true)
+        exportSession.exportAsynchronouslyWithCompletionHandler { 
+            let status:AVAssetExportSessionStatus = exportSession.status
+            progressTimer.invalidate()
             switch status {
             case .Failed:
                 dispatch_async(dispatch_get_main_queue(), {
-                    
-                    SVProgressHUD.showErrorWithStatus(exporter.error!.description)
-                    print(exporter.error!.description)
+                    SVProgressHUD.showErrorWithStatus(exportSession.error!.description)
+                    print(exportSession.error!.description)
                 })
             case .Cancelled:
                 print("Cancel")
             case .Completed:
                 print("completed")
                 dispatch_async(dispatch_get_main_queue(), {
-                    
                     SVProgressHUD.dismiss()
                     let movieURL = NSURL.fileURLWithPath(self.tempVideoPath)
-                                        let s = NSSelectorFromString("video:didFinishSavingWithError:contextInfo:")
-                    
+                    let s = NSSelectorFromString("video:didFinishSavingWithError:contextInfo:")
                     let avvc = AVPlayerViewController()
                     avvc.player = AVPlayer(URL: movieURL)
                     self.presentViewController(avvc, animated: true, completion: nil)
-                    
-                    
-                                        SVProgressHUD.showWithStatus("Saving...")
-                                        UISaveVideoAtPathToSavedPhotosAlbum(movieURL.relativePath!, self, s, nil)
+                    SVProgressHUD.showWithStatus("Saving...")
+                    UISaveVideoAtPathToSavedPhotosAlbum(movieURL.relativePath!, self, s, nil)
                 })
-                
-                
-                
-                
             default: "Never enter into status"
             }
         }
-        
-        
-        
+    }
+    
+    func refreshProgress() {
+        guard let p = exportSession?.progress else {
+            return
+        }
+        SVProgressHUD.showProgress(p, status: "Cutting")
     }
 
     func applyVideoEffects(composition:AVMutableVideoComposition, size:CGSize) {
