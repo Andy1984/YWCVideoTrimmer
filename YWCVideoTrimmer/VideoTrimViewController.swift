@@ -222,6 +222,29 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
     
     func videoOutput() {
         
+        self.deleteTempFile()
+        
+        let manager = VideoTrimManager()
+        manager.startTime = NSTimeInterval(self.startTime)
+        manager.endTime = NSTimeInterval(self.endTime)
+        manager.asset = self.asset
+        manager.outputURL = NSURL.fileURLWithPath(self.tempVideoPath)
+        manager.exportAsynchronouslyWithCompletionHandler = {
+            let movieURL = NSURL.fileURLWithPath(self.tempVideoPath)
+            let avvc = AVPlayerViewController()
+            avvc.player = AVPlayer(URL: movieURL)
+            self.presentViewController(avvc, animated: true, completion: nil)
+            
+        }
+        manager.trimOriginalAspectRatio()
+        
+        
+        return
+        
+        
+        
+        
+        
         let method: TrimVideoMethod = .CropSquare
         
         
