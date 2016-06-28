@@ -223,195 +223,239 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
     func videoOutput() {
         
         self.deleteTempFile()
+        //original
+//        let startCMT = CMTimeMake(Int64(self.startTime * 1000000), 1000000)
+//        let durationCMT = CMTimeMake(Int64((self.endTime - self.startTime) * 1000000), 1000000)
+//        let timeRange = CMTimeRangeMake(startCMT, durationCMT)
+//        
+//        let manager = VideoTrimManager()
+//        manager.timeRange = timeRange
+//        manager.asset = self.asset
+//        manager.outputURL = NSURL.fileURLWithPath(self.tempVideoPath)
+//        manager.exportAsynchronouslyWithCompletionHandler = {
+//            dispatch_async(dispatch_get_main_queue(), { 
+//                let movieURL = NSURL.fileURLWithPath(self.tempVideoPath)
+//                let avvc = AVPlayerViewController()
+//                avvc.player = AVPlayer(URL: movieURL)
+//                self.presentViewController(avvc, animated: true, completion: nil)
+//            })
+//        }
+////        manager.trimOriginalAspectRatio()
+//        manager.trimCropSquare()
+//        return
+        
+        
+        //Crop
+//        let startCMT = CMTimeMake(Int64(self.startTime * 1000000), 1000000)
+//        let durationCMT = CMTimeMake(Int64((self.endTime - self.startTime) * 1000000), 1000000)
+//        let timeRange = CMTimeRangeMake(startCMT, durationCMT)
+//        
+//        let manager = VideoTrimManager()
+//        manager.playerScrollView = self.playerScrollView
+//        manager.timeRange = timeRange
+//        manager.asset = self.asset
+//        manager.outputURL = NSURL.fileURLWithPath(self.tempVideoPath)
+//        manager.exportAsynchronouslyWithCompletionHandler = {
+//            dispatch_async(dispatch_get_main_queue(), {
+//                let movieURL = NSURL.fileURLWithPath(self.tempVideoPath)
+//                let avvc = AVPlayerViewController()
+//                avvc.player = AVPlayer(URL: movieURL)
+//                self.presentViewController(avvc, animated: true, completion: nil)
+//            })
+//        }
+//        manager.trimCropSquare()
+//        return
+        
+        //Fill
+        let startCMT = CMTimeMake(Int64(self.startTime * 1000000), 1000000)
+        let durationCMT = CMTimeMake(Int64((self.endTime - self.startTime) * 1000000), 1000000)
+        let timeRange = CMTimeRangeMake(startCMT, durationCMT)
         
         let manager = VideoTrimManager()
-        manager.startTime = NSTimeInterval(self.startTime)
-        manager.endTime = NSTimeInterval(self.endTime)
+        manager.timeRange = timeRange
         manager.asset = self.asset
         manager.outputURL = NSURL.fileURLWithPath(self.tempVideoPath)
+        manager.backgroundLayerImage = self.backgroundLayerImage
         manager.exportAsynchronouslyWithCompletionHandler = {
-            let movieURL = NSURL.fileURLWithPath(self.tempVideoPath)
-            let avvc = AVPlayerViewController()
-            avvc.player = AVPlayer(URL: movieURL)
-            self.presentViewController(avvc, animated: true, completion: nil)
-            
+            dispatch_async(dispatch_get_main_queue(), {
+                let movieURL = NSURL.fileURLWithPath(self.tempVideoPath)
+                let avvc = AVPlayerViewController()
+                avvc.player = AVPlayer(URL: movieURL)
+                self.presentViewController(avvc, animated: true, completion: nil)
+            })
         }
-        manager.trimOriginalAspectRatio()
-        
-        
+        manager.trimFillSquare()
         return
         
         
         
         
         
-        let method: TrimVideoMethod = .CropSquare
-        
-        
-        let startCMT = CMTimeMake(Int64(self.startTime * 1000000), 1000000)
-        let durationCMT = CMTimeMake(Int64((self.endTime - self.startTime) * 1000000), 1000000)
-        let timeRange = CMTimeRangeMake(startCMT, durationCMT)
-        
-        
-        // 1 - Early exit if there's no video file selected
-        if self.asset == nil {
-            SVProgressHUD.showErrorWithStatus("No video asset")
-            return
-        }
-        
-        // 2 - Create AVMutableComposition object. This object will hold your AVMutableCompositionTrack instances.
-        let mixComposition = AVMutableComposition()
-        
-        // 3 - Video track
-        // Guard let, because there must be videoTrack, or it is not a video
-        guard let videoTrack: AVAssetTrack = self.asset.tracksWithMediaType(AVMediaTypeVideo).first else {
-            SVProgressHUD.showErrorWithStatus("Get video track error")
-            return
-        }
-        let videoCompositionTrack: AVMutableCompositionTrack = mixComposition.addMutableTrackWithMediaType(AVMediaTypeVideo, preferredTrackID: kCMPersistentTrackID_Invalid)
-        do {
-            try videoCompositionTrack.insertTimeRange(timeRange, ofTrack: videoTrack, atTime: kCMTimeZero)
-            
-        } catch {
-            SVProgressHUD.showErrorWithStatus("Get videoCompositionTrack error")
-            return
-        }
-        
-        // 3.0 - Audio track
-        // If let, because there might be no audioTrack
-        if let audioTrack = self.asset.tracksWithMediaType(AVMediaTypeAudio).first {
-            let audioCompositionTrack = mixComposition.addMutableTrackWithMediaType(AVMediaTypeAudio, preferredTrackID: kCMPersistentTrackID_Invalid)
-            do {
-                try audioCompositionTrack.insertTimeRange(timeRange, ofTrack: audioTrack, atTime: kCMTimeZero)
-            } catch {
-                SVProgressHUD.showErrorWithStatus("There is audio track, but cannot insert")
-                return
-            }
-        }
-        
-        // 3.1 - Create AVMutableVideoCompositionInstruction
-        let mainInstruction = AVMutableVideoCompositionInstruction()
-        mainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, durationCMT)
-        
-        
-        // 3.2 - Create an AVMutableVideoCompositionLayerInstruction for the video track and fix the orientation.
-        let videoLayerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: videoTrack)
-        var isVideoAssetPortrait = false
-        let videoTransform = videoTrack.preferredTransform
-        if (videoTransform.a == 0 && videoTransform.b == 1.0 && videoTransform.c == -1.0 && videoTransform.d == 0) {
-            isVideoAssetPortrait = true;
-        }
-        if (videoTransform.a == 0 && videoTransform.b == -1.0 && videoTransform.c == 1.0 && videoTransform.d == 0) {
-            isVideoAssetPortrait = true;
-        }
-        
-        
-        var naturalSize:CGSize;
-        if isVideoAssetPortrait == true {
-            naturalSize = CGSizeMake(videoTrack.naturalSize.height, videoTrack.naturalSize.width)
-        } else {
-            naturalSize = videoTrack.naturalSize
-        }
-        var transform: CGAffineTransform!
-        if method == .FillSquare {
-            // Monkey patch
-            if isVideoAssetPortrait == true {
-                let scale = naturalSize.height / naturalSize.width
-                transform = CGAffineTransformMakeScale(scale, 1)
-                transform = CGAffineTransformConcat(videoTrack.preferredTransform, transform)
-            } else {
-                let scale = naturalSize.width / naturalSize.height
-                transform = CGAffineTransformMakeScale(1, scale)
-            }
-        } else if method == .CropSquare {
-            
-            let offset = self.playerScrollView.contentOffset
-            let offsetX = offset.x
-//            let offsetY = offset.y
-            
-            if isVideoAssetPortrait == true {
-                //瞎写的
-                let scale = naturalSize.height / naturalSize.width
-                transform = CGAffineTransformMakeScale(scale, 1)
-                transform = CGAffineTransformConcat(videoTrack.preferredTransform, transform)
-            } else {
-                let scale = naturalSize.width / naturalSize.height
-                transform = CGAffineTransformMakeScale(scale, scale);
-                let translationX = -offsetX * naturalSize.width/self.playerScrollView.width
-                let translation = CGAffineTransformMakeTranslation(translationX, 0)
-                
-                transform = CGAffineTransformConcat(transform, translation)
-            }
-        } else if method == .Original {
-            
-        }
         
         
         
         
-        
-        videoLayerInstruction.setTransform(transform, atTime: kCMTimeZero)
-        //opacity不应该是1.0吗
-        videoLayerInstruction.setOpacity(0.0, atTime: self.asset.duration)
-        
-        // 3.3 - Add instructions
-        mainInstruction.layerInstructions = [videoLayerInstruction]
-        
-        let mainCompositionInst = AVMutableVideoComposition()
-        let squareLength = max(naturalSize.width, naturalSize.height)
-        let squareSize = CGSizeMake(squareLength, squareLength)
-        mainCompositionInst.renderSize = squareSize
-        mainCompositionInst.instructions = [mainInstruction]
-        mainCompositionInst.frameDuration = CMTimeMake(1, 30)
-        
-        if method == .FillSquare {
-            self.applyVideoEffects(mainCompositionInst, size: naturalSize)
-        } else if method == .CropSquare {
-
-        } else if method == .Original {
-            
-        }
-        
-        // 4 - Get path
-        deleteTempFile()
-        
-        let fileURL = NSURL.fileURLWithPath(self.tempVideoPath)
-        
-        guard let exportSession = AVAssetExportSession(asset: mixComposition, presetName: AVAssetExportPresetMediumQuality) else {
-            SVProgressHUD.showErrorWithStatus("Create exportSession fail")
-            return
-        }
-        self.exportSession = exportSession
-        exportSession.outputURL = fileURL
-        exportSession.outputFileType = AVFileTypeQuickTimeMovie
-        exportSession.videoComposition = mainCompositionInst
-        exportSession.shouldOptimizeForNetworkUse = true
-        exportSession.videoComposition = mainCompositionInst
-        
-        let progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(refreshProgress), userInfo: nil, repeats: true)
-        exportSession.exportAsynchronouslyWithCompletionHandler { 
-            let status:AVAssetExportSessionStatus = exportSession.status
-            progressTimer.invalidate()
-            switch status {
-            case .Failed:
-                dispatch_async(dispatch_get_main_queue(), {
-                    SVProgressHUD.showErrorWithStatus(exportSession.error!.description)
-                    print(exportSession.error!.description)
-                })
-            case .Cancelled:
-                print("Cancel")
-            case .Completed:
-                print("completed")
-                dispatch_async(dispatch_get_main_queue(), {
-                    SVProgressHUD.dismiss()
-                    let movieURL = NSURL.fileURLWithPath(self.tempVideoPath)
-                    let avvc = AVPlayerViewController()
-                    avvc.player = AVPlayer(URL: movieURL)
-                    self.presentViewController(avvc, animated: true, completion: nil)
-                })
-            default: "Never enter into status"
-            }
-        }
+//        let method: TrimVideoMethod = .CropSquare
+//
+//        // 1 - Early exit if there's no video file selected
+//        if self.asset == nil {
+//            SVProgressHUD.showErrorWithStatus("No video asset")
+//            return
+//        }
+//        
+//        // 2 - Create AVMutableComposition object. This object will hold your AVMutableCompositionTrack instances.
+//        let mixComposition = AVMutableComposition()
+//        
+//        // 3 - Video track
+//        // Guard let, because there must be videoTrack, or it is not a video
+//        guard let videoTrack: AVAssetTrack = self.asset.tracksWithMediaType(AVMediaTypeVideo).first else {
+//            SVProgressHUD.showErrorWithStatus("Get video track error")
+//            return
+//        }
+//        let videoCompositionTrack: AVMutableCompositionTrack = mixComposition.addMutableTrackWithMediaType(AVMediaTypeVideo, preferredTrackID: kCMPersistentTrackID_Invalid)
+//        do {
+//            try videoCompositionTrack.insertTimeRange(timeRange, ofTrack: videoTrack, atTime: kCMTimeZero)
+//            
+//        } catch {
+//            SVProgressHUD.showErrorWithStatus("Get videoCompositionTrack error")
+//            return
+//        }
+//        
+//        // 3.0 - Audio track
+//        // If let, because there might be no audioTrack
+//        if let audioTrack = self.asset.tracksWithMediaType(AVMediaTypeAudio).first {
+//            let audioCompositionTrack = mixComposition.addMutableTrackWithMediaType(AVMediaTypeAudio, preferredTrackID: kCMPersistentTrackID_Invalid)
+//            do {
+//                try audioCompositionTrack.insertTimeRange(timeRange, ofTrack: audioTrack, atTime: kCMTimeZero)
+//            } catch {
+//                SVProgressHUD.showErrorWithStatus("There is audio track, but cannot insert")
+//                return
+//            }
+//        }
+//        
+//        // 3.1 - Create AVMutableVideoCompositionInstruction
+//        let mainInstruction = AVMutableVideoCompositionInstruction()
+//        mainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, durationCMT)
+//        
+//        
+//        // 3.2 - Create an AVMutableVideoCompositionLayerInstruction for the video track and fix the orientation.
+//        let videoLayerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: videoTrack)
+//        var isVideoAssetPortrait = false
+//        let videoTransform = videoTrack.preferredTransform
+//        if (videoTransform.a == 0 && videoTransform.b == 1.0 && videoTransform.c == -1.0 && videoTransform.d == 0) {
+//            isVideoAssetPortrait = true;
+//        }
+//        if (videoTransform.a == 0 && videoTransform.b == -1.0 && videoTransform.c == 1.0 && videoTransform.d == 0) {
+//            isVideoAssetPortrait = true;
+//        }
+//        
+//        
+//        var naturalSize:CGSize;
+//        if isVideoAssetPortrait == true {
+//            naturalSize = CGSizeMake(videoTrack.naturalSize.height, videoTrack.naturalSize.width)
+//        } else {
+//            naturalSize = videoTrack.naturalSize
+//        }
+//        var transform: CGAffineTransform!
+//        if method == .FillSquare {
+//            // Monkey patch
+//            if isVideoAssetPortrait == true {
+//                let scale = naturalSize.height / naturalSize.width
+//                transform = CGAffineTransformMakeScale(scale, 1)
+//                transform = CGAffineTransformConcat(videoTrack.preferredTransform, transform)
+//            } else {
+//                let scale = naturalSize.width / naturalSize.height
+//                transform = CGAffineTransformMakeScale(1, scale)
+//            }
+//        } else if method == .CropSquare {
+//            
+//            let offset = self.playerScrollView.contentOffset
+//            let offsetX = offset.x
+////            let offsetY = offset.y
+//            
+//            if isVideoAssetPortrait == true {
+//                //瞎写的
+//                let scale = naturalSize.height / naturalSize.width
+//                transform = CGAffineTransformMakeScale(scale, 1)
+//                transform = CGAffineTransformConcat(videoTrack.preferredTransform, transform)
+//            } else {
+//                let scale = naturalSize.width / naturalSize.height
+//                transform = CGAffineTransformMakeScale(scale, scale);
+//                let translationX = -offsetX * naturalSize.width/self.playerScrollView.width
+//                let translation = CGAffineTransformMakeTranslation(translationX, 0)
+//                
+//                transform = CGAffineTransformConcat(transform, translation)
+//            }
+//        } else if method == .Original {
+//            
+//        }
+//        
+//        
+//        
+//        
+//        
+//        videoLayerInstruction.setTransform(transform, atTime: kCMTimeZero)
+//        //opacity不应该是1.0吗
+//        videoLayerInstruction.setOpacity(0.0, atTime: self.asset.duration)
+//        
+//        // 3.3 - Add instructions
+//        mainInstruction.layerInstructions = [videoLayerInstruction]
+//        
+//        let mainCompositionInst = AVMutableVideoComposition()
+//        let squareLength = max(naturalSize.width, naturalSize.height)
+//        let squareSize = CGSizeMake(squareLength, squareLength)
+//        mainCompositionInst.renderSize = squareSize
+//        mainCompositionInst.instructions = [mainInstruction]
+//        mainCompositionInst.frameDuration = CMTimeMake(1, 30)
+//        
+//        if method == .FillSquare {
+//            self.applyVideoEffects(mainCompositionInst, size: naturalSize)
+//        } else if method == .CropSquare {
+//
+//        } else if method == .Original {
+//            
+//        }
+//        
+//        // 4 - Get path
+//        deleteTempFile()
+//        
+//        let fileURL = NSURL.fileURLWithPath(self.tempVideoPath)
+//        
+//        guard let exportSession = AVAssetExportSession(asset: mixComposition, presetName: AVAssetExportPresetMediumQuality) else {
+//            SVProgressHUD.showErrorWithStatus("Create exportSession fail")
+//            return
+//        }
+//        self.exportSession = exportSession
+//        exportSession.outputURL = fileURL
+//        exportSession.outputFileType = AVFileTypeQuickTimeMovie
+//        exportSession.videoComposition = mainCompositionInst
+//        exportSession.shouldOptimizeForNetworkUse = true
+//        exportSession.videoComposition = mainCompositionInst
+//        
+//        let progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(refreshProgress), userInfo: nil, repeats: true)
+//        exportSession.exportAsynchronouslyWithCompletionHandler { 
+//            let status:AVAssetExportSessionStatus = exportSession.status
+//            progressTimer.invalidate()
+//            switch status {
+//            case .Failed:
+//                dispatch_async(dispatch_get_main_queue(), {
+//                    SVProgressHUD.showErrorWithStatus(exportSession.error!.description)
+//                    print(exportSession.error!.description)
+//                })
+//            case .Cancelled:
+//                print("Cancel")
+//            case .Completed:
+//                print("completed")
+//                dispatch_async(dispatch_get_main_queue(), {
+//                    SVProgressHUD.dismiss()
+//                    let movieURL = NSURL.fileURLWithPath(self.tempVideoPath)
+//                    let avvc = AVPlayerViewController()
+//                    avvc.player = AVPlayer(URL: movieURL)
+//                    self.presentViewController(avvc, animated: true, completion: nil)
+//                })
+//            default: "Never enter into status"
+//            }
+//        }
     }
     
     func refreshProgress() {
