@@ -20,11 +20,11 @@ class VideoTrimManager {
     
     var outputURL: NSURL!
     var exportSession: AVAssetExportSession?
-    lazy var backgroundLayerImage: UIImage = UIImage(named: "pattern_0")!
+    lazy var backgroundLayerImage: UIImage = UIImage(named: "pattern_0.jpg")!
     weak var playerScrollView: UIScrollView?
     var presetName: String = AVAssetExportPresetHighestQuality
     var outputFileType: String = AVFileTypeQuickTimeMovie
-    var exportAsynchronouslyWithCompletionHandler:(() -> Void) = {}
+    var completionHandler:((AVAssetExportSession!) -> Void) = { _ in}
     var unexpectedStatus:((String) -> Void) = {info in print(info)}
     
     enum TrimVideoMode {
@@ -39,7 +39,7 @@ class VideoTrimManager {
         exportSession?.outputFileType = AVFileTypeQuickTimeMovie
         exportSession?.timeRange = timeRange
         exportSession?.exportAsynchronouslyWithCompletionHandler({
-            self.exportAsynchronouslyWithCompletionHandler()
+            self.completionHandler(exportSession)
         })
     }
     
@@ -128,7 +128,7 @@ class VideoTrimManager {
         exportSession.videoComposition = mainCompositionInst
         exportSession.shouldOptimizeForNetworkUse = true
         exportSession.exportAsynchronouslyWithCompletionHandler {
-            self.exportAsynchronouslyWithCompletionHandler()
+            self.completionHandler(exportSession)
         }
     }
     
@@ -226,7 +226,7 @@ class VideoTrimManager {
         exportSession.videoComposition = mainCompositionInst
         exportSession.shouldOptimizeForNetworkUse = true
         exportSession.exportAsynchronouslyWithCompletionHandler {
-            self.exportAsynchronouslyWithCompletionHandler()
+            self.completionHandler(exportSession)
         }
         
     }
