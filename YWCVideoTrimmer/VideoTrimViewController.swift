@@ -222,20 +222,24 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         case CropSquare
     }
     
-    var progressTimer: NSTimer!
     var manager: VideoTrimManager!
     
-    func videoOutput() {
-        
-        progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(refreshProgress), userInfo: nil, repeats: true)
-        
+    func videoOutput(sender: UIBarButtonItem) {
+        sender.enabled = false
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
+        dispatch_after(delayTime, dispatch_get_main_queue()) {
+            sender.enabled = true
+        }
         self.deleteTempFile()
+        let progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(refreshProgress), userInfo: nil, repeats: true)
+        
+        
         let startCMT = CMTimeMake(Int64(self.startTime * 1000000), 1000000)
         let durationCMT = CMTimeMake(Int64((self.endTime - self.startTime) * 1000000), 1000000)
         let timeRange = CMTimeRangeMake(startCMT, durationCMT)
         let completionHandler: ((AVAssetExportSession!) -> Void) = { session in
              dispatch_async(dispatch_get_main_queue(), {
-                self.progressTimer.invalidate()
+                progressTimer.invalidate()
                 SVProgressHUD.dismiss()
                 guard let status: AVAssetExportSessionStatus = session.status else {
                     return
