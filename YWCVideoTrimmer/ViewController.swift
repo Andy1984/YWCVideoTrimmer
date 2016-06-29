@@ -13,30 +13,15 @@ import AVFoundation
 
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    
-    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
-//        guard let path = NSBundle.mainBundle().pathForResource("launchScreen", ofType: "mp4") else {
-//            print("path is nil")
-//            return
-//        }
-//        let URL = NSURL.fileURLWithPath(path)
-//        let asset:AVURLAsset = AVURLAsset(URL: URL)
-//        let trimVC = TrimViewController()
-//        trimVC.asset = asset
-//        let navi = UINavigationController(rootViewController: trimVC)
-//        presentViewController(navi, animated: true, completion: nil)
-        
         let cutVC = VideoTrimViewController()
         let navi = UINavigationController(rootViewController: cutVC)
         self.presentViewController(navi, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
-        
+        super.viewDidLoad()
     }
     
     @IBAction func pickVideo(sender: AnyObject) {
@@ -63,15 +48,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
-    
-    @IBAction func realTimeFilter(sender: AnyObject) {
-        
-        
-        
-        let vc = RealTimeFilterViewController()
-        presentViewController(vc, animated: true, completion: nil)
-    }
-        
+
         
         
         

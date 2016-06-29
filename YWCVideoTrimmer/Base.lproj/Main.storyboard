@@ -24,13 +24,6 @@
                                     <action selector="pickVideo:" destination="BYZ-38-t0r" eventType="touchUpInside" id="r4j-J0-ekH"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O7f-EK-G1c">
-                                <rect key="frame" x="46" y="77" width="98" height="30"/>
-                                <state key="normal" title="RealTimeFilter"/>
-                                <connections>
-                                    <action selector="realTimeFilter:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JoK-5r-pE3"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
