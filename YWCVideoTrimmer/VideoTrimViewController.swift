@@ -263,8 +263,10 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
             manager.asset = self.asset
             manager.outputURL = NSURL.fileURLWithPath(self.tempVideoPath)
             manager.completionHandler = completionHandler
+            manager.unexpectedStatus = { info in
+                SVProgressHUD.showErrorWithStatus(info)
+            }
             manager.trimOriginalAspectRatio()
-            
             
         case .CropSquare:
             let manager = VideoTrimManager()
@@ -274,6 +276,9 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
             manager.asset = self.asset
             manager.outputURL = NSURL.fileURLWithPath(self.tempVideoPath)
             manager.completionHandler = completionHandler
+            manager.unexpectedStatus = { info in
+                SVProgressHUD.showErrorWithStatus(info)
+            }
             manager.trimCropSquare()
             
         case .FillSquare:
@@ -284,6 +289,9 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
             manager.outputURL = NSURL.fileURLWithPath(self.tempVideoPath)
             manager.completionHandler = completionHandler
             manager.backgroundLayerImage = self.backgroundLayerImage
+            manager.unexpectedStatus = { info in
+                SVProgressHUD.showErrorWithStatus(info)
+            }
             manager.trimFillSquare()
         }
     }
