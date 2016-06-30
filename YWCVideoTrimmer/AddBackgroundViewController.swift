@@ -17,9 +17,22 @@ class AddBackgroundViewController: UIViewController, UICollectionViewDelegate, U
         super.viewDidLoad()
         self.view.bounds = CGRectMake(0 , 0, ScreenWidth, ScreenHeight - ScreenWidth - 44)
         self.view.backgroundColor = UIColor.whiteColor()
-        for i in 0...6 {
-            let name = "pattern_" + "\(i)" + ".jpg"
-            let image = UIImage(named: name)
+//        for i in 0...6 {
+//            let name = "pattern_" + "\(i)" + ".jpg"
+//            let image = UIImage(named: name)
+//            images.append(image!)
+//        }
+        
+        let black = createImage(UIColor.blackColor(), size: CGSizeMake(750, 750))
+        let white = createImage(UIColor.whiteColor(), size: CGSizeMake(750, 750))
+        images.append(black)
+        images.append(white)
+        
+        let manager = NSFileManager.defaultManager()
+        let imagesPath = NSBundle.mainBundle().pathForResource("AddBackground", ofType: nil)
+        let imageNames = try! manager.contentsOfDirectoryAtPath(imagesPath!)
+        imageNames.forEach { name in
+            let image = UIImage(contentsOfFile: imagesPath! + "/" + name)
             images.append(image!)
         }
         

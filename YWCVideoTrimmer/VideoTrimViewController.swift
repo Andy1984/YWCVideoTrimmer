@@ -27,7 +27,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
     var playerScrollView:UIScrollView!
     var playerLayer:CALayer!
     var addBackgroundViewController:AddBackgroundViewController!
-    var backgroundLayerImage:UIImage = UIImage(named: "pattern_0.jpg")!
+    var backgroundLayerImage:UIImage = createImage(UIColor.blackColor(), size: CGSizeMake(750,750))
     enum VideoTrim {
         case OriginalAspectRatio
         case FillSquare
