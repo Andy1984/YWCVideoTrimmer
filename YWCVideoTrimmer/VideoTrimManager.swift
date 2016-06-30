@@ -41,14 +41,16 @@ class VideoTrimManager {
         // Guard let, because there must be videoTrack, or it is not a video
         guard let videoTrack: AVAssetTrack = self.asset.tracksWithMediaType(AVMediaTypeVideo).first else {
             //            SVProgressHUD.showErrorWithStatus("Get video track error")
-            unexpectedStatus("Get video track error" + #file + String(#line))
+            unexpectedStatus("Get video track error")
+            print("unexpectedStatus:  " + #file + String(#line))
             return
         }
         let videoCompositionTrack: AVMutableCompositionTrack = mixComposition.addMutableTrackWithMediaType(AVMediaTypeVideo, preferredTrackID: kCMPersistentTrackID_Invalid)
         do {
             try videoCompositionTrack.insertTimeRange(timeRange, ofTrack: videoTrack, atTime: kCMTimeZero)
         } catch {
-            unexpectedStatus("Get videoCompositionTrack error" + #file + String(#line))
+            unexpectedStatus("Get videoCompositionTrack error")
+            print("unexpectedStatus:  " + #file + String(#line))
             return
         }
         
@@ -59,7 +61,8 @@ class VideoTrimManager {
             do {
                 try audioCompositionTrack.insertTimeRange(timeRange, ofTrack: audioTrack, atTime: kCMTimeZero)
             } catch {
-                unexpectedStatus("There is audio track, but cannot insert" + #file + String(#line))
+                unexpectedStatus("There is audio track, but cannot insert")
+                print("unexpectedStatus:  " + #file + String(#line))
                 return
             }
         }
@@ -110,7 +113,8 @@ class VideoTrimManager {
         mainCompositionInst.frameDuration = CMTimeMake(1, 30)
         self.applyVideoEffects(mainCompositionInst, size: naturalSize)
         guard let exportSession = AVAssetExportSession(asset: mixComposition, presetName: AVAssetExportPresetMediumQuality) else {
-            unexpectedStatus("Create exportSession fail" + #file + String(#line))
+            unexpectedStatus("Create exportSession fail")
+            print("unexpectedStatus:  " + #file + String(#line))
             return
         }
         self.exportSession = exportSession
@@ -129,15 +133,16 @@ class VideoTrimManager {
         // 3 - Video track
         // Guard let, because there must be videoTrack, or it is not a video
         guard let videoTrack: AVAssetTrack = self.asset.tracksWithMediaType(AVMediaTypeVideo).first else {
-//            SVProgressHUD.showErrorWithStatus("Get video track error")
-            unexpectedStatus("Get video track error" + #file + String(#line))
+            unexpectedStatus("Get video track error")
+            print("unexpectedStatus:  " + #file + String(#line))
             return
         }
         let videoCompositionTrack: AVMutableCompositionTrack = mixComposition.addMutableTrackWithMediaType(AVMediaTypeVideo, preferredTrackID: kCMPersistentTrackID_Invalid)
         do {
             try videoCompositionTrack.insertTimeRange(timeRange, ofTrack: videoTrack, atTime: kCMTimeZero)
         } catch {
-            unexpectedStatus("Get videoCompositionTrack error" + #file + String(#line))
+            unexpectedStatus("Get videoCompositionTrack error")
+            print("unexpectedStatus:  " + #file + String(#line))
             return
         }
         
@@ -148,7 +153,8 @@ class VideoTrimManager {
             do {
                 try audioCompositionTrack.insertTimeRange(timeRange, ofTrack: audioTrack, atTime: kCMTimeZero)
             } catch {
-                unexpectedStatus("There is audio track, but cannot insert" + #file + String(#line))
+                unexpectedStatus("There is audio track, but cannot insert")
+                print("unexpectedStatus:  " + #file + String(#line))
                 return
             }
         }
@@ -208,7 +214,8 @@ class VideoTrimManager {
         mainCompositionInst.instructions = [mainInstruction]
         mainCompositionInst.frameDuration = CMTimeMake(1, 30)
         guard let exportSession = AVAssetExportSession(asset: mixComposition, presetName: AVAssetExportPresetMediumQuality) else {
-            unexpectedStatus("Create exportSession fail" + #file + String(#line))
+            unexpectedStatus("Create exportSession fail")
+            print("unexpectedStatus:  " + #file + String(#line))
             return
         }
         self.exportSession = exportSession
