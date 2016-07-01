@@ -77,22 +77,23 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         self.addChildViewController(self.addBackgroundViewController)
         self.view.addSubview(self.addBackgroundViewController.view)
         addBackgroundViewController.dismiss()
-        
+        // backgroundImageLayer is strong referenced by the block `didSelectBackground`, so it will not dealloc when `viewDidLoad` finished
+        let backgroundImageLayer: CALayer = CALayer()
         addBackgroundViewController.didSelectBackground = { [weak self] image in
             guard self != nil else {
                 return
             }
             self!.backgroundLayerImage = image
-            self!.backgroundImageLayer.contents =  image.CGImage
-            self!.backgroundImageLayer.frame = self!.playerLayer.bounds
-            if self!.playerLayer.sublayers?.contains(self!.backgroundImageLayer) == false {
-                self!.playerLayer.insertSublayer(self!.backgroundImageLayer, atIndex: 0)
+            backgroundImageLayer.contents =  image.CGImage
+            backgroundImageLayer.frame = self!.playerLayer.bounds
+            if self!.playerLayer.sublayers?.contains(backgroundImageLayer) == false {
+                self!.playerLayer.insertSublayer(backgroundImageLayer, atIndex: 0)
             }
         }
         SVProgressHUD.setDefaultMaskType(SVProgressHUDMaskType.Clear)
     }
     
-    var backgroundImageLayer: CALayer = CALayer()
+    
     
     func newTrimView() {
         let margin: CGFloat = 15
