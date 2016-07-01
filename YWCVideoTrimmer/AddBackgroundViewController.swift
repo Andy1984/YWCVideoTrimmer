@@ -13,15 +13,11 @@ class AddBackgroundViewController: UIViewController, UICollectionViewDelegate, U
     
     var didSelectBackground:(UIImage -> Void) = {_ in }
     var images:[UIImage] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.bounds = CGRectMake(0 , 0, ScreenWidth, ScreenHeight - ScreenWidth - 44)
         self.view.backgroundColor = UIColor.whiteColor()
-//        for i in 0...6 {
-//            let name = "pattern_" + "\(i)" + ".jpg"
-//            let image = UIImage(named: name)
-//            images.append(image!)
-//        }
         
         let black = createImage(UIColor.blackColor(), size: CGSizeMake(750, 750))
         let white = createImage(UIColor.whiteColor(), size: CGSizeMake(750, 750))
