@@ -1,9 +1,7 @@
 # YWCVideoTrimmer
---
-Mimic video trimming of Miaopai. 
+A completed iOS demo of video trimming, which is a mimiccy of of **Flash Show**, namely **秒拍**. 
 
 ### Usage of `VideoTrimView`
-
 ```
 trimView = VideoTrimView(frame: frame, player: self.player)
 self.view.addSubview(trimView)
@@ -21,7 +19,7 @@ trimView.delegate = self
 
 
 ### Usage of `VideoTrimManager`
-##### Simple trim video with the original aspect ratio
+#### Simple trim video with the original aspect ratio
 ```
 
 let manager = VideoTrimManager()
