@@ -67,7 +67,7 @@ manager.unexpectedStatus = { info in
 }
 manager.trimFillSquare()
 ```
-##### If you need progress
+##### If you need a progress
 ```
 let progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(refreshProgress), userInfo: nil, repeats: true)
 func refreshProgress() {
@@ -77,4 +77,5 @@ func refreshProgress() {
     SVProgressHUD.showProgress(p)
 }
 ```
+You can see code above in the demo. It is believed that you do understand `SVProgressHUD` is needed to `pod install` and `import`. 
 
