@@ -244,13 +244,13 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         let progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(refreshProgress), userInfo: nil, repeats: true)
         
         
-        let startCMT = CMTimeMake(Int64(self.startTime * 1000000), 1000000)
-        let durationCMT = CMTimeMake(Int64((self.endTime - self.startTime) * 1000000), 1000000)
+        let startCMT = CMTimeMake(Int64(self.startTime * 1000), 1000)
+        let durationCMT = CMTimeMake(Int64((self.endTime - self.startTime) * 1000), 1000)
         let timeRange = CMTimeRangeMake(startCMT, durationCMT)
         let completionHandler: ((AVAssetExportSession!) -> Void) = { session in
              dispatch_async(dispatch_get_main_queue(), {
-                progressTimer.invalidate()
                 SVProgressHUD.dismiss()
+                progressTimer.invalidate()
                 guard let status: AVAssetExportSessionStatus = session.status else {
                     return
                 }
@@ -260,6 +260,14 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
                     let avvc = AVPlayerViewController()
                     avvc.player = AVPlayer(URL: movieURL)
                     self.presentViewController(avvc, animated: true, completion: nil)
+                case .Failed:
+                    if let error = session.error {
+                        print(error.description)
+                        SVProgressHUD.showErrorWithStatus(error.description)
+                        dispatch_after(2, dispatch_get_main_queue(), { 
+                            SVProgressHUD.dismiss()
+                        })
+                    }
                 default:break
                 }
             })
