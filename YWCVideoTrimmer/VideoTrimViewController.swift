@@ -248,12 +248,13 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         let durationCMT = CMTimeMake(Int64((self.endTime - self.startTime) * 1000), 1000)
         let timeRange = CMTimeRangeMake(startCMT, durationCMT)
         let completionHandler: ((AVAssetExportSession!) -> Void) = { session in
-             dispatch_async(dispatch_get_main_queue(), {
+            guard let status: AVAssetExportSessionStatus = session.status else {
+                return
+            }
+            dispatch_async(dispatch_get_main_queue(), {
                 SVProgressHUD.dismiss()
                 progressTimer.invalidate()
-                guard let status: AVAssetExportSessionStatus = session.status else {
-                    return
-                }
+                
                 switch status {
                 case .Completed:
                     let movieURL = NSURL.fileURLWithPath(self.tempVideoPath)
@@ -264,7 +265,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
                     if let error = session.error {
                         print(error.description)
                         SVProgressHUD.showErrorWithStatus(error.description)
-                        dispatch_after(2, dispatch_get_main_queue(), { 
+                        dispatch_after(2, dispatch_get_main_queue(), {
                             SVProgressHUD.dismiss()
                         })
                     }
