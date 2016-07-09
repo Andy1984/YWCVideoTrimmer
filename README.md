@@ -17,7 +17,6 @@ trimView.resetSubviews()
 trimView.delegate = self
 ```
 
-
 ### Usage of `VideoTrimManager`
 #### Simple trim video with the original aspect ratio
 ```
