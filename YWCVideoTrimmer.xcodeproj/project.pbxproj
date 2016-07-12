@@ -14,12 +14,12 @@
 		1710262F1CE49EE6009A9233 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1710262E1CE49EE6009A9233 /* Assets.xcassets */; };
 		171026321CE49EE6009A9233 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 171026301CE49EE6009A9233 /* LaunchScreen.storyboard */; };
 		1726D3681CEEB62F00C8146B /* mv.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 1726D3671CEEB62F00C8146B /* mv.mp4 */; };
-		17686B841CEC63F900BE1FEA /* launchScreen.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 17686B831CEC63F900BE1FEA /* launchScreen.mp4 */; };
+		17686B841CEC63F900BE1FEA /* mxsf.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 17686B831CEC63F900BE1FEA /* mxsf.mp4 */; };
 		1796C7201CEDA256005E7250 /* AVAsset+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1796C71F1CEDA256005E7250 /* AVAsset+Extension.swift */; };
 		1796C7241CEDD43C005E7250 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1796C7231CEDD43C005E7250 /* UIView+Extension.swift */; };
 		1798275B1CE71FBF0072996D /* Tool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1798275A1CE71FBF0072996D /* Tool.swift */; };
 		17F20B9A1CEAC48600CA4BF4 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17F20B991CEAC48600CA4BF4 /* OpenGLES.framework */; };
-		E42865D21D019AED0088A10F /* mxsf.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = E42865D11D019AED0088A10F /* mxsf.mp4 */; };
+		E42865D21D019AED0088A10F /* launchScreen.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = E42865D11D019AED0088A10F /* launchScreen.mp4 */; };
 		E42CFB991D054F950040DB53 /* trim_11_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E42CFB951D054F950040DB53 /* trim_11_selected@2x.png */; };
 		E42CFB9A1D054F950040DB53 /* trim_11_unselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E42CFB961D054F950040DB53 /* trim_11_unselected@2x.png */; };
 		E42CFB9B1D054F950040DB53 /* trim_169_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E42CFB971D054F950040DB53 /* trim_169_selected@2x.png */; };
@@ -44,7 +44,7 @@
 		171026311CE49EE6009A9233 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		171026331CE49EE6009A9233 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1726D3671CEEB62F00C8146B /* mv.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = mv.mp4; sourceTree = "<group>"; };
-		17686B831CEC63F900BE1FEA /* launchScreen.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = launchScreen.mp4; sourceTree = "<group>"; };
+		17686B831CEC63F900BE1FEA /* mxsf.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = mxsf.mp4; sourceTree = "<group>"; };
 		1796C71F1CEDA256005E7250 /* AVAsset+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AVAsset+Extension.swift"; sourceTree = "<group>"; };
 		1796C7231CEDD43C005E7250 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		1798275A1CE71FBF0072996D /* Tool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tool.swift; sourceTree = "<group>"; };
@@ -52,7 +52,7 @@
 		24DF6F57B73E420BAC1D8B03 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B95D305B7E64BFCC6155A73A /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE2B564F8B3932BF0F71CDBF /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		E42865D11D019AED0088A10F /* mxsf.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = mxsf.mp4; sourceTree = "<group>"; };
+		E42865D11D019AED0088A10F /* launchScreen.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = launchScreen.mp4; sourceTree = "<group>"; };
 		E42CFB951D054F950040DB53 /* trim_11_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trim_11_selected@2x.png"; sourceTree = "<group>"; };
 		E42CFB961D054F950040DB53 /* trim_11_unselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trim_11_unselected@2x.png"; sourceTree = "<group>"; };
 		E42CFB971D054F950040DB53 /* trim_169_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trim_169_selected@2x.png"; sourceTree = "<group>"; };
@@ -112,9 +112,9 @@
 				1796C7231CEDD43C005E7250 /* UIView+Extension.swift */,
 				1796C71F1CEDA256005E7250 /* AVAsset+Extension.swift */,
 				1798275A1CE71FBF0072996D /* Tool.swift */,
-				E42865D11D019AED0088A10F /* mxsf.mp4 */,
+				E42865D11D019AED0088A10F /* launchScreen.mp4 */,
 				1726D3671CEEB62F00C8146B /* mv.mp4 */,
-				17686B831CEC63F900BE1FEA /* launchScreen.mp4 */,
+				17686B831CEC63F900BE1FEA /* mxsf.mp4 */,
 				1710262B1CE49EE6009A9233 /* Main.storyboard */,
 				E4A600741D0D330400993196 /* AddBackgroundViewController.swift */,
 				E4A600781D0D35D900993196 /* dismissButton@2x.png */,
@@ -234,11 +234,11 @@
 				E4986E391D10F1BA00804CBC /* cut_play@2x.png in Resources */,
 				1710262F1CE49EE6009A9233 /* Assets.xcassets in Resources */,
 				E42CFB991D054F950040DB53 /* trim_11_selected@2x.png in Resources */,
-				17686B841CEC63F900BE1FEA /* launchScreen.mp4 in Resources */,
+				17686B841CEC63F900BE1FEA /* mxsf.mp4 in Resources */,
 				E42CFB9C1D054F950040DB53 /* trim_169_unselected@2x.png in Resources */,
 				E4A600791D0D35D900993196 /* dismissButton@2x.png in Resources */,
 				1710262D1CE49EE6009A9233 /* Main.storyboard in Resources */,
-				E42865D21D019AED0088A10F /* mxsf.mp4 in Resources */,
+				E42865D21D019AED0088A10F /* launchScreen.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
