@@ -186,7 +186,7 @@ class VideoTrimManager {
             return
         }
         let offsetX = playerScrollView.contentOffset.x
-        //            let offsetY = playerScrollView.contentOffset.y
+        let offsetY = playerScrollView.contentOffset.y
         if isVideoAssetPortrait == true {
             //瞎写的
             let scale = naturalSize.height / naturalSize.width
