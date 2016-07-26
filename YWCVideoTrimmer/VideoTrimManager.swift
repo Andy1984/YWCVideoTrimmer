@@ -166,20 +166,23 @@ class VideoTrimManager {
         // 3.2 - Create an AVMutableVideoCompositionLayerInstruction for the video track and fix the orientation.
         let videoLayerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: videoTrack)
         var isVideoAssetPortrait = false
-        let videoTransform = videoTrack.preferredTransform
-        if (videoTransform.a == 0 && videoTransform.b == 1.0 && videoTransform.c == -1.0 && videoTransform.d == 0) {
+//        let videoTransform = videoTrack.preferredTransform
+//        if (videoTransform.a == 0 && videoTransform.b == 1.0 && videoTransform.c == -1.0 && videoTransform.d == 0) {
+//            isVideoAssetPortrait = true;
+//        }
+//        if (videoTransform.a == 0 && videoTransform.b == -1.0 && videoTransform.c == 1.0 && videoTransform.d == 0) {
+//            isVideoAssetPortrait = true;
+//        }
+        let naturalSize:CGSize = videoTrack.naturalSize
+        if naturalSize.width < naturalSize.height {
             isVideoAssetPortrait = true;
         }
-        if (videoTransform.a == 0 && videoTransform.b == -1.0 && videoTransform.c == 1.0 && videoTransform.d == 0) {
-            isVideoAssetPortrait = true;
-        }
-        
-        var naturalSize:CGSize;
-        if isVideoAssetPortrait == true {
-            naturalSize = CGSizeMake(videoTrack.naturalSize.height, videoTrack.naturalSize.width)
-        } else {
-            naturalSize = videoTrack.naturalSize
-        }
+//        var naturalSize:CGSize;
+//        if isVideoAssetPortrait == true {
+//            naturalSize = CGSizeMake(videoTrack.naturalSize.height, videoTrack.naturalSize.width)
+//        } else {
+//            naturalSize = videoTrack.naturalSize
+//        }
         var transform: CGAffineTransform!
         guard let playerScrollView = self.playerScrollView else {
             assert(false, "You need to pass a scrollView if you want to crop video to a square")
@@ -190,8 +193,10 @@ class VideoTrimManager {
         if isVideoAssetPortrait == true {
             //瞎写的
             let scale = naturalSize.height / naturalSize.width
-            transform = CGAffineTransformMakeScale(scale, 1)
-            transform = CGAffineTransformConcat(videoTrack.preferredTransform, transform)
+            transform = CGAffineTransformMakeScale(scale, scale)
+            let translationY = -offsetY * naturalSize.height / playerScrollView.frame.size.height
+            let translation = CGAffineTransformMakeTranslation(0, translationY)
+            transform = CGAffineTransformConcat(transform, translation)
         } else {
             let scale = naturalSize.width / naturalSize.height
             transform = CGAffineTransformMakeScale(scale, scale);
