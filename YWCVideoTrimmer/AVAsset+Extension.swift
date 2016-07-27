@@ -61,6 +61,14 @@ extension AVAsset {
         return lastTrack.nominalFrameRate
     }
     
+    var isPortrait:Bool {
+        if width > height {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
     
     
 }

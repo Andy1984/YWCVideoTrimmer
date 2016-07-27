@@ -73,27 +73,14 @@ class VideoTrimManager {
         
         // 3.2 - Create an AVMutableVideoCompositionLayerInstruction for the video track and fix the orientation.
         let videoLayerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: videoTrack)
-        var isVideoAssetPortrait = false
-        let videoTransform = videoTrack.preferredTransform
-        if (videoTransform.a == 0 && videoTransform.b == 1.0 && videoTransform.c == -1.0 && videoTransform.d == 0) {
-            isVideoAssetPortrait = true;
-        }
-        if (videoTransform.a == 0 && videoTransform.b == -1.0 && videoTransform.c == 1.0 && videoTransform.d == 0) {
-            isVideoAssetPortrait = true;
-        }
         
-        var naturalSize:CGSize;
-        if isVideoAssetPortrait == true {
-            naturalSize = CGSizeMake(videoTrack.naturalSize.height, videoTrack.naturalSize.width)
-        } else {
-            naturalSize = videoTrack.naturalSize
-        }
+        let naturalSize = videoTrack.naturalSize;
+        
         var transform: CGAffineTransform!
         // Monkey patch
-        if isVideoAssetPortrait == true {
-            let scale = naturalSize.height / naturalSize.width
-            transform = CGAffineTransformMakeScale(scale, 1)
-            transform = CGAffineTransformConcat(videoTrack.preferredTransform, transform)
+        if asset.isPortrait == true {
+            let scale = naturalSize.height / naturalSize.width;
+            transform = CGAffineTransformMakeScale(scale, 1);
         } else {
             let scale = naturalSize.width / naturalSize.height
             transform = CGAffineTransformMakeScale(1, scale)
