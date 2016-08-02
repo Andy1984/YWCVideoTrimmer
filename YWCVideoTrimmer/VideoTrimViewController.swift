@@ -50,7 +50,7 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cut", style: .Plain, target: self, action: #selector(videoOutput))
         self.navigationController?.navigationBar.translucent = false
         
-        guard let URLString = NSBundle.mainBundle().pathForResource("mxsf", ofType: "mp4") else {
+        guard let URLString = NSBundle.mainBundle().pathForResource("mv", ofType: "mp4") else {
             print("Cannot get video")
             return
         }
