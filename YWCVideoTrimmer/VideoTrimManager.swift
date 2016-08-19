@@ -69,7 +69,7 @@ class VideoTrimManager {
         
         // 3.1 - Create AVMutableVideoCompositionInstruction
         let mainInstruction = AVMutableVideoCompositionInstruction()
-        mainInstruction.timeRange = timeRange
+        mainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, timeRange.duration)
         
         // 3.2 - Create an AVMutableVideoCompositionLayerInstruction for the video track and fix the orientation.
         let videoLayerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: videoTrack)
@@ -148,7 +148,7 @@ class VideoTrimManager {
         
         // 3.1 - Create AVMutableVideoCompositionInstruction
         let mainInstruction = AVMutableVideoCompositionInstruction()
-        mainInstruction.timeRange = timeRange
+        mainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, timeRange.duration)
         
         // 3.2 - Create an AVMutableVideoCompositionLayerInstruction for the video track and fix the orientation.
         let videoLayerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: videoTrack)
