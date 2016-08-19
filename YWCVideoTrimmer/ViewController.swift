@@ -13,12 +13,6 @@ import AVFoundation
 
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        let cutVC = VideoTrimViewController()
-        let navi = UINavigationController(rootViewController: cutVC)
-        self.presentViewController(navi, animated: true, completion: nil)
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,8 +26,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         picker.mediaTypes = [movieType,vidoeType]
         picker.delegate = self
         presentViewController(picker, animated: true, completion: nil)
-    
-        
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {

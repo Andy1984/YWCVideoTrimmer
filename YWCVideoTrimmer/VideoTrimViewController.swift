@@ -50,13 +50,6 @@ class VideoTrimViewController: UIViewController, YWCVideoTrimViewDelegate {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cut", style: .Plain, target: self, action: #selector(videoOutput))
         self.navigationController?.navigationBar.translucent = false
         
-        guard let URLString = NSBundle.mainBundle().pathForResource("mv", ofType: "mp4") else {
-            print("Cannot get video")
-            return
-        }
-        let URL = NSURL(fileURLWithPath: URLString)
-        asset = AVURLAsset(URL: URL)
-        
         if asset.width >= asset.height {
             playerLayerFrame = CGRectMake(0, 0, ScreenWidth * asset.width/asset.height, ScreenWidth)
             playerScrollViewContentSize = CGSizeMake(ScreenWidth * asset.width / asset.height, ScreenWidth)
