@@ -10,63 +10,48 @@ import Foundation
 import AVFoundation
 
 extension AVAsset {
+    
     var seconds:Double {
         return CMTimeGetSeconds(self.duration)
     }
     
+    var videoTracks:[AVAssetTrack] {
+        return tracksWithMediaType(AVMediaTypeVideo)
+    }
+    
+    var firstTrack: AVAssetTrack {
+        return videoTracks.first!
+    }
+    
     var width:CGFloat {
-        guard let tracks:[AVAssetTrack] = tracksWithMediaType(AVMediaTypeVideo) else {
-            print("获取视频width失败,远程视频, 可能会出现成功获取asset, 但是asset.tracks为空数组的情况")
-            return ScreenWidth
-        }
-        guard let track = tracks.first else {
-            print("tracks.first == nil")
-            return ScreenWidth
-        }
-
-        
-        if CGAffineTransformEqualToTransform(track.preferredTransform, CGAffineTransformIdentity) {
-            return track.naturalSize.width
-        } else {
-            return track.naturalSize.height
-        }
+        return firstTrack.naturalSize.width
     }
     
     var height:CGFloat {
-        guard let tracks:[AVAssetTrack] = tracksWithMediaType(AVMediaTypeVideo) else {
-            print("获取视频width失败,远程视频, 可能会出现成功获取asset, 但是asset.tracks为空数组的情况")
-            return ScreenWidth
-        }
-        guard let track = tracks.first else {
-            print("tracks.first == nil")
-            return ScreenWidth
-        }
-        
-        if CGAffineTransformEqualToTransform(track.preferredTransform, CGAffineTransformIdentity) {
-            return track.naturalSize.height
-        } else {
-            return track.naturalSize.width
-        }
+        return firstTrack.naturalSize.height
     }
     
     var fps:Float {
-        guard let videoTracks:[AVAssetTrack] = tracksWithMediaType(AVMediaTypeVideo) else {
-            print("cannot get videoTracks")
-            return 20
-        }
-        guard let lastTrack = videoTracks.last else {
-            print("lesser than one track")
-            return 20
-        }
-        return lastTrack.nominalFrameRate
+        return videoTracks.last!.nominalFrameRate
     }
     
-    var isPortrait:Bool {
-        if width > height {
-            return false;
-        } else {
-            return true;
+    var rotationAngle: Int {
+        let t:CGAffineTransform = firstTrack.preferredTransform
+        var angle = -1
+        if(t.a == 0 && t.b == 1.0 && t.c == -1.0 && t.d == 0){
+            // Portrait
+            angle = 90;
+        }else if(t.a == 0 && t.b == -1.0 && t.c == 1.0 && t.d == 0){
+            // PortraitUpsideDown
+            angle = 270;
+        }else if(t.a == 1.0 && t.b == 0 && t.c == 0 && t.d == 1.0){
+            // LandscapeRight
+            angle = 0;
+        }else if(t.a == -1.0 && t.b == 0 && t.c == 0 && t.d == -1.0){
+            // LandscapeLeft
+            angle = 180;
         }
+        return angle
     }
     
     

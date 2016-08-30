@@ -77,14 +77,15 @@ class VideoTrimManager {
         let naturalSize = videoTrack.naturalSize;
         
         var transform: CGAffineTransform!
+        // 这是可能要的
         // Monkey patch
-        if asset.isPortrait == true {
-            let scale = naturalSize.height / naturalSize.width;
-            transform = CGAffineTransformMakeScale(scale, 1);
-        } else {
-            let scale = naturalSize.width / naturalSize.height
-            transform = CGAffineTransformMakeScale(1, scale)
-        }
+//        if asset.isPortrait == true {
+//            let scale = naturalSize.height / naturalSize.width;
+//            transform = CGAffineTransformMakeScale(scale, 1);
+//        } else {
+//            let scale = naturalSize.width / naturalSize.height
+//            transform = CGAffineTransformMakeScale(1, scale)
+//        }
         videoLayerInstruction.setTransform(transform, atTime: kCMTimeZero)
         //opacity不应该是1.0吗
         videoLayerInstruction.setOpacity(0.0, atTime: self.asset.duration)
