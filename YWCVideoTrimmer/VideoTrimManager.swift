@@ -75,8 +75,8 @@ class VideoTrimManager {
         let videoLayerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: videoCompositionTrack)
         
         let naturalSize = videoTrack.naturalSize;
-        
         var transform: CGAffineTransform!
+
         // 这是可能要的
         // Monkey patch
 //        if asset.isPortrait == true {
@@ -161,16 +161,17 @@ class VideoTrimManager {
 //        if (videoTransform.a == 0 && videoTransform.b == -1.0 && videoTransform.c == 1.0 && videoTransform.d == 0) {
 //            isVideoAssetPortrait = true;
 //        }
-        let naturalSize:CGSize = videoTrack.naturalSize
-        if naturalSize.width < naturalSize.height {
-            isVideoAssetPortrait = true;
-        }
+//        let naturalSize:CGSize = videoTrack.naturalSize
+//        if naturalSize.width < naturalSize.height {
+//            isVideoAssetPortrait = true;
+//        }
 //        var naturalSize:CGSize;
 //        if isVideoAssetPortrait == true {
 //            naturalSize = CGSizeMake(videoTrack.naturalSize.height, videoTrack.naturalSize.width)
 //        } else {
 //            naturalSize = videoTrack.naturalSize
 //        }
+        
         var transform: CGAffineTransform!
         guard let playerScrollView = self.playerScrollView else {
             assert(false, "You need to pass a scrollView if you want to crop video to a square")
@@ -178,30 +179,43 @@ class VideoTrimManager {
         }
         let offsetX = playerScrollView.contentOffset.x
         let offsetY = playerScrollView.contentOffset.y
-        if isVideoAssetPortrait == true {
-            //瞎写的
-            let scale = naturalSize.height / naturalSize.width
-            transform = CGAffineTransformMakeScale(scale, scale)
-            let translationY = -offsetY * naturalSize.height / playerScrollView.frame.size.height
-            let translation = CGAffineTransformMakeTranslation(0, translationY)
-            transform = CGAffineTransformConcat(transform, translation)
-        } else {
-            let scale = naturalSize.width / naturalSize.height
-            transform = CGAffineTransformMakeScale(scale, scale);
-            let translationX = -offsetX * naturalSize.width/playerScrollView.frame.size.width
-            let translation = CGAffineTransformMakeTranslation(translationX, 0)
-            transform = CGAffineTransformConcat(transform, translation)
+//        if asset.isPortraitTransform == true {
+//            //瞎写的
+//            let scale = asset.height / asset.width
+//            transform = CGAffineTransformMakeScale(scale, scale)
+//            let translationY = -offsetY * asset.height / playerScrollView.frame.size.height
+//            let translation = CGAffineTransformMakeTranslation(0, translationY)
+//            transform = CGAffineTransformConcat(transform, translation)
+//        } else {
+//            let scale = asset.width / asset.height
+//            transform = CGAffineTransformMakeScale(scale, scale);
+//            let translationX = -offsetX * asset.width/playerScrollView.frame.size.width
+//            let translation = CGAffineTransformMakeTranslation(translationX, 0)
+//            transform = CGAffineTransformConcat(transform, translation)
+//        }
+//        transform = CGAffineTransformConcat(transform, asset.preferredTransform)
+//        videoLayerInstruction.setTransform(transform, atTime: kCMTimeZero)
+//        //opacity不应该是1.0吗
+//        videoLayerInstruction.setOpacity(0.0, atTime: self.asset.duration)
+//        let naturalSize:CGSize = videoTrack.naturalSize
+        if asset.isPortraitTransform == true {
+//            let scale = asset.height / asset.width
+//            transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2))
+//            let translationY = -offsetY * asset.width / playerScrollView.frame.size.height
+//            let translation = CGAffineTransformMakeTranslation(0, translationY)
+//            transform = CGAffineTransformConcat(transform, translation)
+//            transform = CGAffineTransformConcat(transform, CGAffineTransformMakeScale(scale, scale))
+            transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2))
+            
         }
+        videoLayerInstruction.setTransform(CGAffineTransformIdentity, atTime: kCMTimeZero)
         
-        videoLayerInstruction.setTransform(transform, atTime: kCMTimeZero)
-        //opacity不应该是1.0吗
-        videoLayerInstruction.setOpacity(0.0, atTime: self.asset.duration)
         
         // 3.3 - Add instructions
         mainInstruction.layerInstructions = [videoLayerInstruction]
         
         let mainCompositionInst = AVMutableVideoComposition()
-        let squareLength = max(naturalSize.width, naturalSize.height)
+        let squareLength = max(asset.width, asset.height)
         let squareSize = CGSizeMake(squareLength, squareLength)
         mainCompositionInst.renderSize = squareSize
         mainCompositionInst.instructions = [mainInstruction]
